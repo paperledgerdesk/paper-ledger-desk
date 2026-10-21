@@ -84,10 +84,25 @@ The waitlist buttons send email to **paperledgerdesk@gmail.com**. To change it,
 edit `WAITLIST_EMAIL` in `config.js` and the same address in the two `mailto:`
 links in `index.html` (they are used if a visitor's browser has JavaScript turned off).
 
+## Feedback relay (one-tap "Send" in the app)
+
+In the app, **More › Settings › Feedback & suggestions › Send** posts the message straight to the team
+inbox through [FormSubmit](https://formsubmit.co) (no backend of our own). Only what the user types is
+sent: the message, an optional name and reply email, the app version, and (only if the user ticks
+the box) basic app info. Invoices,
+clients, amounts and settings are never sent. If sending fails or the device is offline, the note is
+kept on the device and retried automatically; emailing it by hand is offered as a last resort.
+
+- The endpoint is `FEEDBACK_ENDPOINT` in `config.js`. The app is a single offline file and cannot read
+  `config.js`, so `app/index.html` has the same value in its own `FEEDBACK_ENDPOINT` constant, and its
+  Content-Security-Policy allows `connect-src https://formsubmit.co` only. Change all three together.
+- **One-time activation:** the first real submission makes FormSubmit email paperledgerdesk@gmail.com
+  a confirmation link. Click it once; until then messages are not delivered.
+
 ## Important: what paying does and does not do today
 
 The app keeps all data in the user's own browser. There are no accounts and no
-server. That means **paying does not lock or unlock anything in the app yet**:
+server (the only thing that ever leaves the device is feedback the user chooses to send). That means **paying does not lock or unlock anything in the app yet**:
 every feature is available in the free version. To have real paid-only features
 (for example cloud backup, sync between devices, or several users), the app will
 need user accounts and a small backend that checks Paystack subscriptions. That

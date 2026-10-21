@@ -33,6 +33,14 @@ const DEFAULT_CURRENCY = "USD";
 // Email address for the waitlist buttons.
 const WAITLIST_EMAIL = "paperledgerdesk@gmail.com";
 
+// Where the app's "Send" button in Feedback & suggestions posts messages (no backend needed).
+// Default: FormSubmit AJAX endpoint for the team inbox. Can be switched later (e.g. to Supabase).
+// NOTE: the app (app/index.html) is a single offline file with a strict CSP, so it cannot read this
+// file. It carries the same value as its own FEEDBACK_ENDPOINT constant. If you change this, also
+// change that constant and the connect-src host in the app's Content-Security-Policy meta tag.
+// FormSubmit needs a one-time activation: the first real message emails the inbox a confirm link.
+const FEEDBACK_ENDPOINT = "https://formsubmit.co/ajax/paperledgerdesk@gmail.com";
+
 /* ---- nothing below this line needs editing ---- */
 (function () {
   // Guess the visitor's currency from their time zone, then their language

@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1F4D3A">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-nP8PhJ39bz5PLHFir0ELndwvzeCHsYEu6CJvc8zOpv4=' 'sha256-vX+fI0Xp2TpmbgKREFma0vRyHWMdV4GRiKdUXs417sw='; style-src 'unsafe-inline'; img-src data: blob:; font-src 'none'; manifest-src blob:; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-nP8PhJ39bz5PLHFir0ELndwvzeCHsYEu6CJvc8zOpv4=' 'sha256-yvMSKGF3bHw8e5YTw1Dxg5XpRZdSaa8X6PIhuDgTHA4='; style-src 'unsafe-inline'; img-src data: blob:; font-src 'none'; manifest-src blob:; connect-src https://formsubmit.co; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
 <style>
 :root{--paper:#F4F0E6;--ink:#1C1915;--grove:#1F4D3A;--rust:#8F3D2C;--soft:#5C5348;--line:#D4CDBE;--white:#FFFcf7}
 body.dark{--paper:#1C1915;--ink:#F4F0E6;--grove:#7BAF8A;--rust:#E08A7A;--soft:#A89F90;--line:#3A342C;--white:#252019}
@@ -130,13 +130,14 @@ td strong,.clientrow strong{display:inline-block;max-width:100%}
 .linkbtn{background:none;border:0;padding:0;color:var(--grove);text-decoration:underline;font:inherit;cursor:pointer;min-height:44px;min-width:44px;display:inline-flex;align-items:center;vertical-align:middle}
 body.dark .linkbtn{color:inherit}
 #feedbackModal textarea{font:inherit}
+.hp{position:absolute!important;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
 </style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="app">
   <header>
-    <div><h1 class="logo">Paper Ledger</h1><div class="tag">Get paid on time. Local-first, nothing leaves this device.</div></div>
+    <div><h1 class="logo">Paper Ledger</h1><div class="tag">Get paid on time. Local-first: nothing leaves your device unless you choose to send feedback.</div></div>
     <div style="display:flex;gap:0.4rem;align-items:center">
       <button class="btn secondary" id="themeBtn">Dark</button>
       <nav class="nav mainnav" id="mainnav" aria-label="Sections"><button class="active" data-group="today">Today</button><button data-group="invoices">Invoices</button><button data-group="clients">Clients</button><button data-group="cash">Cash</button><button data-group="more">More</button></nav>
@@ -456,7 +457,7 @@ body.dark .linkbtn{color:inherit}
 </div></div>
 <div class="modal-backdrop" id="feedbackModal"><div class="modal">
   <div style="font-family:var(--serif);font-size:1.05rem;margin-bottom:0.3rem">Feedback &amp; suggestions</div>
-  <p class="reason" id="fbPrivacy" style="margin:0 0 0.5rem"><strong>This goes privately to the Paper Ledger Desk team by email. Nobody else can see it.</strong> Your invoices and clients are never included.</p>
+  <p class="reason" id="fbPrivacy" style="margin:0 0 0.5rem"><strong>This goes privately to the Paper Ledger Desk team. Nobody else can see it.</strong> It is sent only when you press Send, through the FormSubmit form relay (formsubmit.co) to our inbox. Your invoices, clients, amounts and settings are never included.</p>
   <div><label for="fbType" style="font-size:0.7rem;color:var(--soft)">Type</label><select id="fbType" style="width:100%"><option>Complaint</option><option selected>Suggestion</option><option>Bug report</option><option>Praise</option><option>Other</option></select></div>
   <div style="margin-top:0.35rem"><label for="fbMsg" style="font-size:0.7rem;color:var(--soft)">Your message (required)</label><textarea id="fbMsg" rows="6" maxlength="3000" required aria-required="true" aria-describedby="fbCount fbErr" placeholder="What happened, or what would make the app better for you?" style="width:100%"></textarea><div class="reason" id="fbCount" aria-live="polite">0 / 3000</div></div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.35rem;margin-top:0.25rem">
@@ -465,10 +466,10 @@ body.dark .linkbtn{color:inherit}
   </div>
   <label class="chk" style="display:flex;gap:0.4rem;align-items:center;justify-content:flex-start;text-align:left;margin-top:0.4rem;font-size:0.78rem"><input type="checkbox" id="fbInfo"> Include basic app info (app version, browser, screen size — never invoice or client data)</label>
   <div id="fbErr" role="alert" style="color:var(--rust);font-size:0.78rem;min-height:1em;margin-top:0.25rem"></div>
-  <div style="margin-top:0.3rem"><button class="btn" id="fbSend">Send by email</button> <button class="btn secondary" id="fbCancel">Close</button></div>
+  <div style="margin-top:0.3rem"><div class="hp" aria-hidden="true"><label for="fbHoney">Leave this field empty</label><input id="fbHoney" name="_honey" tabindex="-1" autocomplete="off"></div><button class="btn" id="fbSend">Send</button> <button class="btn secondary" id="fbCancel">Close</button></div>
   <p class="reason" id="fbDone" aria-live="polite" style="margin:0.35rem 0 0"></p>
   <div id="fbFallback" hidden style="margin-top:0.35rem">
-    <div class="reason">No email app? Copy the message and send it to <strong id="fbAddr">paperledgerdesk@gmail.com</strong> from any email account.</div>
+    <div style="margin-bottom:0.25rem"><button type="button" class="btn small secondary" id="fbRetry">Try sending again now</button></div><div class="reason">Last resort: copy the message and email it to <strong id="fbAddr">paperledgerdesk@gmail.com</strong> from any email account, or open your email app.</div>
     <label for="fbFallbackText" style="font-size:0.7rem;color:var(--soft)">Message to send</label><textarea id="fbFallbackText" rows="5" readonly style="width:100%"></textarea>
     <div style="margin-top:0.25rem"><button class="btn secondary" id="fbCopy">Copy message</button> <a class="btn secondary" id="fbMailto" href="mailto:paperledgerdesk@gmail.com?subject=%5BFeedback%5D%20Suggestion">Open email app again</a></div>
   </div>
@@ -2753,7 +2754,7 @@ if($('undoBar')){$('undoBar').setAttribute('role','region');$('undoBar').setAttr
 
 
 // ================= v4.1: private feedback to the Paper Ledger Desk team (email only, nothing stored remotely) =================
-const APP_VERSION='4.2';
+const APP_VERSION='4.2.1';
 const FEEDBACK_TO='paperledgerdesk@gmail.com';
 const FB_KEY='pld_feedback_sent_v1';
 const FB_TYPES=['Complaint','Suggestion','Bug report','Praise','Other'];
@@ -2807,6 +2808,94 @@ safeOn('fbSend',sendFeedback);safeOn('fbCopy',copyFeedback);safeOn('fbCancel',cl
 safeOn('fbClearList',()=>{if(!confirm('Remove the list of feedback you sent from this device? (Emails already sent are not affected.)'))return;localStorage.removeItem(FB_KEY);renderFbList();toast('List cleared');});
 if($('fbMsg'))$('fbMsg').addEventListener('input',updateFbCount);
 document.addEventListener('keydown',e=>{if(e.key==='F'&&e.shiftKey&&!e.metaKey&&!e.ctrlKey&&!openModals().length&&!['INPUT','SELECT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();openFeedback();}});
+// ---------- v4.2.1: one-tap feedback sending through a no-backend form relay (FormSubmit) ----------
+// FEEDBACK_ENDPOINT mirrors FEEDBACK_ENDPOINT in /config.js. The app cannot read config.js: it is a single file whose
+// CSP only runs its own hashed inline scripts, and it must also work when opened straight from disk. To switch relay
+// (e.g. Supabase later), change this constant, config.js, and the connect-src host in the CSP meta tag together.
+const FEEDBACK_ENDPOINT='https://formsubmit.co/ajax/paperledgerdesk@gmail.com';
+const FEEDBACK_HOST='formsubmit.co';
+const FB_FIELDS=['_subject','_captcha','_template','_honey','type','message','name','email','app_version','app_info'];
+const FB_BACKOFF=[30e3,120e3,600e3,3600e3,21600e3];
+const FB_QUEUE_MAX=20;
+var fbRetryTimer=null,fbFlushing=false;
+function feedbackEndpoint(){try{const u=new URL(FEEDBACK_ENDPOINT);return u.protocol==='https:'&&u.hostname===FEEDBACK_HOST&&!u.username&&!u.password?u.href:'';}catch{return '';}}
+function fbBackoff(n){return FB_BACKOFF[Math.max(0,Math.min(n-1,FB_BACKOFF.length-1))];}
+function fbClean(p){const o={};if(!p||typeof p!=='object')return o;FB_FIELDS.forEach(k=>{if(typeof p[k]==='string'&&p[k]!=='')o[k]=p[k].slice(0,k==='message'?FB_MAX:4000);});o._captcha='false';o._honey='';return o;}
+function fbPayload(f){
+  const p={_subject:'[Feedback] '+f.type+' — Paper Ledger Desk '+APP_VERSION,_captcha:'false',_template:'table',_honey:'',type:f.type,message:f.msg,app_version:APP_VERSION+' (data schema '+SCHEMA+')'};
+  if(f.name)p.name=f.name;
+  if(f.email)p.email=f.email;
+  if($('fbInfo')&&$('fbInfo').checked)p.app_info=fbAppInfo();
+  return fbClean(p);
+}
+async function fbPost(payload){
+  const url=feedbackEndpoint();if(!url)return {ok:false,error:'no relay configured'};
+  if(navigator.onLine===false)return {ok:false,error:'offline'};
+  const ctl=typeof AbortController!=='undefined'?new AbortController():null;const t=ctl?setTimeout(()=>ctl.abort(),15000):0;
+  try{
+    const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(fbClean(payload)),credentials:'omit',referrerPolicy:'no-referrer',cache:'no-store',mode:'cors',signal:ctl?ctl.signal:undefined});
+    let j=null;try{j=await res.json();}catch{}
+    if(res.ok&&j&&(j.success===true||j.success==='true'))return {ok:true};
+    return {ok:false,error:'HTTP '+res.status};
+  }catch(e){return {ok:false,error:navigator.onLine===false?'offline':'network'};}
+  finally{if(t)clearTimeout(t);}
+}
+function fbStore(list){
+  const q=list.filter(x=>x.status==='queued').slice(0,FB_QUEUE_MAX);const rest=list.filter(x=>x.status!=='queued');
+  const keep=new Set(q.concat(rest).slice(0,Math.max(50,q.length)));
+  try{localStorage.setItem(FB_KEY,JSON.stringify(list.filter(x=>keep.has(x))));return true;}catch{return false;}
+}
+function fbStatusText(x){return x.status==='sent'?'Sent ✓':x.status==='queued'?'Waiting to send — retries automatically':'Opened in your email app';}
+function renderFbList(){
+  const l=fbSent();const el=$('fbList');if(!el)return;
+  $('fbHistory').hidden=!l.length;
+  el.innerHTML=l.slice(0,20).map(x=>`<li><strong>${escape(String(x.date||''))}</strong> · ${escape(String(x.type||''))} · ${escape(String(x.snippet||''))} · <em>${escape(fbStatusText(x))}</em></li>`).join('');
+}
+function fbShowFallback(f){
+  $('fbMailto').href=f.href;
+  $('fbFallbackText').value='To: '+FEEDBACK_TO+'\nSubject: '+f.subject+'\n\n'+f.body;
+  $('fbFallback').hidden=false;
+}
+async function sendFeedback(){
+  const f=fbCompose();
+  if(!f.msg){$('fbErr').textContent='Please write your message first.';$('fbMsg').focus();return;}
+  if(f.email&&!EMAIL_RE.test(f.email)){$('fbErr').textContent='That email address does not look right (or leave it empty).';$('fbEmail').focus();return;}
+  $('fbErr').textContent='';$('fbFallback').hidden=true;
+  const snippet=f.msg.slice(0,80)+(f.msg.length>80?'…':'');
+  if($('fbHoney')&&$('fbHoney').value){$('fbDone').textContent='Sent ✓ thank you!';return;} // honeypot filled: a bot, drop silently
+  const btn=$('fbSend');btn.disabled=true;$('fbDone').textContent='Sending…';
+  const payload=fbPayload(f);const r=await fbPost(payload);btn.disabled=false;
+  const list=fbSent();const entry={id:Date.now(),date:today(),type:f.type,snippet};
+  if(r.ok){entry.status='sent';list.unshift(entry);fbStore(list);
+    $('fbDone').textContent='Sent ✓ thank you! Your message reached the Paper Ledger Desk team.'+(f.email?' We will reply to '+f.email+'.':'');
+    $('fbMsg').value='';updateFbCount();}
+  else{entry.status='queued';entry.payload=payload;entry.tries=1;entry.next=Date.now()+fbBackoff(1);entry.err=r.error;list.unshift(entry);const stored=fbStore(list);
+    $('fbDone').textContent=(r.error==='offline'?'You are offline, so it was not sent yet. ':'It could not be sent right now ('+r.error+'). ')+(stored?'It is saved on this device and will be sent automatically when you are back online or next time you open the app.':'It could not be saved on this device either.')+' If it is urgent, you can also email it yourself:';
+    fbShowFallback(f);scheduleFbRetry();}
+  renderFbList();
+}
+async function flushFeedbackQueue(force){
+  if(fbFlushing)return;
+  const due=fbSent().filter(x=>x.status==='queued'&&x.payload&&(force||!x.next||x.next<=Date.now()));
+  if(!due.length||navigator.onLine===false){scheduleFbRetry();return;}
+  fbFlushing=true;let sent=0;
+  try{for(const e of due){const r=await fbPost(e.payload);const l=fbSent();const it=l.find(x=>x.id===e.id&&x.status==='queued');if(!it)continue;
+    if(r.ok){it.status='sent';it.sentAt=today();delete it.payload;delete it.next;delete it.err;delete it.tries;sent++;}
+    else{it.tries=(+it.tries||0)+1;it.next=Date.now()+fbBackoff(it.tries);it.err=r.error;}
+    fbStore(l);}}
+  finally{fbFlushing=false;}
+  if(sent)toast(plural(sent,'queued feedback message')+' sent ✓ thank you');
+  renderFbList();scheduleFbRetry();
+}
+function scheduleFbRetry(){
+  clearTimeout(fbRetryTimer);fbRetryTimer=null;
+  const q=fbSent().filter(x=>x.status==='queued'&&x.payload);if(!q.length)return;
+  const next=Math.min(...q.map(x=>+x.next||0));
+  fbRetryTimer=setTimeout(()=>flushFeedbackQueue(false),Math.max(1000,Math.min(next-Date.now(),2147483000)));
+}
+window.addEventListener('online',()=>flushFeedbackQueue(true));
+safeOn('fbSend',sendFeedback);
+safeOn('fbRetry',()=>{flushFeedbackQueue(true).then(()=>{const q=fbSent().some(x=>x.status==='queued');$('fbDone').textContent=q?'Still not sent. It stays saved on this device and retries automatically.':'Sent ✓ thank you!';if(!q)$('fbFallback').hidden=true;});});
 
 // Reliable startup
 window._reachedEnd = true;
@@ -2815,6 +2904,7 @@ setTimeout(function(){
   try{
     load();
     refresh();
+    setTimeout(()=>flushFeedbackQueue(true),1500);
     window._readyAt=performance.now();
   }catch(e){
     window._startupError = e.message;
