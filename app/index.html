@@ -123,6 +123,11 @@ td,th,.clientrow,.topact,.exprow,.payrow,.workrow,.reason,.card,.kpi,.safety,#pr
 td strong,.clientrow strong{display:inline-block;max-width:100%}
 .firstrun .btn{margin-top:0.2rem}
 @media (max-width:760px){#invoices .tablewrap table{position:relative;display:block}#invoices table thead{position:absolute;top:0;left:0;right:0;width:auto;height:2.8rem;overflow:visible;clip:auto;display:block}#invoices table thead tr{display:flex;align-items:center;padding:0.2rem 0.6rem;height:100%}#invoices table thead th{display:none}#invoices table thead th:first-child{display:flex;align-items:center;gap:0.4rem;border:0;padding:0}#invoices table thead th:first-child::after{content:"Select all";font-size:0.8rem;font-weight:normal}#invoices table tbody{display:block;padding-top:2.8rem}}
+
+/* v4.1 feedback */
+.linkbtn{background:none;border:0;padding:0;color:var(--grove);text-decoration:underline;font:inherit;cursor:pointer;min-height:44px;min-width:44px;display:inline-flex;align-items:center;vertical-align:middle}
+body.dark .linkbtn{color:inherit}
+#feedbackModal textarea{font:inherit}
 </style>
 </head>
 <body>
@@ -235,7 +240,7 @@ td strong,.clientrow strong{display:inline-block;max-width:100%}
       <div style="margin-top:0.3rem"><label class="fl" for="setRemOffsets">Reminder schedule (days from due date; negative = before)</label><input id="setRemOffsets" placeholder="-3, 0, 7, 14, 30" style="width:100%"></div>
       <div style="margin-top:0.3rem"><label class="fl" for="setLogo">Logo (PNG or JPEG, transparency kept; stored on this device)</label><input type="file" id="setLogo" accept="image/png,image/jpeg"> <img id="logoPreview" alt="Current logo" style="max-height:40px;display:none;vertical-align:middle"> <button class="btn small secondary" id="clearLogo">Remove logo</button></div>
       <div style="margin-top:0.4rem" id="pwaNote"></div>
-      <div style="margin-top:0.4rem"><button class="btn" id="saveSettings">Save settings</button> <button class="btn secondary" id="rerunWizard">Run setup again</button></div>
+      <div style="margin-top:0.4rem"><button class="btn" id="saveSettings">Save settings</button> <button class="btn secondary" id="rerunWizard">Run setup again</button> <button class="btn secondary" id="openFeedback">Feedback &amp; suggestions</button></div>
     </div>
     <div class="card" style="margin-top:0.4rem">
       <div style="font-family:var(--serif)">Help</div>
@@ -446,6 +451,26 @@ td strong,.clientrow strong{display:inline-block;max-width:100%}
   <div class="reason" style="margin-top:0.2rem">PDF: <strong id="sendFile"></strong></div>
   <div style="margin-top:0.4rem;display:flex;gap:0.25rem"><a class="btn" id="sendEmail" href="#">Open email</a><a class="btn" id="sendWa" href="#" target="_blank" rel="noopener">Open WhatsApp</a><button class="btn secondary" id="closeSend">Close</button></div>
 </div></div>
+<div class="modal-backdrop" id="feedbackModal"><div class="modal">
+  <div style="font-family:var(--serif);font-size:1.05rem;margin-bottom:0.3rem">Feedback &amp; suggestions</div>
+  <p class="reason" id="fbPrivacy" style="margin:0 0 0.5rem"><strong>This goes privately to the Paper Ledger Desk team by email. Nobody else can see it.</strong> Your invoices and clients are never included.</p>
+  <div><label for="fbType" style="font-size:0.7rem;color:var(--soft)">Type</label><select id="fbType" style="width:100%"><option>Complaint</option><option selected>Suggestion</option><option>Bug report</option><option>Praise</option><option>Other</option></select></div>
+  <div style="margin-top:0.35rem"><label for="fbMsg" style="font-size:0.7rem;color:var(--soft)">Your message (required)</label><textarea id="fbMsg" rows="6" maxlength="3000" required aria-required="true" aria-describedby="fbCount fbErr" placeholder="What happened, or what would make the app better for you?" style="width:100%"></textarea><div class="reason" id="fbCount" aria-live="polite">0 / 3000</div></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.35rem;margin-top:0.25rem">
+    <div><label for="fbName" style="font-size:0.7rem;color:var(--soft)">Name (optional)</label><input id="fbName" autocomplete="name" style="width:100%"></div>
+    <div><label for="fbEmail" style="font-size:0.7rem;color:var(--soft)">Email for a reply (optional)</label><input id="fbEmail" type="email" autocomplete="email" style="width:100%"></div>
+  </div>
+  <label class="chk" style="display:flex;gap:0.4rem;align-items:center;justify-content:flex-start;text-align:left;margin-top:0.4rem;font-size:0.78rem"><input type="checkbox" id="fbInfo"> Include basic app info (app version, browser, screen size — never invoice or client data)</label>
+  <div id="fbErr" role="alert" style="color:var(--rust);font-size:0.78rem;min-height:1em;margin-top:0.25rem"></div>
+  <div style="margin-top:0.3rem"><button class="btn" id="fbSend">Send by email</button> <button class="btn secondary" id="fbCancel">Close</button></div>
+  <p class="reason" id="fbDone" aria-live="polite" style="margin:0.35rem 0 0"></p>
+  <div id="fbFallback" hidden style="margin-top:0.35rem">
+    <div class="reason">No email app? Copy the message and send it to <strong id="fbAddr">paperledgerdesk@gmail.com</strong> from any email account.</div>
+    <label for="fbFallbackText" style="font-size:0.7rem;color:var(--soft)">Message to send</label><textarea id="fbFallbackText" rows="5" readonly style="width:100%"></textarea>
+    <div style="margin-top:0.25rem"><button class="btn secondary" id="fbCopy">Copy message</button> <a class="btn secondary" id="fbMailto" href="mailto:paperledgerdesk@gmail.com?subject=%5BFeedback%5D%20Suggestion">Open email app again</a></div>
+  </div>
+  <details id="fbHistory" hidden style="margin-top:0.45rem"><summary style="font-size:0.78rem">Feedback I’ve sent (on this device only)</summary><ul id="fbList" class="reason" style="margin:0.3rem 0 0 1rem"></ul><button class="btn small secondary" id="fbClearList">Clear this list</button></details>
+</div></div>
 <div class="modal-backdrop" id="wizard"><div class="modal">
   <div style="font-family:var(--serif);font-size:1.1rem;margin-bottom:0.2rem">Welcome to Paper Ledger</div>
   <p class="reason" style="margin-bottom:0.5rem">Four quick details and you're ready. Everything stays in this browser.</p>
@@ -461,7 +486,7 @@ td strong,.clientrow strong{display:inline-block;max-width:100%}
 </div></div>
 <div class="undobar" id="undoBar"><span id="undoMsg"></span><button class="btn small" id="undoBtn">Undo</button></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<footer style="text-align:center;font-size:0.62rem;color:var(--soft);padding-top:0.5rem">Paper Ledger Desk · Month-end reconciliation · Forecast vs actual</footer>
+<footer style="text-align:center;font-size:0.62rem;color:var(--soft);padding-top:0.5rem">Paper Ledger Desk · Month-end reconciliation · Forecast vs actual · <button type="button" class="linkbtn" id="footFeedback">Feedback &amp; suggestions</button></footer>
 
 <script>
 window.onerror=function(msg,url,line){window._err=msg+' at '+line;return false;};
@@ -1445,7 +1470,7 @@ document.addEventListener('keydown',e=>{
   if(e.key==='u'&&!e.metaKey&&!e.ctrlKey){e.preventDefault();undoLast();}
   if(e.key==='/'&&!e.metaKey&&!e.ctrlKey){e.preventDefault();goView('invoices');setTimeout(()=>$('search').focus(),50);}
   if(e.key==='d'&&!e.metaKey&&!e.ctrlKey){e.preventDefault();$('themeBtn').click();}
-  if(e.key==='?'&&!e.metaKey&&!e.ctrlKey){e.preventDefault();alert('Shortcuts: A add invoice · N notes · W WIP · U undo last delete · / search · D dark mode');}
+  if(e.key==='?'&&!e.metaKey&&!e.ctrlKey){e.preventDefault();alert('Shortcuts: A add invoice · N notes · W WIP · U undo last delete · / search · D dark mode · Shift+F feedback');}
 });
 // ===================== v2: currency, clients, undo, snapshots, reminders, PDF =====================
 function defCur(){return settings.currency||'ZAR';}
@@ -2610,6 +2635,62 @@ if($('mClient'))$('mClient').addEventListener('change',()=>{if(editingId)return;
 document.addEventListener('click',e=>{document.querySelectorAll('details.tools[open]').forEach(d=>{if(!d.contains(e.target)||(e.target.closest('.toolmenu')&&e.target.closest('button')))d.open=false;});});
 if($('undoBar')){$('undoBar').setAttribute('role','region');$('undoBar').setAttribute('aria-label','Undo');$('undoMsg').setAttribute('aria-live','polite');}
 
+
+// ================= v4.1: private feedback to the Paper Ledger Desk team (email only, nothing stored remotely) =================
+const APP_VERSION='4.1';
+const FEEDBACK_TO='paperledgerdesk@gmail.com';
+const FB_KEY='pld_feedback_sent_v1';
+const FB_TYPES=['Complaint','Suggestion','Bug report','Praise','Other'];
+const FB_MAX=3000;
+function fbSent(){try{const a=JSON.parse(localStorage.getItem(FB_KEY)||'[]');return Array.isArray(a)?a.filter(x=>x&&typeof x==='object'):[];}catch{return [];}}
+function fbAppInfo(){
+  const s=window.screen||{};
+  return ['App: Paper Ledger Desk '+APP_VERSION+' (data schema '+SCHEMA+')','Browser: '+String(navigator.userAgent||'unknown').slice(0,200),'Screen: '+(s.width||'?')+'×'+(s.height||'?')+' · window '+innerWidth+'×'+innerHeight+' · pixel ratio '+(window.devicePixelRatio||1),'Language: '+(navigator.language||'?')+' · opened from '+(location.protocol==='file:'?'a file':'the web')].join('\n');
+}
+function fbCompose(){
+  const type=FB_TYPES.includes($('fbType').value)?$('fbType').value:'Other';
+  const msg=$('fbMsg').value.trim();const name=$('fbName').value.trim();const email=$('fbEmail').value.trim();
+  const subject='[Feedback] '+type;
+  const reply=name||email?('Reply to: '+(name||'')+(email?(name?' <'+email+'>':email):'')):'Reply to: no reply requested';
+  const body='Type: '+type+'\n\n'+msg+'\n\n'+reply+($('fbInfo').checked?'\n\n--- Basic app info (no invoice or client data) ---\n'+fbAppInfo():'')+'\n\nSent from the Paper Ledger Desk feedback form.';
+  return {type,msg,name,email,subject,body,href:'mailto:'+FEEDBACK_TO+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body)};
+}
+function renderFbList(){
+  const l=fbSent();const el=$('fbList');if(!el)return;
+  $('fbHistory').hidden=!l.length;
+  el.innerHTML=l.slice(0,20).map(x=>`<li><strong>${escape(String(x.date||''))}</strong> · ${escape(String(x.type||''))} · ${escape(String(x.snippet||''))}</li>`).join('');
+}
+function openFeedback(){
+  $('fbErr').textContent='';$('fbFallback').hidden=true;$('fbDone').textContent='';
+  if(!$('fbMsg').value)$('fbType').value='Suggestion';
+  updateFbCount();renderFbList();$('feedbackModal').classList.add('show');
+}
+function updateFbCount(){const n=$('fbMsg').value.length;$('fbCount').textContent=n+' / '+FB_MAX;}
+function sendFeedback(){
+  const f=fbCompose();
+  if(!f.msg){$('fbErr').textContent='Please write your message first.';$('fbMsg').focus();return;}
+  if(f.email&&!EMAIL_RE.test(f.email)){$('fbErr').textContent='That email address does not look right (or leave it empty).';$('fbEmail').focus();return;}
+  $('fbErr').textContent='';
+  const a=$('fbMailto');a.href=f.href;
+  $('fbFallbackText').value='To: '+FEEDBACK_TO+'\nSubject: '+f.subject+'\n\n'+f.body;
+  $('fbFallback').hidden=false;
+  $('fbDone').textContent='Your email app should open with the message ready — press Send there. If nothing opened, copy the message below and email it to '+FEEDBACK_TO+'.';
+  const list=fbSent();list.unshift({date:today(),type:f.type,snippet:f.msg.slice(0,80)+(f.msg.length>80?'…':'')});
+  try{localStorage.setItem(FB_KEY,JSON.stringify(list.slice(0,50)));}catch{}
+  renderFbList();
+  a.click();
+}
+function copyFeedback(){
+  const ta=$('fbFallbackText');const t=ta.value;
+  const fallback=()=>{ta.focus();ta.select();$('fbDone').textContent='Copy was blocked by the browser — the message is selected, press Ctrl+C (or long-press › Copy), then email it to '+FEEDBACK_TO+'.';};
+  try{if(!navigator.clipboard||!navigator.clipboard.writeText){fallback();return;}navigator.clipboard.writeText(t).then(()=>{toast('Feedback copied');$('fbDone').textContent='Copied. Paste it into an email to '+FEEDBACK_TO+'.';},fallback);}catch{fallback();}
+}
+function close(){['clientModal','workModal','sendModal','modal','payModal','actionModal','importModal','expModal','feedbackModal'].forEach(m=>$(m)&&$(m).classList.remove('show'));editingPay=null;editingExp=null;editingWork=null;}
+['openFeedback','footFeedback'].forEach(id=>safeOn(id,openFeedback));
+safeOn('fbSend',sendFeedback);safeOn('fbCopy',copyFeedback);safeOn('fbCancel',close);
+safeOn('fbClearList',()=>{if(!confirm('Remove the list of feedback you sent from this device? (Emails already sent are not affected.)'))return;localStorage.removeItem(FB_KEY);renderFbList();toast('List cleared');});
+if($('fbMsg'))$('fbMsg').addEventListener('input',updateFbCount);
+document.addEventListener('keydown',e=>{if(e.key==='F'&&e.shiftKey&&!e.metaKey&&!e.ctrlKey&&!openModals().length&&!['INPUT','SELECT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();openFeedback();}});
 
 // Reliable startup
 window._reachedEnd = true;
