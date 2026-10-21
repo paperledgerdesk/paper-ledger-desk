@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1F4D3A">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-nP8PhJ39bz5PLHFir0ELndwvzeCHsYEu6CJvc8zOpv4=' 'sha256-v+UgIWsUBvlXhlYtaay02b9ZdN7Lmvny6Rz3b+QTd1w='; style-src 'unsafe-inline'; img-src data: blob:; font-src 'none'; manifest-src blob:; connect-src https://zovatyzvqmszrgoacpum.supabase.co; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-nP8PhJ39bz5PLHFir0ELndwvzeCHsYEu6CJvc8zOpv4=' 'sha256-1+Qgrrc57qMVhjIEYvlbciVMMzKTMXZ/og+DetZjygk='; style-src 'unsafe-inline'; img-src data: blob:; font-src 'none'; manifest-src blob:; connect-src https://zovatyzvqmszrgoacpum.supabase.co; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
 <style>
 :root{--paper:#F4F0E6;--ink:#1C1915;--grove:#1F4D3A;--rust:#8F3D2C;--soft:#5C5348;--line:#D4CDBE;--white:#FFFcf7}
 body.dark{--paper:#1C1915;--ink:#F4F0E6;--grove:#7BAF8A;--rust:#E08A7A;--soft:#A89F90;--line:#3A342C;--white:#252019}
@@ -148,6 +148,49 @@ body.dark .stars label{color:#E8C76A}
 .nagevery{display:inline-flex;align-items:center;gap:0.25rem;margin-left:0.3rem}
 #persistBtn[hidden],#nudge[hidden]{display:none}
 body.dark .payprev a{color:var(--grove)}
+/* v4.3.1: Today page, persistent Add invoice, overdue actions, downgrade guard */
+.keycards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0.6rem;margin-bottom:0.85rem}
+.keycard{display:flex;flex-direction:column;align-items:flex-start;gap:0.15rem;text-align:left;background:var(--white);color:var(--ink);border:1px solid var(--line);border-top:3px solid var(--line);padding:0.65rem 0.75rem;border-radius:2px;cursor:pointer;font:inherit;min-height:44px}
+.keycard:hover{border-color:var(--grove)}
+.keycard:focus-visible{outline:3px solid var(--grove);outline-offset:2px}
+.keycard .kc-l{font-size:0.62rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--soft);font-weight:600}
+.keycard .kc-v{display:block;font-family:var(--serif);font-size:1.15rem;font-weight:700;line-height:1.25}
+.keycard .kc-s{font-size:0.7rem;color:var(--soft);margin-top:0.15rem}
+.keycard.kc-rust{border-top-color:var(--rust)}.keycard.kc-rust .kc-v{color:var(--rust)}
+.keycard.kc-grove{border-top-color:var(--grove)}.keycard.kc-grove .kc-v{color:var(--grove)}
+.priocard h2{font-family:var(--serif);font-size:1.05rem;font-weight:400;margin:0 0 0.4rem}
+.priolist{list-style:none;margin:0;padding:0}
+.prio{display:flex;justify-content:space-between;align-items:center;gap:0.6rem;flex-wrap:wrap;padding:0.4rem 0;border-bottom:1px solid var(--line);font-size:0.8rem}
+.prio:last-child{border-bottom:none}
+.prio-a{display:flex;flex-wrap:wrap;gap:0.3rem}
+.pk{display:inline-block;font-size:0.62rem;text-transform:uppercase;letter-spacing:0.04em;font-weight:700;color:var(--grove);margin-right:0.25rem}
+.pk-rust{color:var(--rust)}
+.prio-empty{font-size:0.82rem;padding:0.2rem 0}
+.prio-sched{margin:0.35rem 0 0}
+.odacts{display:inline-flex;flex-wrap:wrap;gap:0.3rem}
+#invoices td.actions .odacts{margin-right:0.3rem}
+.deskmore{margin-top:0.4rem}
+.deskmore>summary{cursor:pointer;font-size:0.82rem;padding:0.75rem 0;min-height:44px;display:list-item;box-sizing:border-box}
+.subsep{align-self:center;font-size:0.66rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--soft);margin:0 0.15rem 0 0.6rem}
+.subsep[hidden]{display:none}
+.addtop{position:fixed;right:1rem;bottom:1rem;z-index:46;font-size:0.85rem;padding:0.6rem 1rem;min-height:44px;box-shadow:0 2px 8px rgba(28,25,21,0.25);font-weight:600}
+.app{padding-bottom:4.5rem}
+.toast{bottom:4.2rem}
+#futureNotice[hidden]{display:none}
+.chips{border:0;margin:0.35rem 0 0;padding:0}
+.chips legend{font-size:0.7rem;color:var(--soft);padding:0}
+.chips .chiprow{display:flex;flex-wrap:wrap;gap:0.35rem;margin-top:0.2rem}
+.chip{display:inline-flex;align-items:center;gap:0.3rem;min-height:44px;padding:0 0.7rem;border:1px solid var(--line);border-radius:999px;cursor:pointer;font-size:0.78rem;background:var(--white)}
+.chip:has(input:checked){border-color:var(--grove);background:var(--paper);font-weight:600}
+.chip input:focus-visible{outline:2px solid var(--grove);outline-offset:2px}
+#followModal .modal{max-width:420px}
+@media (max-width:900px){.keycards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:700px){
+  .addtop{right:0.7rem;bottom:calc(62px + env(safe-area-inset-bottom))}
+  .app{padding-bottom:9.5rem}
+  .toast{bottom:8.6rem}.undobar{bottom:8.6rem}
+  .prio{align-items:flex-start}
+}
 </style>
 </head>
 <body>
@@ -157,16 +200,21 @@ body.dark .payprev a{color:var(--grove)}
     <div><h1 class="logo">Paper Ledger</h1><div class="tag">Get paid on time. Local-first: nothing leaves your device unless you choose to send feedback.</div></div>
     <div style="display:flex;gap:0.4rem;align-items:center">
       <button class="btn secondary" id="themeBtn">Dark</button>
+      <button class="btn addtop" id="addInvoiceTop"><span aria-hidden="true">+ </span>Add invoice</button>
       <nav class="nav mainnav" id="mainnav" aria-label="Sections"><button class="active" data-group="today">Today</button><button data-group="invoices">Invoices</button><button data-group="clients">Clients</button><button data-group="cash">Cash</button><button data-group="more">More</button></nav>
     </div>
   </header>
-  <nav class="nav subnav" id="subnav" aria-label="Pages in this section"><button data-group="today" data-view="dashboard" class="active">Today</button><button data-group="invoices" data-view="invoices">Invoices</button><button data-group="invoices" data-view="notes">Reminders</button><button data-group="invoices" data-view="wip">Work to invoice</button><button data-group="clients" data-view="clients">Clients</button><button data-group="cash" data-view="cashflow">Forecast</button><button data-group="cash" data-view="transactions">Bank import</button><button data-group="cash" data-view="expenses">Expenses</button><button data-group="cash" data-view="ledger">Payments</button><button data-group="cash" data-view="reconcile">Reconcile</button><button data-group="cash" data-view="calendar">Calendar</button><button data-group="more" data-view="insights">Insights</button><button data-group="more" data-view="settings">Settings</button><button data-group="more" data-view="backup">Backups</button><button data-group="more" data-view="health">Health</button><button data-group="more" data-view="effectiveness">Effectiveness</button><button data-group="more" data-view="review">Month review</button><button data-group="more" data-view="activity">Activity</button></nav>
+  <nav class="nav subnav" id="subnav" aria-label="Pages in this section"><button data-group="today" data-view="dashboard" class="active">Today</button><button data-group="invoices" data-view="invoices">Invoices</button><button data-group="invoices" data-view="notes">Reminders</button><button data-group="invoices" data-view="wip">Work to invoice</button><button data-group="clients" data-view="clients">Clients</button><button data-group="cash" data-view="cashflow">Forecast</button><button data-group="cash" data-view="transactions">Bank import</button><button data-group="cash" data-view="expenses">Expenses</button><button data-group="cash" data-view="ledger">Payments</button><button data-group="more" data-view="settings">Settings</button><button data-group="more" data-view="backup">Backups</button><span class="subsep" data-group="more" aria-hidden="true" hidden>Tools</span><button data-group="more" data-view="insights">Insights</button><button data-group="more" data-view="reconcile">Reconcile</button><button data-group="more" data-view="calendar">Calendar</button><button data-group="more" data-view="health">Health</button><button data-group="more" data-view="effectiveness">Effectiveness</button><button data-group="more" data-view="review">Month review</button><button data-group="more" data-view="activity">Activity</button></nav>
   <main id="main" tabindex="-1">
+  <div id="futureNotice" class="nag" role="alert" hidden></div>
   <div id="storageWarn" class="nag" role="alert" hidden></div>
   <div id="nudge" hidden></div>
 
   <section class="view active" id="dashboard">
-    <div id="backupNag" style="display:none"></div>
+    <h2 class="sr-only" id="todayH">Today</h2>
+    <div class="keycards" id="keyCards"></div>
+    <section class="card priocard" aria-labelledby="prioH"><h2 id="prioH">Today’s priorities</h2><div id="backupNag" style="display:none"></div><div id="priorities"></div></section>
+    <details class="deskmore" id="deskMore"><summary>More for today: collection desk, reminder schedule, KPIs and safety net</summary>
     <div class="command">
       <h2 style="font-family:var(--serif);font-size:1.02rem;font-weight:400;margin-bottom:0.35rem">Collection Command Centre</h2>
       <div class="cmd-grid" id="command"></div>
@@ -183,6 +231,7 @@ body.dark .payprev a{color:var(--grove)}
     <div class="kpi-grid" id="recoveredToday"></div>
     <div class="card"><div style="font-family:var(--serif);font-size:0.9rem;margin-bottom:0.3rem">Priority (explainable score)</div><div id="priority"></div></div>
     <div class="card"><div style="font-family:var(--serif);font-size:0.9rem;margin-bottom:0.3rem">Financial Safety Net</div><div id="safety"></div></div>
+    </details>
   </section>
 
   <section class="view" id="invoices">
@@ -191,7 +240,7 @@ body.dark .payprev a{color:var(--grove)}
       <input type="search" id="search" placeholder="Search…" aria-label="Search invoices">
       <select id="filterClient" aria-label="Filter by client"><option value="">All clients</option></select>
       <select id="filterTag" aria-label="Filter by tag"><option value="">All tags</option></select>
-      <select id="filter" aria-label="Filter by status"><option value="">All</option><option value="draft">Drafts</option><option value="overdue">Overdue</option><option value="unpaid">Unpaid</option><option value="partial">Partial</option><option value="quote">Quotes</option><option value="paid">Paid</option><option value="writtenoff">Written off</option><option value="needs">Needs action</option></select>
+      <select id="filter" aria-label="Filter by status"><option value="">All</option><option value="open">Open (outstanding)</option><option value="draft">Drafts</option><option value="overdue">Overdue</option><option value="unpaid">Unpaid</option><option value="partial">Partial</option><option value="quote">Quotes</option><option value="paid">Paid</option><option value="writtenoff">Written off</option><option value="needs">Needs action</option></select>
       <button class="btn" id="addBtn">Add invoice</button>
       <button class="btn" id="dailySheet">Daily Action Sheet</button>
       <button class="btn secondary" id="prepareAll">Prepare all notes</button>
@@ -483,6 +532,8 @@ body.dark .payprev a{color:var(--grove)}
   <p class="reason" id="fbExtraNote" aria-live="polite" hidden></p>
   <div><label for="fbType" style="font-size:0.7rem;color:var(--soft)">Type</label><select id="fbType" style="width:100%"><option>Complaint</option><option selected>Suggestion</option><option>Bug report</option><option>Praise</option><option>Other</option></select></div>
   <div style="margin-top:0.35rem"><label for="fbMsg" style="font-size:0.7rem;color:var(--soft)">Your message (required)</label><textarea id="fbMsg" rows="6" maxlength="3000" required aria-required="true" aria-describedby="fbCount fbErr" placeholder="What happened, or what would make the app better for you?" style="width:100%"></textarea><div class="reason" id="fbCount" aria-live="polite">0 / 3000</div></div>
+  <fieldset class="chips" id="fbAreas"><legend>What is it about? (optional)</legend><div class="chiprow"><label class="chip"><input type="checkbox" name="fbArea" value="Invoices"> Invoices</label><label class="chip"><input type="checkbox" name="fbArea" value="PDF"> PDF</label><label class="chip"><input type="checkbox" name="fbArea" value="Clients"> Clients</label><label class="chip"><input type="checkbox" name="fbArea" value="Cash flow"> Cash flow</label><label class="chip"><input type="checkbox" name="fbArea" value="Speed"> Speed</label><label class="chip"><input type="checkbox" name="fbArea" value="Looks"> Looks</label></div></fieldset>
+  <div style="margin-top:0.35rem"><label for="fbTask" style="font-size:0.7rem;color:var(--soft)">What were you trying to do? (optional)</label><input id="fbTask" maxlength="140" autocomplete="off" placeholder="e.g. send a reminder to a late client" style="width:100%"></div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.35rem;margin-top:0.25rem">
     <div><label for="fbName" style="font-size:0.7rem;color:var(--soft)">Name (optional)</label><input id="fbName" autocomplete="name" style="width:100%"></div>
     <div><label for="fbEmail" style="font-size:0.7rem;color:var(--soft)">Email for a reply (optional)</label><input id="fbEmail" type="email" autocomplete="email" style="width:100%"></div>
@@ -508,6 +559,15 @@ body.dark .payprev a{color:var(--grove)}
   <div id="bankUnmatched" style="margin-top:0.3rem;font-size:0.78rem"></div>
   <p class="reason" id="bankLeft" aria-live="polite" style="margin:0.35rem 0"></p>
   <div style="display:flex;gap:0.25rem;flex-wrap:wrap"><button class="btn" id="bankApply">Import</button><button class="btn secondary" id="bankCancel">Cancel — import nothing</button></div>
+</div></div>
+<div class="modal-backdrop" id="followModal"><div class="modal">
+  <div style="font-family:var(--serif);font-size:1.05rem;margin-bottom:0.3rem">Set follow-up date</div>
+  <p class="reason" id="followFor" style="margin:0 0 0.4rem"></p>
+  <label class="fl" for="followDate">Follow up on</label><input type="date" id="followDate" aria-describedby="followHelp followErr" style="width:100%">
+  <div role="group" aria-label="Quick dates" style="display:flex;flex-wrap:wrap;gap:0.3rem;margin-top:0.35rem"><button type="button" class="btn small secondary" data-days="3">In 3 days</button><button type="button" class="btn small secondary" data-days="7">In 1 week</button><button type="button" class="btn small secondary" data-days="14">In 2 weeks</button></div>
+  <div id="followErr" role="alert" class="rateerr" style="margin-top:0.25rem"></div>
+  <p class="reason" id="followHelp" style="margin:0.25rem 0 0.4rem">This sets the invoice’s next follow-up date (the Next column) and notes it in the follow-up history. Nothing is sent.</p>
+  <div style="display:flex;gap:0.25rem"><button class="btn" id="followSave">Save</button><button class="btn secondary" id="followCancel">Cancel</button></div>
 </div></div>
 <div class="modal-backdrop" id="wizard"><div class="modal">
   <div style="font-family:var(--serif);font-size:1.1rem;margin-bottom:0.2rem">Welcome to Paper Ledger</div>
@@ -694,7 +754,7 @@ function load(){
   window._loaded = true;
   let firstRun=false;
   try{
-    const rawStr=localStorage.getItem(KEY);const raw=JSON.parse(rawStr||'null');
+    const rawStr=localStorage.getItem(KEY);const raw=JSON.parse(rawStr||'null');if(isFuture(raw))lockFuture(raw);
     if(raw&&raw.invoices){const mig=migrateSnapshot(rawStr,raw);applyPayload(raw);if(mig!=null)log('upgrade','Data format upgraded from '+mig+' to '+SCHEMA+' (v'+APP_VERSION+'); the previous data is kept as a pinned snapshot in More › Backups');if(raw.invoices.length&&!settings.onboarded){settings.onboarded=true;settings.createdAt=settings.createdAt||new Date().toISOString();}}
     else firstRun=true;
   }catch{toast('Stored data could not be read — restore a snapshot from More › Backups');snapPaused=true;}
@@ -714,11 +774,11 @@ function load(){
   if($('tolAbs'))$('tolAbs').value=settings.tolAbs??5;
   const incomplete=invoices.filter(i=>!i.client||!i.ref).length;
   if(incomplete) toast(plural(incomplete,'invoice')+' missing client or ref');
-  if(!snapPaused)save();
-  if(!settings.onboarded&&!invoices.length)showWizard();
+  if(!snapPaused&&!futureLock)save();
+  if(!settings.onboarded&&!invoices.length&&!futureLock)showWizard();
 }
 function log(type,detail){activity.unshift({at:Date.now(),type,detail});if(activity.length>200)activity.length=200;}
-function save(){if(snapPaused){toast('Saving paused: stored data was unreadable. Restore a snapshot or export first.');return;}const str=JSON.stringify(payload());localStorage.setItem(KEY,str);autoSnapshot(str);}
+function save(){if(futureLock){futureBlocked();return false;}if(snapPaused){toast('Saving paused: stored data was unreadable. Restore a snapshot or export first.');return;}const str=JSON.stringify(payload());localStorage.setItem(KEY,str);autoSnapshot(str);}
 window._afterSave = true;
 
 function renderBriefing(){
@@ -1439,7 +1499,7 @@ $('filterTag').onchange=renderTable;
 safeOn('clientsCsv',exportClients);
 safeOn('importBtn',()=>$('importFile').click());
 $('importFile').onchange=e=>{
-  const f=e.target.files[0];if(!f)return;
+  const f=e.target.files[0];if(!f)return;if(futureLock){e.target.value='';pendingImport=null;futureBlocked();return;}
   const r=new FileReader();
   r.onload=ev=>{
     try{
@@ -1455,7 +1515,7 @@ $('importFile').onchange=e=>{
   r.readAsText(f);e.target.value='';
 };
 $('confirmImport').onclick=()=>{
-  if(!pendingImport)return;
+  if(!pendingImport)return;if(futureLock){pendingImport=null;close();futureBlocked();return;}
   const data=pendingImport;
   const full=data.settings&&typeof data.settings==='object';
   autoSnapshot(JSON.stringify(payload()),true);
@@ -1538,7 +1598,7 @@ let snapPaused=false;
 function getSnaps(){try{return JSON.parse(localStorage.getItem(SNAP_KEY)||'[]');}catch{return [];}}
 function putSnaps(snaps){while(snaps.length){try{localStorage.setItem(SNAP_KEY,JSON.stringify(snaps));return true;}catch(e){snaps.pop();}}return false;}
 function autoSnapshot(str,force){
-  if(snapPaused)return;
+  if(snapPaused||futureLock)return;
   let snaps=getSnaps();const last=snaps[0];
   if(!force&&last&&last.data===str)return;
   const now=Date.now();
@@ -1553,7 +1613,7 @@ function renderBackups(){
   $('snapList').innerHTML=snaps.length?snaps.map((s,k)=>`<div class="safety snaprow"><strong>${escape(new Date(s.at).toLocaleString())}</strong>${s.pin?' · '+escape(s.label||'Kept before upgrade'):''} · ${plural(s.n,'invoice')} · ${Math.round(s.data.length/1024)} KB <button class="btn small secondary" data-act="restoreSnapshot" data-id="${escape(k)}">Restore</button></div>`).join(''):'<div class="empty">No snapshots yet.</div>';
 }
 function restoreSnapshot(k){
-  const snaps=getSnaps();const s=snaps[k];if(!s)return;
+  const snaps=getSnaps();const s=snaps[k];if(!s)return;if(futureLock){futureBlocked();return;}{let pd=null;try{pd=JSON.parse(s.data);}catch{}if(isFuture(pd)){futureRefused('snapshot');return;}}
   if(!confirm('Restore the snapshot from '+new Date(s.at).toLocaleString()+'? Your current data is snapshotted first, so you can switch back.'))return;
   autoSnapshot(JSON.stringify(payload()),true);
   applyPayload(JSON.parse(s.data));log('snapshot','Restored snapshot from '+new Date(s.at).toLocaleString());
@@ -1575,7 +1635,7 @@ function renderBackupNag(){
   el.style.display='block';
   el.innerHTML=`<div class="nag">${settings.lastBackup?'Last exported '+plural(days,'day')+' ago.':'No backup exported yet ('+plural(days,'day')+' of data).'} Browser storage can be wiped — export a backup file. <button class="btn small" id="nagExport">Export now</button> <button class="btn small secondary" id="nagLater">Remind me tomorrow</button></div>`;
   $('nagExport').onclick=exportBackup;
-  $('nagLater').onclick=()=>{settings.nagSnooze=Date.now()+86400000;save();renderBackupNag();};
+  $('nagLater').onclick=()=>{settings.nagSnooze=Date.now()+86400000;save();renderBackupNag();renderPriorities();};
 }
 
 // ---------- clients ----------
@@ -1807,6 +1867,7 @@ function goView(v){
   document.querySelectorAll('.mainnav button').forEach(b=>b.classList.toggle('active',b.dataset.group===g));
   const subs=[...document.querySelectorAll('.subnav button')];
   subs.forEach(b=>{b.style.display=b.dataset.group===g?'':'none';b.classList.toggle('active',b.dataset.view===v);});
+  document.querySelectorAll('.subnav .subsep').forEach(x=>x.hidden=x.dataset.group!==g);
   $('subnav').style.display=subs.filter(b=>b.dataset.group===g).length>1?'flex':'none';
   document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id===v));
   if(v==='backup')renderBackups();
@@ -2160,7 +2221,7 @@ function renderTableInner(){
   const shown=rows.length>tableLimit?rows.slice(0,tableLimit):rows;
   $('table').innerHTML=shown.map(i=>{
     const s=statusOf(i);const rem=remaining(i);const ps=priorityScore(i);const id=i.id;
-    return `<tr data-id="${escape(id)}"><td data-label="Select" class="selcell"><label class="chk"><input type="checkbox" class="rowchk" data-id="${escape(id)}" aria-label="Select ${escape(i.ref||'invoice')}" ${selected.has(id)?'checked':''}></label></td><td data-label="Ref">${escape(i.ref||'—')}${i.recurring?' <span aria-label="recurring" title="Recurring monthly">↻</span>':''}</td><td data-label="Client"><strong>${escape(i.client)}</strong>${i.tags?'<br><span class="reason">'+escape(i.tags)+'</span>':''}</td><td data-label="Total / Rem">${money(total(i),i.currency)}<br><small>${rem<0?'<span class="overpay">Credit '+money(-rem,i.currency)+'</span>':'Rem '+money(rem,i.currency)}</small></td><td data-label="Due">${escape(i.due)}</td><td data-label="Next">${escape(i.nextAction||'—')}</td><td data-label="Score">${ps.score}</td><td data-label="Status"><span class="status ${escape(s)}">${s}</span></td><td class="actions">${s==='draft'?'<button class="btn small" data-act="finaliseDraft" data-id="'+escape(id)+'">Finalise</button> ':''}${i.type==='quote'?'<button class="btn small" data-act="convert" data-id="'+escape(id)+'">Convert</button> ':''}<button class="btn small secondary" data-act="duplicate" data-id="${escape(id)}">Dup</button> <button class="btn small secondary" data-act="openPay" data-id="${escape(id)}">Pay</button> <button class="btn small secondary" data-act="openAction" data-id="${escape(id)}">Action</button> <button class="btn small secondary" data-act="openEdit" data-id="${escape(id)}">Edit</button> <button class="btn small secondary" data-act="printInvoice" data-id="${escape(id)}">Print</button> <button class="btn small secondary" data-act="downloadInvoicePdf" data-id="${escape(id)}">PDF</button> <button class="btn small secondary" data-act="sendInvoice" data-id="${escape(id)}">Send</button> <button class="btn small secondary" data-act="logContact" data-id="${escape(id)}">Contact</button> <button class="btn small secondary" data-act="showContacts" data-id="${escape(id)}">History</button> <button class="btn small secondary" data-act="statement" data-arg="${escape(i.client)}">Stmt</button> <button class="btn small secondary danger" data-act="deleteInvoice" data-id="${escape(id)}">Del</button></td></tr>`;
+    return `<tr data-id="${escape(id)}"><td data-label="Select" class="selcell"><label class="chk"><input type="checkbox" class="rowchk" data-id="${escape(id)}" aria-label="Select ${escape(i.ref||'invoice')}" ${selected.has(id)?'checked':''}></label></td><td data-label="Ref">${escape(i.ref||'—')}${i.recurring?' <span aria-label="recurring" title="Recurring monthly">↻</span>':''}</td><td data-label="Client"><strong>${escape(i.client)}</strong>${i.tags?'<br><span class="reason">'+escape(i.tags)+'</span>':''}</td><td data-label="Total / Rem">${money(total(i),i.currency)}<br><small>${rem<0?'<span class="overpay">Credit '+money(-rem,i.currency)+'</span>':'Rem '+money(rem,i.currency)}</small></td><td data-label="Due">${escape(i.due)}</td><td data-label="Next">${escape(i.nextAction||'—')}</td><td data-label="Score">${ps.score}</td><td data-label="Status"><span class="status ${escape(s)}">${s}</span></td><td class="actions">${s==='overdue'?overdueActs(i):''}${s==='draft'?'<button class="btn small" data-act="finaliseDraft" data-id="'+escape(id)+'">Finalise</button> ':''}${i.type==='quote'?'<button class="btn small" data-act="convert" data-id="'+escape(id)+'">Convert</button> ':''}<button class="btn small secondary" data-act="duplicate" data-id="${escape(id)}">Dup</button> <button class="btn small secondary" data-act="openPay" data-id="${escape(id)}">Pay</button> <button class="btn small secondary" data-act="openAction" data-id="${escape(id)}">Action</button> <button class="btn small secondary" data-act="openEdit" data-id="${escape(id)}">Edit</button> <button class="btn small secondary" data-act="printInvoice" data-id="${escape(id)}">Print</button> <button class="btn small secondary" data-act="downloadInvoicePdf" data-id="${escape(id)}">PDF</button> <button class="btn small secondary" data-act="sendInvoice" data-id="${escape(id)}">Send</button> <button class="btn small secondary" data-act="logContact" data-id="${escape(id)}">Contact</button> <button class="btn small secondary" data-act="showContacts" data-id="${escape(id)}">History</button> <button class="btn small secondary" data-act="statement" data-arg="${escape(i.client)}">Stmt</button> <button class="btn small secondary danger" data-act="deleteInvoice" data-id="${escape(id)}">Del</button></td></tr>`;
   }).join('')+(rows.length>shown.length?`<tr class="morerow"><td colspan="9"><span class="reason">Showing ${shown.length} of ${rows.length}.</span> <button class="btn secondary" id="showMoreRows">Show 100 more</button> <button class="btn secondary" id="showAllRows">Show all ${rows.length}</button></td></tr>`:'');
   $('table').querySelectorAll('.rowchk').forEach(cb=>cb.onchange=e=>{const id=+e.target.dataset.id;if(e.target.checked)selected.add(id);else selected.delete(id);});
   if($('showMoreRows'))$('showMoreRows').onclick=()=>{tableLimit+=100;renderTable();};
@@ -2207,6 +2268,7 @@ let storageFull=false,snapsOff=false;
 function isQuota(e){return !!e&&(e.name==='QuotaExceededError'||e.name==='NS_ERROR_DOM_QUOTA_REACHED'||e.code===22||e.code===1014);}
 function dropOldestSnapshot(){const s=getSnaps();if(!s.length)return false;dropOneSnap(s);try{if(s.length)localStorage.setItem(SNAP_KEY,JSON.stringify(s));else localStorage.removeItem(SNAP_KEY);}catch{localStorage.removeItem(SNAP_KEY);}return true;}
 function save(){
+  if(futureLock){futureBlocked();return false;}
   if(snapPaused){toast('Saving paused: stored data was unreadable. Restore a snapshot or export first.');return false;}
   maybePersist();const str=JSON.stringify(payload());let ok=false,err=null,trimmed=0;
   for(let k=0;k<SNAP_MAX+2;k++){try{localStorage.setItem(KEY,str);ok=true;break;}catch(e){err=e;if(!isQuota(e)||!dropOldestSnapshot())break;trimmed++;}}
@@ -2216,7 +2278,7 @@ function save(){
   autoSnapshot(str);renderStorageWarn();return true;
 }
 function autoSnapshot(str,force){
-  if(snapPaused)return;
+  if(snapPaused||futureLock)return;
   let snaps=getSnaps();const last=snaps[0];
   if(!force&&last&&last.data===str)return;
   const now=Date.now();const meta={at:now,n:invoices.length,c:Object.keys(clientsMeta).length,data:str};
@@ -2236,7 +2298,7 @@ function renderStorageWarn(){
   else if(snapsOff){el.hidden=false;el.innerHTML='Storage is nearly full: automatic snapshots are paused. Your data is saved. Export a backup file regularly.';}
   else{el.hidden=true;el.innerHTML='';}
 }
-function deleteAllSnapshots(){if(!confirm('Delete all automatic snapshots in this browser? Your current data is not affected.'))return;localStorage.removeItem(SNAP_KEY);snapsOff=false;log('snapshot','Deleted all snapshots');renderBackups();renderStorageWarn();toast('Snapshots deleted');}
+function deleteAllSnapshots(){if(futureLock){futureBlocked();return;}if(!confirm('Delete all automatic snapshots in this browser? Your current data is not affected.'))return;localStorage.removeItem(SNAP_KEY);snapsOff=false;log('snapshot','Deleted all snapshots');renderBackups();renderStorageWarn();toast('Snapshots deleted');}
 function exportBackup(){
   settings.lastBackup=new Date().toISOString();settings.nagSnooze=0;bump('backup');
   save();
@@ -2353,7 +2415,7 @@ function refresh(){
 }
 function refreshInner(){
   renderBackupNag();populateClientList();if($('backup')&&$('backup').classList.contains('active'))renderBackups();
-  renderCommand();renderReminderSchedule();renderKPIs();
+  renderKeyCards();renderPriorities();renderCommand();renderReminderSchedule();renderKPIs();
   const d=insightsData();renderRecoveredCards(d,$('recoveredToday'));
   renderPriority();renderSafety();populateFilter();populateTags();renderTable();renderClients();renderCash();renderExpenses();renderTransactions();renderCalendar();renderLedger();renderActivity();renderWip();renderWork();renderReview();renderHealth();renderEffectiveness();renderReconcile();populateNotes();
   if($('insights')&&$('insights').classList.contains('active'))renderInsights();
@@ -2641,13 +2703,14 @@ function migrateSnapshot(rawStr,raw){
   window._migratedFrom=from;return from;
 }
 $('importFile').onchange=e=>{
-  const f=e.target.files[0];if(!f)return;
+  const f=e.target.files[0];if(!f)return;if(futureLock){e.target.value='';pendingImport=null;futureBlocked();return;}
   if(f.size>MAX_IMPORT_BYTES){e.target.value='';pendingImport=null;toast('That backup is too large to import ('+Math.round(f.size/1048576)+' MB; the limit is 5 MB). Nothing was changed.');return;}
   const r=new FileReader();
   r.onload=ev=>{
     const text=ev.target.result;
     if(typeof text!=='string'||text.length>MAX_IMPORT_BYTES){pendingImport=null;toast('That backup is too large to import (the limit is 5 MB). Nothing was changed.');return;}
     let data;try{data=JSON.parse(text);}catch{toast('This file is not a readable backup (invalid or cut-off JSON). Nothing was changed.');return;}
+    if(isFuture(data)){pendingImport=null;futureRefused('import');return;}
     if(!isObj(data)||!Array.isArray(data.invoices)){toast('This file is not a Paper Ledger backup (no invoice list). Nothing was changed.');return;}
     const probs=[];const clean=sanitizePayload(data,probs,{import:true});
     clean.logo=null;
@@ -2660,7 +2723,7 @@ $('importFile').onchange=e=>{
   r.readAsText(f);e.target.value='';
 };
 $('confirmImport').onclick=()=>{
-  if(!pendingImport)return;
+  if(!pendingImport)return;if(futureLock){pendingImport=null;close();futureBlocked();return;}
   const data=pendingImport;const full=isObj(data.settings)&&Object.keys(data.settings).length>0;
   if(!snapPaused)autoSnapshot(JSON.stringify(payload()),true);
   if(full&&confirm('Restore this full backup? This REPLACES all current data on this device (invoices, clients, expenses, transactions, work, settings). Cancel to merge invoices only.')){
@@ -2676,7 +2739,7 @@ $('confirmImport').onclick=()=>{
   pendingImport=null;save();close();load();refresh();toast('Imported '+added+', skipped '+skipped);
 };
 function restoreSnapshot(k){
-  const snaps=getSnaps();const s=snaps[k];if(!s)return;
+  const snaps=getSnaps();const s=snaps[k];if(!s)return;if(futureLock){futureBlocked();return;}{let pd=null;try{pd=JSON.parse(s.data);}catch{}if(isFuture(pd)){futureRefused('snapshot');return;}}
   if(!confirm('Restore the snapshot from '+new Date(s.at).toLocaleString()+'?'+(snapPaused?' Your stored data could not be read, so this replaces it.':' Your current data is snapshotted first, so you can switch back.')))return;
   let data;try{data=JSON.parse(s.data);}catch{toast('That snapshot is damaged — try another one');return;}
   if(!snapPaused)autoSnapshot(JSON.stringify(payload()),true);
@@ -2749,7 +2812,7 @@ function getFiltered(){
     const needs=f==='needs'&&((i.nextAction&&i.nextAction<=today())||daysOver(i)>0||(i.promiseDate&&i.promiseDate<=today()));
     const hay=!q||[i.client,i.tags,i.ref,i.project,i.fileRef,...(i.lines||[]).map(l=>l.desc)].some(x=>String(x||'').toLowerCase().includes(q))||(qn&&/^\d+(\.\d+)?$/.test(qn)&&qn.length>=2&&[total(i),remaining(i)].some(v=>v.toFixed(2).startsWith(qn)||String(v).startsWith(qn)));
     const tagMatch=!tg||(i.tags||'').split(',').map(t=>t.trim()).includes(tg);
-    return hay&&tagMatch&&(!f||s===f||needs)&&(!cl||i.client===cl);
+    return hay&&tagMatch&&(!f||s===f||needs||(f==='open'&&isOpen(i)))&&(!cl||i.client===cl);
   });
 }
 // ---------- Today: empty state + weekly target that keeps focus ----------
@@ -2791,7 +2854,7 @@ if($('undoBar')){$('undoBar').setAttribute('role','region');$('undoBar').setAttr
 
 
 // ================= v4.1: private feedback to the Paper Ledger Desk team (email only, nothing stored remotely) =================
-const APP_VERSION='4.3';
+const APP_VERSION='4.3.1';
 const FEEDBACK_TO='paperledgerdesk@gmail.com';
 const FB_KEY='pld_feedback_sent_v1';
 const FB_TYPES=['Complaint','Suggestion','Bug report','Praise','Other'];
@@ -2815,14 +2878,14 @@ function renderFbList(){
   el.innerHTML=l.slice(0,20).map(x=>`<li><strong>${escape(String(x.date||''))}</strong> · ${escape(String(x.type||''))} · ${escape(String(x.snippet||''))}</li>`).join('');
 }
 function openFeedback(){
-  fbExtra=null;renderFbExtraNote();$('fbErr').textContent='';$('fbFallback').hidden=true;$('fbDone').textContent='';if($('fbUsage'))$('fbUsage').checked=false;renderUsageList();
+  fbExtra=null;resetFbNudge();renderFbExtraNote();$('fbErr').textContent='';$('fbFallback').hidden=true;$('fbDone').textContent='';if($('fbUsage'))$('fbUsage').checked=false;renderUsageList();
   if(!$('fbMsg').value)$('fbType').value='Suggestion';
   updateFbCount();renderFbList();$('feedbackModal').classList.add('show');
 }
 function updateFbCount(){const n=$('fbMsg').value.length;$('fbCount').textContent=n+' / '+FB_MAX;}
 function sendFeedback(){
   const f=fbCompose();
-  if(!f.msg&&!fbExtraLine()){$('fbErr').textContent='Please write your message first.';$('fbMsg').focus();return;}
+  if(!f.msg&&!fbRatingOnly()){$('fbErr').textContent='Please write your message first.';$('fbMsg').focus();return;}
   if(f.email&&!EMAIL_RE.test(f.email)){$('fbErr').textContent='That email address does not look right (or leave it empty).';$('fbEmail').focus();return;}
   $('fbErr').textContent='';
   const a=$('fbMailto');a.href=f.href;
@@ -2931,7 +2994,7 @@ function fbQueue(entry,payload,r){
 }
 async function sendFeedback(){
   const f=fbCompose();
-  if(!f.msg&&!fbExtraLine()){$('fbErr').textContent='Please write your message first.';$('fbMsg').focus();return;}
+  if(!f.msg&&!fbRatingOnly()){$('fbErr').textContent='Please write your message first.';$('fbMsg').focus();return;}
   if(f.email&&!EMAIL_RE.test(f.email)){$('fbErr').textContent='That email address does not look right (or leave it empty).';$('fbEmail').focus();return;}
   $('fbErr').textContent='';$('fbFallback').hidden=true;
   const snippet=fbSnippet(f);
@@ -2941,10 +3004,10 @@ async function sendFeedback(){
   const list=fbSent();const entry={id:Date.now(),date:today(),type:f.type,snippet};
   if(r.ok){entry.status='sent';list.unshift(entry);fbStore(list);
     $('fbDone').textContent=FB_TXT.sent+(f.email?' We will reply to '+f.email+'.':'');
-    $('fbMsg').value='';updateFbCount();fbExtra=null;renderFbExtraNote();}
+    $('fbMsg').value='';updateFbCount();fbExtra=null;resetFbNudge();renderFbExtraNote();}
   else{fbQueue(entry,payload,r);list.unshift(entry);const stored=fbStore(list);
     $('fbDone').textContent=!stored?FB_TXT.unsaved:r.origin?FB_TXT.origin:r.error==='offline'?FB_TXT.offline:FB_TXT.failed;
-    fbShowFallback(f);fbExtra=null;renderFbExtraNote();scheduleFbRetry();}
+    fbShowFallback(f);fbExtra=null;resetFbNudge();renderFbExtraNote();scheduleFbRetry();}
   renderFbList();
 }
 // One-time on first v4.2.2 load (and harmless afterwards): notes that v4.2.1 queued for its previous relay are re-cleaned to
@@ -3279,7 +3342,7 @@ function renderBackupNag(){
       el.style.display='block';
       el.innerHTML=`<div class="nag"><strong>Back up your data.</strong> ${settings.lastBackup?'Last exported '+plural(days,'day')+' ago (last backup file: '+escape(fmtDate(settings.lastBackup))+').':'No backup exported yet ('+plural(days,'day')+' of data).'} Browser storage can be wiped — export a backup file and keep it on your phone, computer or cloud drive. <button class="btn small" id="nagExport">Export now</button> <button class="btn small secondary" id="nagLater">Remind me tomorrow</button> <label class="nagevery">Remind me every <select id="nagEvery">${everyOpts(every)}</select></label></div>`;
       $('nagExport').onclick=exportBackup;
-      $('nagLater').onclick=()=>{settings.nagSnooze=Date.now()+86400000;save();renderBackupNag();};
+      $('nagLater').onclick=()=>{settings.nagSnooze=Date.now()+86400000;save();renderBackupNag();renderPriorities();};
       $('nagEvery').onchange=e=>setBackupEvery(e.target.value);
     }
   }
@@ -3377,6 +3440,155 @@ function fbPayload(f){
 function fbSnippet(f){const t=f.msg||fbExtraLine();return t.slice(0,80)+(t.length>80?'…':'');}
 function renderFbExtraNote(){const el=$('fbExtraNote');if(!el)return;const line=fbExtraLine();el.hidden=!line;el.textContent=line?'Also sent with your message: '+line:'';}
 if($('fbUsage'))$('fbUsage').addEventListener('change',renderFbExtraNote);
+// ================= v4.3.1: simpler Today page, overdue inline actions, feedback nudge, downgrade guard =================
+// ---------- downgrade guard ----------
+// Data, a backup or a snapshot saved by a NEWER build (schema > SCHEMA) is never written over by this build.
+// Stored newer data opens read-only: every write to the ledger keys is refused until the page is reloaded with a newer build.
+let futureLock=null;
+const GUARD_KEYS=[KEY,SNAP_KEY,LOGO_KEY];
+const FUTURE_MSG='This data was saved by a newer version of Paper Ledger Desk. To keep it safe, this older version won’t change it. Please reload to get the latest version.';
+function schemaOf(d){const n=Number(d&&d.schema);return Number.isFinite(n)?n:0;}
+function isFuture(d){return isObj(d)&&schemaOf(d)>SCHEMA;}
+// Belt and braces: while locked, no code path can write or remove the ledger keys (feedback notes are separate and unaffected).
+(function(){try{const P=Storage.prototype,set=P.setItem,rem=P.removeItem,clr=P.clear;
+  const blocked=(st,k)=>!!futureLock&&st===window.localStorage&&(k===undefined||GUARD_KEYS.includes(String(k)));
+  const note=()=>{window._guardBlocked=(window._guardBlocked||0)+1;};
+  P.setItem=function(k,v){if(blocked(this,k)){note();return;}return set.call(this,k,v);};
+  P.removeItem=function(k){if(blocked(this,k)){note();return;}return rem.call(this,k);};
+  P.clear=function(){if(blocked(this)){note();return;}return clr.call(this);};
+}catch{}})();
+function lockFuture(d){if(futureLock)return;futureLock={schema:schemaOf(d)};renderFutureNotice();}
+// deferred so it is not replaced by the caller's own success toast
+function futureBlocked(){renderFutureNotice();setTimeout(()=>toast('Not saved. This data belongs to a newer version of Paper Ledger Desk. Please reload to get the latest version.'),0);}
+function futureRefused(what){renderFutureNotice(what);toast((what==='import'?'Backup not imported':'Snapshot not restored')+'. Nothing was changed.');}
+function renderFutureNotice(kind){
+  const el=$('futureNotice');if(!el)return;
+  if(futureLock){el.hidden=false;el.innerHTML='<strong>'+FUTURE_MSG+'</strong> You can look around, but nothing you change here is saved. <button type="button" class="btn small" id="futureReload">Reload</button>';}
+  else if(kind){el.hidden=false;el.innerHTML='<strong>'+FUTURE_MSG+'</strong> '+(kind==='import'?'This backup file was not imported.':'This snapshot was not restored.')+' Your current data was not changed. <button type="button" class="btn small" id="futureReload">Reload</button> <button type="button" class="btn small secondary" id="futureDismiss">Dismiss</button>';}
+  else{el.hidden=true;el.innerHTML='';return;}
+  $('futureReload').onclick=()=>location.reload();
+  if($('futureDismiss'))$('futureDismiss').onclick=()=>renderFutureNotice();
+}
+window.addEventListener('storage',e=>{if(e.key!==KEY||!e.newValue||futureLock)return;try{const d=JSON.parse(e.newValue);if(isFuture(d))lockFuture(d);}catch{}});
+// Forward compatibility: unknown top-level keys (already cleaned by sanitizePayload/stripData) are kept and written back.
+let extraTop={};
+const KNOWN_TOP=new Set(['schema','invoices','clientsMeta','expenses','transactions','followups','activity','wip','work','presets','checklist','settings','logo','exported']);
+function payload(){return Object.assign({},extraTop,{schema:SCHEMA,invoices,clientsMeta,expenses,transactions,followups,activity,wip:wipNotes,work:workItems,presets,checklist:[...checklistDone],settings});}
+function applyPayload(raw){
+  const d=sanitizePayload(raw,[]);
+  invoices=d.invoices||[];clientsMeta=d.clientsMeta||{};expenses=d.expenses||[];transactions=d.transactions||[];followups=d.followups||[];activity=d.activity||[];wipNotes=d.wip||[];workItems=d.work||[];presets=d.presets||[];checklistDone=new Set(d.checklist||[]);
+  const sIn=d.settings||{};Object.keys(sIn).forEach(k=>{if(!BAD_KEYS.has(k))settings[k]=sIn[k];});
+  const ex={};Object.keys(d).forEach(k=>{if(!KNOWN_TOP.has(k)&&!BAD_KEYS.has(k)&&d[k]!==undefined)ex[k]=d[k];});extraTop=ex;
+}
+
+// ---------- Today: 4 key cards ----------
+function curPairs(pairs){const by={};pairs.forEach(([c,v])=>{by[c]=(by[c]||0)+v;});const dc=defCur();return Object.keys(by).sort((a,b)=>(a===dc?-1:b===dc?1:a.localeCompare(b))).map(c=>({c,v:by[c]})).filter(x=>Math.abs(x.v)>0.0049);}
+// Same calculations as the existing KPI row (Outstanding, Overdue), Month review (Received this month) and Forecast (opening cash).
+function dashData(){
+  const open=invoices.filter(i=>isOpen(i)&&!i.writtenOff);const od=invoices.filter(i=>statusOf(i)==='overdue');const ym=today().slice(0,7);
+  return {openN:open.length,overdueN:od.length,ym,
+    outstanding:curPairs(open.map(i=>[curOf(i),Math.max(0,remaining(i))])),
+    overdue:curPairs(od.map(i=>[curOf(i),Math.max(0,remaining(i))])),
+    collected:curPairs(allPayments().filter(p=>(p.date||'').startsWith(ym)).map(p=>[p.currency,+p.amount||0])),
+    cash:{c:defCur(),v:+settings.opening||0,reserve:+settings.reserve||0}};
+}
+function kcLines(list,c0){return (list.length?list:[{c:c0,v:0}]).map(x=>`<span class="kc-v" data-cur="${escape(x.c)}">${money(x.v,x.c)}</span>`).join('');}
+function renderKeyCards(){
+  const el=$('keyCards');if(!el)return;const d=dashData();const dc=defCur();
+  const mon=new Date(d.ym+'-01T12:00:00').toLocaleString('en-US',{month:'long'});
+  const card=(k,label,body,sub,cls)=>`<button type="button" class="keycard${cls?' '+cls:''}" id="kc-${k}" data-card="${k}" data-act="dashCard" data-arg="${k}"><span class="kc-l">${label}</span>${body}<span class="kc-s">${sub}</span></button>`;
+  el.innerHTML=card('outstanding','Outstanding',kcLines(d.outstanding,dc),plural(d.openN,'open invoice')+' · view list')
+    +card('overdue','Overdue',kcLines(d.overdue,dc),(d.overdueN?plural(d.overdueN,'invoice')+' to chase':'Nothing overdue')+' · view list','kc-rust')
+    +card('collected','Collected this month',kcLines(d.collected,dc),'Payments dated in '+mon+' · view payments','kc-grove')
+    +card('cash','Available cash',kcLines([{c:dc,v:d.cash.v}],dc),(d.cash.reserve>0?'Reserve '+money(d.cash.reserve,dc)+' · ':'')+'your balance, set in Forecast');
+}
+function dashCard(k){
+  if(k==='outstanding'||k==='overdue'){goView('invoices');$('search').value='';$('filterClient').value='';$('filterTag').value='';$('filter').value=k==='overdue'?'overdue':'open';renderTable();$('filter').focus();}
+  else if(k==='collected'){goView('ledger');$('main').focus();}
+  else if(k==='cash'){goView('cashflow');$('opening').focus();}
+}
+
+// ---------- Today's priorities (built only from existing data) ----------
+function backupDue(){const every=backupEveryDays();const base=settings.lastBackup||settings.createdAt;const days=base?Math.floor((Date.now()-new Date(base))/86400000):0;const snoozed=settings.nagSnooze&&Date.now()<settings.nagSnooze;return !!(every&&invoices.length&&base&&days>=every&&!snoozed);}
+function priorityItems(){
+  const t=today(),soon=addDaysISO(t,7);
+  const open=invoices.filter(i=>isOpen(i)&&!i.writtenOff);
+  const later=i=>i.nextAction&&i.nextAction>t;
+  const od=open.filter(i=>statusOf(i)==='overdue').sort((a,b)=>priorityScore(b).score-priorityScore(a).score);
+  const followDue=i=>(i.nextAction&&i.nextAction<=t)||(i.promiseDate&&i.promiseDate<=t);
+  const fu=open.filter(i=>statusOf(i)!=='overdue'&&followDue(i));
+  return {overdue:od.filter(i=>!later(i)),scheduled:od.filter(later),followups:fu,
+    due:open.filter(i=>statusOf(i)!=='overdue'&&!fu.includes(i)&&i.due&&i.due>=t&&i.due<=soon).sort((a,b)=>a.due.localeCompare(b.due)),
+    drafts:invoices.filter(i=>statusOf(i)==='draft'),
+    bank:transactions.filter(x=>x&&!x.matched).length,backup:backupDue()};
+}
+function overdueActs(i){const id=escape(i.id),r=escape(i.ref||'invoice');
+  return `<span class="odacts"><button type="button" class="btn small" data-act="prepareNote" data-id="${id}" aria-label="Send reminder for ${r}">Send reminder</button> <button type="button" class="btn small secondary" data-act="openPay" data-id="${id}" aria-label="Record payment for ${r}">Record payment</button> <button type="button" class="btn small secondary" data-act="openFollowUp" data-id="${id}" aria-label="Set follow-up date for ${r}">Set follow-up</button></span>`;}
+const PRIO_MAX={overdue:5,followups:3,due:3,drafts:3};
+function renderPriorities(){
+  const el=$('priorities');if(!el)return;const P=priorityItems();const t=today();
+  const who=i=>`<strong>${escape(i.client)}</strong> · ${escape(i.ref||'—')} · ${money(Math.max(0,remaining(i)),curOf(i))}`;
+  const li=(kind,i,text,acts)=>`<li class="prio" data-kind="${kind}"${i?` data-ref="${escape(i.ref||'')}"`:''}><div class="prio-t">${text}</div><div class="prio-a">${acts}</div></li>`;
+  const more=(n,max,label,k)=>n>max?`<li class="prio prio-more"><button type="button" class="btn small secondary" data-act="dashCard" data-arg="${k}">See all ${plural(n,label)}</button></li>`:'';
+  let h='';
+  h+=P.overdue.slice(0,PRIO_MAX.overdue).map(i=>li('overdue',i,`<span class="pk pk-rust">Chase</span> ${who(i)} · ${plural(daysOver(i),'day')} overdue`,overdueActs(i))).join('')+more(P.overdue.length,PRIO_MAX.overdue,'overdue invoice','overdue');
+  h+=P.followups.slice(0,PRIO_MAX.followups).map(i=>li('followup',i,`<span class="pk">Follow up</span> ${who(i)} · ${i.promiseDate&&i.promiseDate<=t?'promised to pay by '+escape(i.promiseDate):'follow-up date '+escape(i.nextAction)}`,`<button type="button" class="btn small" data-act="prepareNote" data-id="${escape(i.id)}" aria-label="Send reminder for ${escape(i.ref||'invoice')}">Send reminder</button> <button type="button" class="btn small secondary" data-act="openFollowUp" data-id="${escape(i.id)}" aria-label="Set follow-up date for ${escape(i.ref||'invoice')}">Set follow-up</button>`)).join('');
+  h+=P.due.slice(0,PRIO_MAX.due).map(i=>{const n=dayDiff(t,i.due);return li('due',i,`<span class="pk">Due ${n<=0?'today':'in '+plural(n,'day')}</span> ${who(i)}`,`<button type="button" class="btn small secondary" data-act="sendInvoice" data-id="${escape(i.id)}" aria-label="Send again: ${escape(i.ref||'invoice')}">Send again</button> <button type="button" class="btn small secondary" data-act="openPay" data-id="${escape(i.id)}" aria-label="Record payment for ${escape(i.ref||'invoice')}">Record payment</button>`);}).join('');
+  h+=P.drafts.slice(0,PRIO_MAX.drafts).map(i=>li('draft',i,`<span class="pk">Draft not sent</span> <strong>${escape(i.client)}</strong> · ${escape(i.ref||'—')}`,`<button type="button" class="btn small secondary" data-act="openEdit" data-id="${escape(i.id)}" aria-label="Finish draft ${escape(i.ref||'')}">Finish draft</button>`)).join('');
+  if(P.bank)h+=li('bank',null,`<span class="pk">Bank</span> ${plural(P.bank,'bank line')} not matched to an invoice yet`,`<button type="button" class="btn small secondary" data-act="goView" data-arg="transactions">Review bank lines</button>`);
+  const sched=P.scheduled.length?`<p class="reason prio-sched">${plural(P.scheduled.length,'overdue invoice')} ${P.scheduled.length===1?'has':'have'} a later follow-up date and will show here again then.</p>`:'';
+  const first=!invoices.length;
+  if(h&&!first){el.innerHTML=`<ul class="priolist" id="prioList">${h}</ul>`+sched;return;}
+  el.innerHTML=(P.backup&&!first?'':`<div class="prio-empty" id="prioEmpty">${!first?'<strong>You’re all caught up.</strong> Nothing is overdue, due this week, waiting as a draft or unmatched in the bank list.':'<strong>Nothing to do yet.</strong> Add your first invoice and it will show here when it needs action.'} <button type="button" class="btn small" data-act="openEdit" data-args="[null]">${!first?'Add invoice':'Add your first invoice'}</button></div>`)+(h?`<ul class="priolist" id="prioList">${h}</ul>`:'')+sched;
+}
+
+// ---------- follow-up date (the existing next-action date + follow-up log; no new storage) ----------
+let followId=null;
+function openFollowUp(id){
+  const inv=invoices.find(x=>x.id===id);if(!inv)return;followId=id;
+  $('followFor').textContent=(inv.ref||'Invoice')+' · '+inv.client+(inv.nextAction?' · current follow-up date '+inv.nextAction:'');
+  const d=daysOver(inv);$('followDate').min=today();
+  $('followDate').value=inv.nextAction&&inv.nextAction>today()?inv.nextAction:addDaysISO(today(),d>30?14:d>14?7:3);
+  $('followErr').textContent='';$('followModal').classList.add('show');
+}
+function saveFollowUp(){
+  const inv=invoices.find(x=>x.id===followId);if(!inv){$('followModal').classList.remove('show');return;}
+  const v=$('followDate').value;
+  if(!isISODate(v)){$('followErr').textContent='Choose a date.';$('followDate').focus();return;}
+  if(v<today()){$('followErr').textContent='Choose today or a later date.';$('followDate').focus();return;}
+  inv.nextAction=v;followups.unshift({id:Date.now(),invoiceId:inv.id,client:inv.client,text:'follow-up: '+v,date:today()});
+  log('action','Follow-up date '+v+' on '+inv.ref);followId=null;$('followModal').classList.remove('show');
+  save();refresh();toast('Follow-up date set: '+v);
+}
+safeOn('followSave',saveFollowUp);
+safeOn('followCancel',()=>{followId=null;$('followModal').classList.remove('show');});
+if($('followModal'))$('followModal').addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-days]');if(!b)return;$('followDate').value=addDaysISO(today(),+b.dataset.days||0);$('followErr').textContent='';});
+function close(){
+  if(bankReview&&$('bankModal')&&$('bankModal').classList.contains('show'))bankReview=null;
+  ['clientModal','workModal','sendModal','modal','payModal','actionModal','importModal','expModal','feedbackModal','bankModal','followModal'].forEach(m=>$(m)&&$(m).classList.remove('show'));editingPay=null;editingExp=null;editingWork=null;followId=null;
+}
+['dashCard','openFollowUp','exportBackup'].forEach(a=>PLD_ACTIONS.add(a));
+safeOn('addInvoiceTop',()=>openEdit(null));
+
+// ---------- feedback nudge: optional area chips + "What were you trying to do?" ----------
+const FB_AREAS=['Invoices','PDF','Clients','Cash flow','Speed','Looks'];
+function fbAreas(){return [...document.querySelectorAll('#fbAreas input[name=fbArea]:checked')].map(x=>x.value).filter(v=>FB_AREAS.includes(v));}
+function fbTask(){const el=$('fbTask');return el?String(el.value||'').replace(/\s+/g,' ').replace(/\|/g,'/').trim().slice(0,140):'';}
+function fbRatingOnly(){const x=fbExtra||{};const n=Math.round(+x.rating);return (n>=1&&n<=5)||x.reaction==='up'||x.reaction==='down';}
+function resetFbNudge(){document.querySelectorAll('#fbAreas input[name=fbArea]').forEach(x=>x.checked=false);if($('fbTask'))$('fbTask').value='';}
+// fbFold() stays the one place that builds the structured first line; this adds Area / Trying to in the same ' | ' format.
+function fbExtraLine(){
+  const x=fbExtra||{},parts=[];
+  const n=Math.round(+x.rating);if(n>=1&&n<=5)parts.push('Rating: '+n+'/5');
+  else if(x.reaction==='up'||x.reaction==='down')parts.push('Rating: thumbs-'+x.reaction);
+  if(FB_CONTEXTS.includes(x.context))parts.push('Context: '+x.context);
+  const a=fbAreas();if(a.length)parts.push('Area: '+a.join(', '));
+  const t=fbTask();if(t)parts.push('Trying to: '+t);
+  if($('fbUsage')&&$('fbUsage').checked)parts.push('Usage: '+fbUsageLine());
+  return parts.join(' | ');
+}
+if($('fbAreas'))$('fbAreas').addEventListener('change',renderFbExtraNote);
+if($('fbTask'))$('fbTask').addEventListener('input',renderFbExtraNote);
 
 // Reliable startup
 window._reachedEnd = true;

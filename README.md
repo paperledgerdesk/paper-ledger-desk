@@ -100,12 +100,28 @@ of `message`, e.g. `Rating: 4/5 | Context: invoice-sent | Usage: pdf=3, send=2, 
 "Include my feature usage counts"), with the user's own text on the following lines. Category is Praise for a 4–5
 rating or a thumbs up and Other otherwise. The folding lives in one function, `fbFold()`, in `app/index.html`.
 
+The dialog also has optional quick-pick chips (Invoices, PDF, Clients, Cash flow, Speed, Looks) and an optional
+"What were you trying to do?" field. They are folded into the same first line in the same ` | ` format, after
+Rating and Context and before Usage, e.g. `Area: PDF, Speed | Trying to: download a PDF`. The message is still the
+only required field, and the chips never change the category (it stays the dialog's type unless a rating is given).
+
 - The endpoint is `FEEDBACK_ENDPOINT` in `config.js`. The app is a single offline file and cannot read
   `config.js`, so `app/index.html` has the same value in its own `FEEDBACK_ENDPOINT` constant, and its
   Content-Security-Policy allows `connect-src https://zovatyzvqmszrgoacpum.supabase.co` only. Change all three together.
 - The function only accepts the origin `https://paperledgerdesk.github.io`. A copy of the app opened as a local
   file (or from any other site) gets 403: the note stays saved on the device, the copy/email option is shown, and
   it is not retried in the background (it is tried once on each app open, so it goes through when opened from the site).
+
+## Data safety when versions change
+
+Every release keeps the storage keys and upgrades older data with a versioned migration that first keeps the raw
+old data as a pinned snapshot (More › Backups). From v4.3.1 on, the app also refuses to downgrade: if it finds stored
+data, a backup file or a snapshot saved by a *newer* version (a higher data-format number than its own), it shows
+"This data was saved by a newer version of Paper Ledger Desk. To keep it safe, this older version won't change it.
+Please reload to get the latest version." Stored newer data can still be looked at, but nothing is written until a
+newer version is loaded; newer backups and snapshots are not imported or restored. Unknown top-level keys and
+unknown invoice fields are kept when the app saves, so data from a newer version is not silently trimmed.
+Versions before v4.3.1 do not have this guard.
 
 ## Important: what paying does and does not do today
 
