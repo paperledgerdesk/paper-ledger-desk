@@ -78,11 +78,11 @@ const PRICES = {
 If you want to remove the yellow "Placeholder price" labels once you are sure,
 open `index.html` and delete the lines that contain `class="placeholder"`.
 
-### 4. Set your waitlist email (TODO)
+### 4. Waitlist email
 
-In `config.js`, replace `TODO-your-email@example.com` with your real address.
-Also replace the same address in the two `mailto:` links in `index.html`
-(they are used if a visitor's browser has JavaScript turned off).
+The waitlist buttons send email to **paperledgerdesk@gmail.com**. To change it,
+edit `WAITLIST_EMAIL` in `config.js` and the same address in the two `mailto:`
+links in `index.html` (they are used if a visitor's browser has JavaScript turned off).
 
 ## Important: what paying does and does not do today
 

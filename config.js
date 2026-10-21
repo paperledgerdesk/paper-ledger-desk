@@ -30,8 +30,8 @@ const PRICES = {
 // Used when we can't tell where the visitor is.
 const DEFAULT_CURRENCY = "USD";
 
-// TODO: replace with your real email address for the waitlist.
-const WAITLIST_EMAIL = "TODO-your-email@example.com";
+// Email address for the waitlist buttons.
+const WAITLIST_EMAIL = "paperledgerdesk@gmail.com";
 
 /* ---- nothing below this line needs editing ---- */
 (function () {
