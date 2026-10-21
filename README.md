@@ -1,11 +1,12 @@
 # Paper Ledger Desk
 
-Invoicing and cash flow for South African freelancers and small businesses.
-PDF invoices, email and WhatsApp reminders, and per-currency cash flow.
+Invoicing and cash flow for freelancers and small businesses, anywhere in the world.
+PDF invoices, email and WhatsApp reminders, and per-currency cash flow
+(ZAR, USD, EUR, GBP, AUD and CAD).
 Everything runs in the browser and the data stays on the user's device.
 
 - **Sales page:** `index.html` (the home page)
-- **The app:** `app/index.html` (open it at `/app/`)
+- **The app:** `app/index.html` (open it at https://paperledgerdesk.github.io/paper-ledger-desk/app/)
 - **Settings for prices and payment links:** `config.js`
 - **Screenshots:** `assets/`
 
@@ -51,16 +52,29 @@ Links must start with `https://`.
 
 ### 3. Change the prices
 
-The prices on the page are **placeholders**. In `config.js` change:
+The prices on the page are **placeholders**. The page shows them in the
+visitor's own currency. It guesses the currency from the visitor's time zone and
+browser language, inside their browser, with nothing sent anywhere. Visitors can
+also pick a currency from the "Show prices in" list.
+
+In `config.js` there is one line per currency:
 
 ```js
 const PRICES = {
-  pro: "R99",
-  business: "R249"
+  ZAR: { pro: 99,   business: 249 },
+  USD: { pro: 7,    business: 17 },
+  ...
 };
 ```
 
-Make sure they match the amounts on your Paystack plans.
+- Change the numbers to whatever you like (whole numbers, no currency symbols).
+- To stop offering a currency, delete its line. It also disappears from the list.
+- **The ZAR line must match your Paystack plans.** A South African Paystack
+  account charges in rand only. Other currencies are a guide: the customer's bank
+  converts the rand amount, so what they pay can differ slightly from the
+  number shown. The page says this under the prices.
+- `DEFAULT_CURRENCY` is used when the page can't tell where a visitor is.
+
 If you want to remove the yellow "Placeholder price" labels once you are sure,
 open `index.html` and delete the lines that contain `class="placeholder"`.
 
@@ -81,5 +95,5 @@ is a later step.
 
 ## Hosting
 
-The site is served free by GitHub Pages from this repository. The workflow in
+The site is served free by GitHub Pages at https://paperledgerdesk.github.io/paper-ledger-desk/ from this repository. The workflow in
 `.github/workflows/pages.yml` republishes it every time `main` changes.

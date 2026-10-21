@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="en-ZA">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
-<title>Paper Ledger Desk: invoicing and cash flow for South African freelancers</title>
-<meta name="description" content="Invoicing and cash flow for South African freelancers and small businesses. PDF invoices you send by email or WhatsApp. Private and local-first: your data stays on your device.">
+<title>Paper Ledger Desk: invoicing and cash flow for freelancers and small businesses, anywhere in the world</title>
+<meta name="description" content="Invoicing and cash flow for freelancers and small businesses, anywhere in the world. PDF invoices you send by email or WhatsApp, in ZAR, USD, EUR, GBP, AUD or CAD. Private and local-first: your data stays on your device.">
 <style>
   :root{--ink:#1d2420;--muted:#5b625d;--paper:#f4f0e6;--card:#fffdf8;--line:#ddd6c6;--green:#1f4a3a;--green2:#2c6650}
   *{box-sizing:border-box}
@@ -38,10 +38,14 @@
   .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch}
   .tier{display:flex;flex-direction:column}
   .tier.featured{border:2px solid var(--green)}
-  .price{font-family:Georgia,serif;font-size:2.2rem;font-weight:bold;margin:.2em 0 0}
-  .price small{font-size:1rem;font-weight:normal;color:var(--muted)}
+  .card p.price{color:var(--ink);font-family:Georgia,serif;font-size:2.2rem;font-weight:bold;margin:.2em 0 0}
+  .card p.price small{font-size:1rem;font-weight:normal;color:var(--muted)}
   .tier ul{padding-left:1.2em;margin:14px 0 20px;flex:1}
   .tier li{margin:4px 0}
+  .pricebar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 20px;margin-bottom:14px}
+  .pricebar p{margin:0}
+  .cursel label{margin-right:8px;color:var(--muted);font-size:.95rem}
+  .cursel select{font:inherit;font-size:16px;padding:8px 10px;min-height:44px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);max-width:100%}
   .placeholder{display:inline-block;background:#fff3c4;border:1px solid #e3c766;color:#5a4500;font-size:.8rem;padding:2px 8px;border-radius:999px;font-weight:600}
   .honest{background:var(--card);border-left:4px solid var(--green);padding:14px 18px;border-radius:6px;margin-top:22px;font-size:.97rem}
   footer{padding:32px 0 48px;color:var(--muted);font-size:.9rem;border-top:1px solid var(--line)}
@@ -63,8 +67,8 @@
 
   <div class="hero">
     <div>
-      <h1>Invoicing and cash flow for South African freelancers and small businesses</h1>
-      <p class="lead">Make professional PDF invoices in rand, send them by email or WhatsApp, and see who owes you what. Private and local-first: your figures stay on your own device.</p>
+      <h1>Invoicing and cash flow for freelancers and small businesses, anywhere in the world</h1>
+      <p class="lead">Make professional PDF invoices, send them by email or WhatsApp, and see who owes you what. Works in six currencies: ZAR, USD, EUR, GBP, AUD and CAD. Private and local-first: your figures stay on your own device.</p>
       <div class="cta">
         <a class="btn" href="app/">Open the app free</a>
         <a class="btn ghost" href="#pricing">See pricing</a>
@@ -79,11 +83,11 @@
   <div class="wrap">
     <h2>What it does</h2>
     <div class="grid">
-      <div class="card"><h3>PDF invoices, quotes and statements</h3><p>Download real PDFs with your logo, address, VAT and bank details. It says "TAX INVOICE" when you are VAT registered.</p></div>
+      <div class="card"><h3>PDF invoices, quotes and statements</h3><p>Download real PDFs with your logo, address, tax number and bank details. It says "TAX INVOICE" when you are VAT registered.</p></div>
       <div class="card"><h3>Send by email or WhatsApp</h3><p>One tap opens a ready-written email or WhatsApp message. You attach the downloaded PDF yourself, and nothing is sent without you.</p></div>
       <div class="card"><h3>Friendly payment reminders</h3><p>A reminder schedule (3 days before, on the due date, then 7, 14 and 30 days late) with gentle, direct or final wording.</p></div>
       <div class="card"><h3>A "Today" list</h3><p>See which invoices need a nudge first, what is due this week and what came in.</p></div>
-      <div class="card"><h3>Rand first, other currencies too</h3><p>ZAR by default with 15% VAT support. Invoice in USD, EUR or GBP too; totals stay separate per currency and are never mixed.</p></div>
+      <div class="card"><h3>Six currencies, never mixed</h3><p>Invoice in ZAR, USD, EUR, GBP, AUD or CAD and pick your default currency. VAT or sales tax at your own rate. Totals stay separate per currency and are never added together.</p></div>
       <div class="card"><h3>Bank CSV import and matching</h3><p>Import your bank statement CSV and match payments to invoices. Partial payments, overpayments and write-offs are handled.</p></div>
       <div class="card"><h3>Cash flow and insights</h3><p>A cash forecast, aging buckets, money recovered from late invoices, collection rate by month and average days-to-pay per client.</p></div>
       <div class="card"><h3>Clients and recurring invoices</h3><p>Client records with terms and VAT numbers. Recurring invoices create next month's draft for you to check and finalise.</p></div>
@@ -98,7 +102,7 @@
     <h2>A closer look</h2>
     <div class="shots">
       <figure><img src="assets/shot-insights.svg" width="960" height="900" loading="lazy" alt="Insights screen with cash recovered this month and a six-month collection rate chart per currency"><figcaption>Insights: cash recovered and collection rate, shown per currency.</figcaption></figure>
-      <figure><img src="assets/shot-pdf-invoice.svg" width="579" height="420" loading="lazy" alt="A PDF invoice made by the app, with logo, line items, 15% tax and balance due in rand"><figcaption>A PDF invoice made in the app, with 15% VAT in rand.</figcaption></figure>
+      <figure><img src="assets/shot-pdf-invoice.svg" width="579" height="420" loading="lazy" alt="A PDF invoice made by the app, with logo, line items, 15% tax and balance due in ZAR"><figcaption>A PDF invoice made in the app (example in ZAR with 15% VAT).</figcaption></figure>
     </div>
   </div>
 </section>
@@ -106,11 +110,25 @@
 <section id="pricing">
   <div class="wrap">
     <h2>Pricing</h2>
-    <p><span class="placeholder">Placeholder prices</span> These prices are not final and may change.</p>
+    <div class="pricebar">
+      <p><span class="placeholder">Placeholder prices</span> These prices are not final and may change.</p>
+      <p class="cursel"><label for="currency">Show prices in</label>
+        <select id="currency">
+          <option value="ZAR">ZAR (South African rand)</option>
+          <option value="USD">USD (US dollar)</option>
+          <option value="EUR">EUR (euro)</option>
+          <option value="GBP">GBP (British pound)</option>
+          <option value="AUD">AUD (Australian dollar)</option>
+          <option value="CAD">CAD (Canadian dollar)</option>
+          <option value="NGN">NGN (Nigerian naira)</option>
+          <option value="KES">KES (Kenyan shilling)</option>
+          <option value="INR">INR (Indian rupee)</option>
+        </select></p>
+    </div>
     <div class="pricing">
       <div class="card tier">
         <h3>Free</h3>
-        <p class="price">R0 <small>/ month</small></p>
+        <p class="price"><span id="price-free">R0</span> <small>/ month</small></p>
         <ul>
           <li>The full app, every feature above</li>
           <li>Data stays on your device</li>
@@ -141,6 +159,7 @@
         <a class="btn" id="btn-business" href="mailto:TODO-your-email@example.com?subject=Paper%20Ledger%20Desk%20Business%20waitlist">Coming soon, join waitlist</a>
       </div>
     </div>
+    <p class="note" id="billing-note">Prices are shown in your local currency as a guide. Subscriptions are charged in South African rand (ZAR) by Paystack, and your bank converts the amount at its own rate, so the final amount on your statement may differ slightly.</p>
     <p class="honest"><strong>Straight talk:</strong> the app runs on your device today, so all features are in the free version. Paid plans are planned for later features like cloud backup and sync, which will need an account.</p>
   </div>
 </section>
