@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1F4D3A">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-nP8PhJ39bz5PLHFir0ELndwvzeCHsYEu6CJvc8zOpv4=' 'sha256-tJQu+RmqH3dudtz23vej7YWiNU1AqQF/uYPZftmKmYc='; style-src 'unsafe-inline'; img-src data: blob:; font-src 'none'; manifest-src blob:; connect-src https://zovatyzvqmszrgoacpum.supabase.co; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-nP8PhJ39bz5PLHFir0ELndwvzeCHsYEu6CJvc8zOpv4=' 'sha256-v+UgIWsUBvlXhlYtaay02b9ZdN7Lmvny6Rz3b+QTd1w='; style-src 'unsafe-inline'; img-src data: blob:; font-src 'none'; manifest-src blob:; connect-src https://zovatyzvqmszrgoacpum.supabase.co; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
 <style>
 :root{--paper:#F4F0E6;--ink:#1C1915;--grove:#1F4D3A;--rust:#8F3D2C;--soft:#5C5348;--line:#D4CDBE;--white:#FFFcf7}
 body.dark{--paper:#1C1915;--ink:#F4F0E6;--grove:#7BAF8A;--rust:#E08A7A;--soft:#A89F90;--line:#3A342C;--white:#252019}
@@ -131,6 +131,23 @@ td strong,.clientrow strong{display:inline-block;max-width:100%}
 body.dark .linkbtn{color:inherit}
 #feedbackModal textarea{font:inherit}
 .hp{position:absolute!important;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
+/* v4.3 */
+.nudge{background:var(--white);border:1px solid var(--line);border-left:4px solid var(--grove);padding:0.5rem 0.7rem;margin-bottom:0.6rem;font-size:0.8rem;line-height:1.5}
+.nudge .btn{margin:0.15rem 0}
+.stars{border:0;margin:0.3rem 0;padding:0;display:flex;flex-wrap:wrap;gap:0.6rem}
+.stars label{display:inline-flex;align-items:center;gap:0.2rem;min-height:44px;cursor:pointer;color:#6B4E00}
+body.dark .stars label{color:#E8C76A}
+.ratecomment{margin:0.2rem 0}.ratecomment input{width:min(100%,28rem)}
+.rateerr{color:var(--rust);font-size:0.75rem;min-height:1em}
+.payprev{display:flex;gap:0.6rem;align-items:center}.payprev svg{flex:none;border:1px solid var(--line)}
+.bmrow{border:1px solid var(--line);padding:0.4rem 0.55rem;margin:0 0 0.45rem;font-size:0.78rem;line-height:1.45}
+.bmrow legend{font-weight:600;padding:0 0.2rem}
+.bmchoice label{display:inline-flex;align-items:center;gap:0.25rem;min-height:44px;margin-right:0.8rem;cursor:pointer}
+#bankModal .modal{max-width:660px}
+#bankList{max-height:48vh;overflow:auto}
+.nagevery{display:inline-flex;align-items:center;gap:0.25rem;margin-left:0.3rem}
+#persistBtn[hidden],#nudge[hidden]{display:none}
+body.dark .payprev a{color:var(--grove)}
 </style>
 </head>
 <body>
@@ -146,6 +163,7 @@ body.dark .linkbtn{color:inherit}
   <nav class="nav subnav" id="subnav" aria-label="Pages in this section"><button data-group="today" data-view="dashboard" class="active">Today</button><button data-group="invoices" data-view="invoices">Invoices</button><button data-group="invoices" data-view="notes">Reminders</button><button data-group="invoices" data-view="wip">Work to invoice</button><button data-group="clients" data-view="clients">Clients</button><button data-group="cash" data-view="cashflow">Forecast</button><button data-group="cash" data-view="transactions">Bank import</button><button data-group="cash" data-view="expenses">Expenses</button><button data-group="cash" data-view="ledger">Payments</button><button data-group="cash" data-view="reconcile">Reconcile</button><button data-group="cash" data-view="calendar">Calendar</button><button data-group="more" data-view="insights">Insights</button><button data-group="more" data-view="settings">Settings</button><button data-group="more" data-view="backup">Backups</button><button data-group="more" data-view="health">Health</button><button data-group="more" data-view="effectiveness">Effectiveness</button><button data-group="more" data-view="review">Month review</button><button data-group="more" data-view="activity">Activity</button></nav>
   <main id="main" tabindex="-1">
   <div id="storageWarn" class="nag" role="alert" hidden></div>
+  <div id="nudge" hidden></div>
 
   <section class="view active" id="dashboard">
     <div id="backupNag" style="display:none"></div>
@@ -237,9 +255,10 @@ body.dark .linkbtn{color:inherit}
       <div style="margin-top:0.3rem"><label class="fl">Business address</label><textarea id="setAddress" style="width:100%;min-height:48px"></textarea></div>
       <div style="margin-top:0.3rem"><label class="fl">Bank / EFT details printed on invoices</label><textarea id="setBank" placeholder="Bank, account holder, account no, branch code" style="width:100%;min-height:48px"></textarea></div>
       <div class="grid2" style="margin-top:0.3rem">
-        <div><label class="fl">Default payment link (https only)</label><input id="setPayLink" placeholder="https://payf.st/…" style="width:100%"></div>
-        <div><label class="fl">Payment provider label</label><select id="setPayProvider" style="width:100%"><option value="auto">Detect from link</option><option>PayFast</option><option>Yoco</option><option>SnapScan</option><option value="Pay online">Other</option></select></div>
+        <div><label class="fl" for="setPayLink">Default payment link (https only)</label><input id="setPayLink" placeholder="https://payf.st/…" inputmode="url" autocomplete="off" spellcheck="false" aria-describedby="payLinkHelp payLinkErr" style="width:100%"><div class="reason" id="payLinkHelp">Your own PayFast, Yoco, SnapScan, PayPal or other payment page. It appears as a Pay now button and QR code on invoices, PDFs and reminders.</div><div id="payLinkErr" role="alert" style="color:var(--rust);font-size:0.75rem"></div></div>
+        <div><label class="fl">Payment provider label</label><select id="setPayProvider" style="width:100%"><option value="auto">Detect from link</option><option>PayFast</option><option>Yoco</option><option>SnapScan</option><option>PayPal</option><option value="Pay online">Other</option></select></div>
       </div>
+      <div id="payLinkPreview" style="margin-top:0.3rem"></div>
       <div style="margin-top:0.3rem"><label class="fl" for="setRemOffsets">Reminder schedule (days from due date; negative = before)</label><input id="setRemOffsets" placeholder="-3, 0, 7, 14, 30" style="width:100%"></div>
       <div style="margin-top:0.3rem"><label class="fl" for="setLogo">Logo (PNG or JPEG, transparency kept; stored on this device)</label><input type="file" id="setLogo" accept="image/png,image/jpeg"> <img id="logoPreview" alt="Current logo" style="max-height:40px;display:none;vertical-align:middle"> <button class="btn small secondary" id="clearLogo">Remove logo</button></div>
       <div style="margin-top:0.4rem" id="pwaNote"></div>
@@ -265,6 +284,8 @@ body.dark .linkbtn{color:inherit}
       <p class="reason" style="margin:0.3rem 0">Automatic snapshots are kept in this browser (up to the last 10, fewer when your data is large). They do not survive clearing browser data — export a backup file too.</p>
       <div style="margin-bottom:0.4rem"><button class="btn" id="backupExport">Export backup file</button> <span class="reason" id="lastExported"></span></div>
       <p class="reason" id="storageMeter" style="margin-bottom:0.4rem"></p>
+      <div class="safety" id="persistBox" style="margin-bottom:0.4rem"><span id="persistStatus">Checking storage protection…</span> <button class="btn small secondary" id="persistBtn">Ask the browser to keep my data</button></div>
+      <div style="margin-bottom:0.4rem;font-size:0.8rem"><label for="backupEvery">Remind me to export a backup every</label> <select id="backupEvery"></select> <span class="reason" id="backupStatus"></span></div>
       <div id="snapList"></div>
       <div style="margin-top:0.4rem"><button class="btn small secondary danger" id="delSnaps">Delete all snapshots</button></div>
     </div>
@@ -281,11 +302,12 @@ body.dark .linkbtn{color:inherit}
   <section class="view" id="transactions">
     <div class="toolbar">
       <button class="btn" id="importCsvBtn">Import CSV statement</button> <label class="reason">Statement currency <select id="csvCur"><option>ZAR</option><option>USD</option><option>EUR</option><option>GBP</option><option>AUD</option><option>CAD</option></select></label>
+      <label class="reason">Bank <select id="csvBank"><option value="auto">Detect automatically</option><option value="fnb">FNB</option><option value="absa">Absa</option><option value="standard">Standard Bank</option><option value="nedbank">Nedbank</option><option value="capitec">Capitec</option><option value="generic">Other bank / generic CSV</option></select></label>
       <input type="file" id="csvFile" aria-label="Bank statement CSV file" accept=".csv,.txt" style="display:none">
     </div>
     <div class="card">
       <div style="font-family:var(--serif);margin-bottom:0.3rem">Bank statement import (CSV only)</div>
-      <p class="reason" style="margin-bottom:0.4rem">This is not a live bank feed. Export a CSV from your bank, then import it here. Columns needed: Date and Amount. Optional: Description, Reference, or Memo. Duplicate transactions (same date, amount, and description) are automatically skipped. Similar amounts are suggested as fuzzy matches. You confirm every match. No credentials are stored.</p>
+      <p class="reason" style="margin-bottom:0.4rem">This is not a live bank feed. Export a CSV from your bank, then import it here. FNB, Absa, Standard Bank, Nedbank and Capitec exports are recognised automatically: suggested matches (by amount, invoice number, client name and date) are shown for you to accept or reject before anything is recorded. Columns needed: Date and Amount. Optional: Description, Reference, or Memo. Duplicate transactions (same date, amount, and description) are automatically skipped. Similar amounts are suggested as fuzzy matches. You confirm every match. No credentials are stored.</p>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.4rem;margin-bottom:0.5rem">
         <div><label style="font-size:0.6rem;color:var(--soft)">Tolerance %</label><input type="number" id="tolPct" value="10" min="0" max="50" step="1" style="width:100%"></div>
         <div><label style="font-size:0.6rem;color:var(--soft)">Tolerance (absolute)</label><input type="number" id="tolAbs" value="5" min="0" step="1" style="width:100%"></div>
@@ -375,7 +397,7 @@ body.dark .linkbtn{color:inherit}
     <div style="margin-top:0.25rem"><label style="font-size:0.6rem;color:var(--soft)">Promise date</label><input type="date" id="mPromise" style="width:100%"></div>
     <div style="margin-top:0.25rem"><label style="font-size:0.6rem;color:var(--soft)">Tags</label><input id="mTags" placeholder="design, urgent…" style="width:100%"></div>
     <div style="margin-top:0.25rem"><label style="font-size:0.6rem;color:var(--soft)">File reference</label><input id="mFile" placeholder="Local path or note" style="width:100%"></div>
-    <div class="grid2" style="margin-top:0.25rem"><div><label style="font-size:0.6rem;color:var(--soft)">Payment link (blank = default from Settings)</label><input id="mPayLink" placeholder="https://…" style="width:100%"></div><div><label style="font-size:0.6rem;color:var(--soft)">Provider label</label><select id="mPayProvider" style="width:100%"><option value="">Default</option><option value="auto">Detect from link</option><option>PayFast</option><option>Yoco</option><option>SnapScan</option><option value="Pay online">Other</option></select></div></div>
+    <div class="grid2" style="margin-top:0.25rem"><div><label style="font-size:0.6rem;color:var(--soft)">Payment link (blank = default from Settings)</label><input id="mPayLink" placeholder="https://…" style="width:100%"></div><div><label style="font-size:0.6rem;color:var(--soft)">Provider label</label><select id="mPayProvider" style="width:100%"><option value="">Default</option><option value="auto">Detect from link</option><option>PayFast</option><option>Yoco</option><option>SnapScan</option><option>PayPal</option><option value="Pay online">Other</option></select></div></div>
     <div style="margin-top:0.25rem"><label style="font-size:0.6rem;color:var(--soft)">Priority override</label><input type="number" id="mPriority" placeholder="Leave blank for auto" style="width:100%"></div>
     <div style="margin-top:0.25rem"><label style="font-size:0.6rem;color:var(--soft)">Payment instructions</label><textarea id="mInstructions" placeholder="Bank details, reference to use…" style="width:100%;min-height:50px"></textarea></div>
     <div style="margin-top:0.25rem"><label><input type="checkbox" id="mRecurring"> Recurring monthly</label> <label style="margin-left:0.6rem"><input type="checkbox" id="mPlan"> Payment plan</label></div>
@@ -458,6 +480,7 @@ body.dark .linkbtn{color:inherit}
 <div class="modal-backdrop" id="feedbackModal"><div class="modal">
   <div style="font-family:var(--serif);font-size:1.05rem;margin-bottom:0.3rem">Feedback &amp; suggestions</div>
   <p class="reason" id="fbPrivacy" style="margin:0 0 0.5rem"><strong>This is sent privately to the Paper Ledger Desk team’s own secure inbox. Nobody else can see it.</strong> It is sent only when you press Send. Your invoices, clients, amounts and settings are never included.</p>
+  <p class="reason" id="fbExtraNote" aria-live="polite" hidden></p>
   <div><label for="fbType" style="font-size:0.7rem;color:var(--soft)">Type</label><select id="fbType" style="width:100%"><option>Complaint</option><option selected>Suggestion</option><option>Bug report</option><option>Praise</option><option>Other</option></select></div>
   <div style="margin-top:0.35rem"><label for="fbMsg" style="font-size:0.7rem;color:var(--soft)">Your message (required)</label><textarea id="fbMsg" rows="6" maxlength="3000" required aria-required="true" aria-describedby="fbCount fbErr" placeholder="What happened, or what would make the app better for you?" style="width:100%"></textarea><div class="reason" id="fbCount" aria-live="polite">0 / 3000</div></div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.35rem;margin-top:0.25rem">
@@ -465,6 +488,8 @@ body.dark .linkbtn{color:inherit}
     <div><label for="fbEmail" style="font-size:0.7rem;color:var(--soft)">Email for a reply (optional)</label><input id="fbEmail" type="email" autocomplete="email" style="width:100%"></div>
   </div>
   <label class="chk" style="display:flex;gap:0.4rem;align-items:center;justify-content:flex-start;text-align:left;margin-top:0.4rem;font-size:0.78rem"><input type="checkbox" id="fbInfo"> Include basic app info (app version, browser, screen size — never invoice or client data)</label>
+  <label class="chk" style="display:flex;gap:0.4rem;align-items:center;justify-content:flex-start;text-align:left;margin-top:0.3rem;font-size:0.78rem"><input type="checkbox" id="fbUsage"> Include my feature usage counts (numbers only, counted on this device — never invoice, client or amount data)</label>
+  <details id="fbUsageWrap" style="margin-top:0.2rem"><summary style="font-size:0.78rem">See the usage counts kept on this device</summary><pre id="fbUsageList" class="reason" style="white-space:pre-wrap;font:inherit;margin:0.3rem 0"></pre><button type="button" class="btn small secondary" id="fbUsageReset">Reset counts</button></details>
   <div id="fbErr" role="alert" style="color:var(--rust);font-size:0.78rem;min-height:1em;margin-top:0.25rem"></div>
   <div style="margin-top:0.3rem"><div class="hp" aria-hidden="true"><label for="fbWebsite">Website</label><input id="fbWebsite" name="website" tabindex="-1" autocomplete="off"></div><button class="btn" id="fbSend">Send</button> <button class="btn secondary" id="fbCancel">Close</button></div>
   <p class="reason" id="fbDone" aria-live="polite" style="margin:0.35rem 0 0"></p>
@@ -474,6 +499,15 @@ body.dark .linkbtn{color:inherit}
     <div style="margin-top:0.25rem"><button class="btn secondary" id="fbCopy">Copy message</button> <a class="btn secondary" id="fbMailto" href="mailto:paperledgerdesk@gmail.com?subject=%5BFeedback%5D%20Suggestion">Open email app again</a></div>
   </div>
   <details id="fbHistory" hidden style="margin-top:0.45rem"><summary style="font-size:0.78rem">Feedback I’ve sent (on this device only)</summary><ul id="fbList" class="reason" style="margin:0.3rem 0 0 1rem"></ul><button class="btn small secondary" id="fbClearList">Clear this list</button></details>
+</div></div>
+<div class="modal-backdrop" id="bankModal"><div class="modal">
+  <div style="font-family:var(--serif);font-size:1.05rem;margin-bottom:0.3rem">Review bank import</div>
+  <p class="reason" id="bankSummary" style="margin:0 0 0.4rem"></p>
+  <div style="margin-bottom:0.35rem"><button type="button" class="btn small secondary" id="bankAcceptAll">Accept all matches</button> <button type="button" class="btn small secondary" id="bankRejectAll">Reject all matches</button></div>
+  <div id="bankList"></div>
+  <div id="bankUnmatched" style="margin-top:0.3rem;font-size:0.78rem"></div>
+  <p class="reason" id="bankLeft" aria-live="polite" style="margin:0.35rem 0"></p>
+  <div style="display:flex;gap:0.25rem;flex-wrap:wrap"><button class="btn" id="bankApply">Import</button><button class="btn secondary" id="bankCancel">Cancel — import nothing</button></div>
 </div></div>
 <div class="modal-backdrop" id="wizard"><div class="modal">
   <div style="font-family:var(--serif);font-size:1.1rem;margin-bottom:0.2rem">Welcome to Paper Ledger</div>
@@ -498,9 +532,9 @@ if(window.top!==window.self){document.documentElement.style.display='';document.
 
 window.onerror=function(msg,url,line){window._err=msg+' at '+line;return false;};
 const KEY='paperLedgerConsolidated38';
-const SCHEMA=40;
+const SCHEMA=41;
 window._scriptStarted = true;
-let invoices=[], clientsMeta={}, expenses=[], transactions=[], editingId=null, payingId=null, actionTarget=null, checklistDone=new Set(), followups=[], activity=[], wipNotes=[], workItems=[], presets=[], settings={opening:0,reserve:0,whatif:0,dark:false,tolPct:10,tolAbs:5,nextNum:1,defaultTerms:30,business:'',lastBackup:null,weeklyTarget:0,currency:'ZAR',defaultTax:0,vatNo:'',regNo:'',address:'',email:'',phone:'',bank:'',payLink:'',payProvider:'auto',onboarded:false,createdAt:null,nagSnooze:0}, pendingImport=null, selected=new Set();
+let invoices=[], clientsMeta={}, expenses=[], transactions=[], editingId=null, payingId=null, actionTarget=null, checklistDone=new Set(), followups=[], activity=[], wipNotes=[], workItems=[], presets=[], settings={opening:0,reserve:0,whatif:0,dark:false,tolPct:10,tolAbs:5,nextNum:1,defaultTerms:30,business:'',lastBackup:null,weeklyTarget:0,currency:'ZAR',defaultTax:0,vatNo:'',regNo:'',address:'',email:'',phone:'',bank:'',payLink:'',payProvider:'auto',onboarded:false,createdAt:null,nagSnooze:0,backupEvery:7,persistAsked:0,fbRated:'',fbThumbPdf:false,fbThumbPay:false,usePdf:0,useSend:0,useReminder:0,usePrint:0,usePayment:0,useBankImport:0,useCsvImport:0,useBackup:0}, pendingImport=null, selected=new Set();
 const $=id=>document.getElementById(id);
 function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1100);}
 function localISO(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
@@ -639,7 +673,7 @@ function loadSettingsUI(){
   if($('setTerms'))$('setTerms').value=settings.defaultTerms||30;if($('setCurrency'))$('setCurrency').value=defCur();if($('setPayProvider'))$('setPayProvider').value=settings.payProvider||'auto';
   document.querySelectorAll('.defcur').forEach(e=>e.textContent=defCur());
   ['csvCur','workCur'].forEach(id=>{if($(id))$(id).value=defCur();});
-  renderLogoPreview();
+  renderLogoPreview();renderPayLinkPreview();
 }
 function saveSettings(){
   settings.business=$('setBusiness').value.trim();
@@ -649,8 +683,9 @@ function saveSettings(){
   settings.currency=$('setCurrency').value;settings.defaultTax=Math.max(0,+$('setDefaultTax').value||0);
   ['vatNo:setVatNo','regNo:setRegNo','email:setEmail','phone:setPhone','address:setAddress','bank:setBank'].forEach(x=>{const [k,id]=x.split(':');settings[k]=$(id).value.trim();});
   const pl=$('setPayLink').value.trim();
-  if(pl&&!/^https:\/\//i.test(pl)){toast('Payment link must start with https://');return;}
-  settings.payLink=pl;settings.payProvider=$('setPayProvider').value;if($('setRemOffsets')){const ro=$('setRemOffsets').value.trim();if(ro.split(/[,;\s]+/).filter(Boolean).every(x=>Number.isFinite(+x)))settings.reminderOffsets=ro;}
+  const plOk=pl?strictPayUrl(pl):'';
+  if(pl&&!plOk){renderPayLinkPreview();toast(payLinkProblem(pl));if($('setPayLink'))$('setPayLink').focus();return;}
+  settings.payLink=plOk;settings.payProvider=$('setPayProvider').value;if($('setRemOffsets')){const ro=$('setRemOffsets').value.trim();if(ro.split(/[,;\s]+/).filter(Boolean).every(x=>Number.isFinite(+x)))settings.reminderOffsets=ro;}
   if($('opening'))$('opening').value=settings.opening||0;
   if($('reserve'))$('reserve').value=settings.reserve;
   log('settings','Settings saved');save();loadSettingsUI();refresh();toast('Settings saved');
@@ -670,7 +705,7 @@ function load(){
   $('opening').value=settings.opening||0;$('reserve').value=settings.reserve||0;$('whatif').value=settings.whatif||0;
   if(settings.lastBackup){
     const days=Math.floor((Date.now()-new Date(settings.lastBackup))/86400000);
-    if(days>=7) toast('Last backup was '+plural(days,'day')+' ago');
+    const every=backupEveryDays();if(every&&days>=every) toast('Last backup was '+plural(days,'day')+' ago');
   }
   loadSettingsUI();
   if($('schemaNo'))$('schemaNo').textContent=SCHEMA;
@@ -935,7 +970,7 @@ function confirmMatch(txIdx,invId){
   if(!confirm('Record '+money(tx.amount,curOf(tx))+' against '+inv.ref+'?'))return;
   inv.payments=inv.payments||[];inv.payments.push({date:tx.date,amount:tx.amount,note:'CSV match',method:'Bank transfer',ref:tx.desc||''});
   inv.lastContact=today();tx.matched=true;tx.matchedTo=inv.ref;
-  log('csv-match','Matched '+money(tx.amount,curOf(tx))+' to '+inv.ref);
+  log('csv-match','Matched '+money(tx.amount,curOf(tx))+' to '+inv.ref);bump('payment');keyMoment('pay');
   save();refresh();toast('Matched');
 }
 function splitCsvLine(line,sep){
@@ -992,7 +1027,7 @@ function importCsv(text){
     if(dup){dups++;skipped.push(t.date+' '+money(t.amount,t.currency)+' '+ (t.desc||''));}
     else{transactions.push(t);added++;}
   });
-  log('csv-import','Imported '+plural(added,'transaction')+', skipped '+plural(dups,'duplicate'));
+  log('csv-import','Imported '+plural(added,'transaction')+', skipped '+plural(dups,'duplicate'));bump('csvImport');
   save();refresh();
   const st=parseCsv.last||{};toast('Imported '+added+', skipped '+dups+' duplicates'+(st.debits?', '+st.debits+' debits ignored':'')+(st.bad?', '+st.bad+' unreadable rows':''));
   if(dups){
@@ -1202,7 +1237,7 @@ function saveInv(){
   const lines=[...$('lines').querySelectorAll('.line-item')].map(r=>({desc:r.querySelector('[data-d]').value.trim()||'Work',qty:+r.querySelector('[data-q]').value||1,rate:+r.querySelector('[data-r]').value||0,hours:+r.querySelector('[data-h]').value||0})).filter(l=>l.rate>0||l.desc!=='Work');
   if(!lines.length){toast('Need a line with an amount');return;}
   const mp=$('mPriority').value.trim();
-  const pl=$('mPayLink').value.trim();if(pl&&!safeUrl(pl)){toast('Payment link must start with https://');return;}
+  const pl=$('mPayLink').value.trim();if(pl&&!strictPayUrl(pl)){toast(payLinkProblem(pl));return;}
   const data={ref,client,issued:$('mIssued').value||today(),payProvider:$('mPayProvider').value,project:$('mProject').value.trim(),lines,tax:+$('mTax').value||0,discount:+$('mDisc').value||0,cost:+$('mCost').value||0,due:$('mDue').value||dueFromTerms(),currency:$('mCur').value,type:$('mType').value,promiseDate:$('mPromise').value||null,nextAction:$('mNext').value||null,expiry:$('mExpiry').value||null,tags:$('mTags').value.trim(),fileRef:$('mFile').value.trim(),payLink:pl,instructions:$('mInstructions').value.trim(),recurring:$('mRecurring').checked,plan:$('mPlan').checked,instalments:+$('mInst').value||1,manualPriority:mp===''?null:+mp,payments:editingId?(invoices.find(x=>x.id===editingId).payments||[]):[],disputed:editingId?(invoices.find(x=>x.id===editingId).disputed||false):false,lastContact:editingId?(invoices.find(x=>x.id===editingId).lastContact||null):null};
   if(editingId){const idx=invoices.findIndex(x=>x.id===editingId);invoices[idx]={...invoices[idx],...data};log('edit','Edited '+ref);}else{invoices.push({id:Date.now(),contacts:[],...data});log('add','Added '+ref);}
   save();close();refresh();toast('Saved');
@@ -1216,7 +1251,7 @@ function confirmPay(){
   }
   inv.payments=inv.payments||[];inv.payments.push(rec);
   inv.lastContact=today();
-  log('payment','Payment on '+inv.ref+' via '+rec.method);
+  log('payment','Payment on '+inv.ref+' via '+rec.method);bump('payment');keyMoment('pay');
   if(inv.recurring && remaining(inv)<=0 && !inv.rolledTo){const d=new Date(inv.due);d.setMonth(d.getMonth()+1);const next=JSON.parse(JSON.stringify(inv));next.id=Date.now();next.ref=nextRef();next.issued=today();next.due=localISO(d);next.payments=[];next.contacts=[];next.promiseDate=null;next.nextAction=null;next.lastContact=null;next.disputed=false;next.writtenOff=false;delete next.rolledTo;inv.rolledTo=next.ref;invoices.push(next);log('recurring','Created '+next.ref+' from '+inv.ref);toast('Paid · next invoice '+next.ref+' created');}
   else toast(remaining(inv)<0?'Overpayment recorded':'Payment recorded');
   save();close();refresh();
@@ -1248,28 +1283,29 @@ function printInvoice(id){
   const c=curOf(inv);const q=inv.type==='quote';const m=clientsMeta[inv.client]||{};const logo=getLogo();
   const title=(inv.draft?'Draft ':'')+(q?'Quote':(settings.vatNo&&(+inv.tax>0)?'Tax Invoice':'Invoice'));
   const subM=toMinor(subtotal(inv),c),aM=toMinor(afterDisc(inv),c),totM=toMinor(total(inv),c);
-  const link=payLinkOf(inv);
+  const link=payLinkOf(inv);bump('print');
   const lines=(inv.lines||[]).map(l=>`<tr><td>${escape(l.desc||'')}</td><td class="r">${escape(l.qty||1)}${l.hours?' × '+escape(l.hours)+' h':''}</td><td class="r">${money(l.rate||0,c)}</td><td class="r">${money(lineAmt(l),c)}</td></tr>`).join('');
   const nl=t=>escape(t||'').replace(/\n/g,'<br>');
   const w=openWin();
-  w.document.write(`<!DOCTYPE html><html><head><title>${escape(title+' '+inv.ref)}</title><style>
+  w.document.write(`<!DOCTYPE html><html lang="en"><head><title>${escape(title+' '+inv.ref)}</title><style>
   @page{size:A4;margin:16mm}*{box-sizing:border-box}body{font-family:Georgia,'Times New Roman',serif;color:#1C1915;margin:0;padding:24px;font-size:13px}
   .top{display:flex;justify-content:space-between;align-items:flex-start;gap:24px}.biz{font-size:12px;line-height:1.45}.biz strong{font-size:15px}h1{font-size:26px;margin:0 0 8px;text-align:right;letter-spacing:0.04em;text-transform:uppercase}
   .meta td{padding:2px 0 2px 16px;text-align:right}.meta td:first-child{color:#5C5348}.bill{margin:24px 0 12px;line-height:1.45}
   table.lines{width:100%;border-collapse:collapse;margin-top:8px}table.lines th{background:#EFEAE0;text-align:left;padding:6px}table.lines td{padding:6px;border-bottom:1px solid #D4CDBE}.r{text-align:right}
   .tot{margin-left:auto;width:280px;margin-top:10px}.tot td{padding:3px 6px}.tot .grand td{font-weight:bold;font-size:15px;border-top:2px solid #1C1915}
-  .pay{margin-top:22px;line-height:1.5}.foot{margin-top:30px;font-size:10px;color:#5C5348}.noprint{margin-bottom:16px}.noprint button{padding:6px 12px}
+  .pay{margin-top:22px;line-height:1.5}.paynow{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:22px;padding:12px 14px;border:1px solid #D4CDBE}.paybtn{display:inline-block;background:#1F4D3A;color:#fff;text-decoration:none;font-weight:bold;padding:10px 26px;border-radius:4px;font-size:15px;-webkit-print-color-adjust:exact;print-color-adjust:exact}.paysub{font-size:11px;color:#5C5348;margin-top:6px;max-width:330px}.payqr{margin:0;text-align:center;font-size:10px;color:#5C5348}.payqr svg{display:block;margin:0 auto 2px}.foot{margin-top:30px;font-size:10px;color:#5C5348}.noprint{margin-bottom:16px}.noprint button{padding:6px 12px}
   img.logo{max-height:70px;max-width:220px;display:block;margin-bottom:8px}@media print{.noprint{display:none}body{padding:0}}
   </style></head><body>
-  <div class="noprint"><button data-pld-print>Print / Save as PDF</button></div>
+  <main><div class="noprint"><button data-pld-print>Print / Save as PDF</button></div>
   <div class="top"><div class="biz">${logo?'<img class="logo" alt="logo" src="'+escape((logo.png||logo.data))+'">':''}<strong>${escape(settings.business||'Your business')}</strong><br>${nl(settings.address)}${settings.email?'<br>'+escape(settings.email):''}${settings.phone?'<br>'+escape(settings.phone):''}${settings.vatNo?'<br>VAT No: '+escape(settings.vatNo):''}${settings.regNo?'<br>Reg No: '+escape(settings.regNo):''}</div>
   <div><h1>${escape(title)}</h1><table class="meta"><tr><td>${q?'Quote no':'Invoice no'}</td><td><strong>${escape(inv.ref)}</strong></td></tr><tr><td>Date</td><td>${escape(inv.issued||today())}</td></tr><tr><td>${q?'Valid until':'Due date'}</td><td>${escape(q?(inv.expiry||'—'):inv.due)}</td></tr><tr><td>Currency</td><td>${escape(c)}</td></tr></table></div></div>
   <div class="bill"><span style="color:#5C5348">${q?'Quote for':'Bill to'}</span><br><strong>${escape(inv.client)}</strong>${m.contact?'<br>'+escape(m.contact):''}${m.address?'<br>'+nl(m.address):''}${m.email?'<br>'+escape(m.email):''}${m.vat?'<br>VAT No: '+escape(m.vat):''}${inv.project?'<br>Re: '+escape(inv.project):''}</div>
   <table class="lines"><thead><tr><th>Description</th><th class="r">Qty</th><th class="r">Rate</th><th class="r">Amount</th></tr></thead><tbody>${lines}</tbody></table>
   <table class="tot"><tr><td>Subtotal</td><td class="r">${money(fromMinor(subM,c),c)}</td></tr>${+inv.discount?`<tr><td>Discount (${escape(inv.discount)}%)</td><td class="r">-${money(fromMinor(subM-aM,c),c)}</td></tr>`:''}${+inv.tax?`<tr><td>${settings.vatNo?'VAT':'Tax'} (${escape(inv.tax)}%)</td><td class="r">${money(fromMinor(totM-aM,c),c)}</td></tr>`:''}<tr class="grand"><td>Total</td><td class="r">${money(total(inv),c)}</td></tr>${!q&&paid(inv)>0?`<tr><td>Paid</td><td class="r">-${money(paid(inv),c)}</td></tr><tr><td><strong>Balance due</strong></td><td class="r"><strong>${money(Math.max(0,remaining(inv)),c)}</strong></td></tr>`:''}</table>
+  ${!q&&link&&remaining(inv)>0?payNowHtml(link,providerLabel(link,inv.payProvider||settings.payProvider)):''}
   <div class="pay">${link?'<strong>Pay online with '+escape(providerLabel(link,inv.payProvider||settings.payProvider))+':</strong> <a href="'+escape(link)+'" rel="noopener">'+escape(link)+'</a><br>':''}${(inv.instructions||settings.bank)?'<strong>Payment details</strong><br>'+nl(inv.instructions||settings.bank)+'<br>':''}${q?'':'Please use <strong>'+escape(inv.ref)+'</strong> as your payment reference.'}</div>
   <div class="foot">Generated by Paper Ledger Desk. This app does not process payments.</div>
-  </body></html>`);
+  </main></body></html>`);
   w.document.close();bindPrint(w);
 }
 function logContact(id){
@@ -1379,7 +1415,7 @@ safeOn('importCsvBtn',()=>$('csvFile').click());
 $('csvFile').onchange=e=>{
   const f=e.target.files[0];if(!f)return;if(f.size>MAX_IMPORT_BYTES){e.target.value='';toast('That file is too large to import ('+Math.round(f.size/1048576)+' MB; the limit is 5 MB). Nothing was changed.');return;}
   const r=new FileReader();
-  r.onload=ev=>importCsv(ev.target.result);
+  r.onload=ev=>importBankOrCsv(ev.target.result);
   r.readAsText(f);e.target.value='';
 };
 if($('tolPct'))$('tolPct').oninput=()=>{settings.tolPct=+$('tolPct').value||10;save();renderTransactions();};
@@ -1524,7 +1560,7 @@ function restoreSnapshot(k){
   save();load();refresh();toast('Snapshot restored');
 }
 function exportBackup(){
-  settings.lastBackup=new Date().toISOString();settings.nagSnooze=0;
+  settings.lastBackup=new Date().toISOString();settings.nagSnooze=0;bump('backup');
   save();
   const data={...payload(),logo:localStorage.getItem(LOGO_KEY)||null,exported:new Date().toISOString()};
   downloadBlob(JSON.stringify(data,null,2),'paper-ledger-backup-'+today()+'.json','application/json');
@@ -1715,7 +1751,7 @@ function reminderText(inv,tone,days){
   else if(tone==='direct') body=`Following up on ${inv.ref} (${amt}), ${plural(days,'day')} overdue. Please arrange payment this week.`;
   else body=`Final notice for ${inv.ref} (${amt}), ${plural(days,'day')} past due. Please settle it within 7 days or contact me to agree a plan.`;
   const link=payLinkOf(inv);
-  if(link) body+=`\n\nPay securely via ${providerLabel(link,inv.payProvider||settings.payProvider)}: ${link}`;
+  if(link) body+=`\n\nPay now via ${providerLabel(link,inv.payProvider||settings.payProvider)}: ${link}`;
   body+='\n\nThank you,\n'+(settings.business||'');
   return {subject:(tone==='final'?'Final notice':'Invoice follow-up')+' — '+inv.ref,body:hello+body};
 }
@@ -1728,7 +1764,7 @@ function logReminder(id,channel,tone){
   const inv=invoices.find(x=>x.id===id);if(!inv)return;
   tone=tone||reminderTone(inv);
   inv.contacts=inv.contacts||[];inv.contacts.unshift({date:today(),note:'Reminder opened in '+channel+' ('+tone+')'});
-  inv.lastContact=today();log('reminder',channel+' reminder ('+tone+') for '+inv.ref);
+  inv.lastContact=today();bump('reminder');log('reminder',channel+' reminder ('+tone+') for '+inv.ref);
   setTimeout(()=>{save();refresh();},0);
 }
 function reminderLinks(i){const t=reminderTone(i);return `<a class="btn small secondary" href="${escape(mailtoHref(i,t))}" data-act="logReminder" data-args="${escape(JSON.stringify([i.id,'email',t]))}">Email</a> <a class="btn small secondary" target="_blank" rel="noopener" href="${escape(waHref(i,t))}" data-act="logReminder" data-args="${escape(JSON.stringify([i.id,'WhatsApp',t]))}">WhatsApp</a>`;}
@@ -1883,7 +1919,7 @@ PDFDoc.prototype.output=function(){
     return add(`<< /Type /XObject /Subtype /Image /Width ${im.pw} /Height ${im.ph} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode${sm} /Length ${im.b.length} >>\nstream\n${im.b}\nendstream`);
   });
   const xo=imgIds.length?'/XObject << '+imgIds.map((id,k)=>`/Im${k} ${id} 0 R`).join(' ')+' >>':'';
-  const kids=this.pages.map(ops=>{const c=ops.join('\n');const cid=add(`<< /Length ${c.length} >>\nstream\n${c}\nendstream`);return add(`<< /Type /Page /Parent ${pagesId} 0 R /MediaBox [0 0 ${this.W} ${this.H}] /Resources << /Font << /F1 ${f1} 0 R /F2 ${f2} 0 R >> ${xo} >> /Contents ${cid} 0 R >>`);});
+  const kids=this.pages.map(ops=>{const c=ops.join('\n');const cid=add(`<< /Length ${c.length} >>\nstream\n${c}\nendstream`);const an=(ops.links||[]).map(l=>add(`<< /Type /Annot /Subtype /Link /Rect [${l.r.map(v=>v.toFixed(2)).join(' ')}] /Border [0 0 0] /A << /Type /Action /S /URI /URI (${pdfStr(l.u)}) >> >>`));return add(`<< /Type /Page /Parent ${pagesId} 0 R /MediaBox [0 0 ${this.W} ${this.H}] /Resources << /Font << /F1 ${f1} 0 R /F2 ${f2} 0 R >> ${xo} >> /Contents ${cid} 0 R${an.length?' /Annots ['+an.map(a=>a+' 0 R').join(' ')+']':''} >>`);});
   objs[cat-1]=`<< /Type /Catalog /Pages ${pagesId} 0 R >>`;
   objs[pagesId-1]=`<< /Type /Pages /Kids [${kids.map(k=>k+' 0 R').join(' ')}] /Count ${kids.length} >>`;
   let out='%PDF-1.4\n%\xE2\xE3\xCF\xD3\n';const offs=[];
@@ -1934,7 +1970,7 @@ function buildInvoicePdf(inv){
     doc.text(450,y,'Balance due',{size:10,bold:true,align:'right'});doc.text(R-4,y,money(Math.max(0,remaining(inv)),c),{size:10,bold:true,align:'right'});y+=20;}
   const link=payLinkOf(inv);
   if(y>700){doc.addPage();y=60;}
-  if(link){doc.text(L,y,'Pay online with '+providerLabel(link,inv.payProvider||settings.payProvider)+':',{size:10,bold:true});y+=13;pdfWrap(link,480,9).forEach(t=>{doc.text(L,y,t,{size:9});y+=11;});y+=6;}
+  if(link){y=pdfPayNow(doc,inv,link,L,R,y,q);}
   const instr=inv.instructions||settings.bank;
   if(instr){doc.text(L,y,'Payment details',{size:10,bold:true});y+=13;pdfWrap(instr,480,9).forEach(t=>{doc.text(L,y,t,{size:9});y+=11;});y+=4;}
   if(!q)doc.text(L,y+6,'Please use '+inv.ref+' as your payment reference.',{size:9,gray:0.35});
@@ -1966,9 +2002,9 @@ function buildStatementPdf(client){
   return doc.output();
 }
 function invPdfName(inv){return safeName((inv.type==='quote'?'Quote-':'Invoice-')+inv.ref)+'.pdf';}
-function downloadInvoicePdf(id){const inv=invoices.find(x=>x.id===id);if(!inv)return;downloadBlob(buildInvoicePdf(inv),invPdfName(inv),'application/pdf');log('pdf','Downloaded PDF '+inv.ref);save();toast('PDF downloaded: '+invPdfName(inv));}
+function downloadInvoicePdf(id){const inv=invoices.find(x=>x.id===id);if(!inv)return;downloadBlob(buildInvoicePdf(inv),invPdfName(inv),'application/pdf');log('pdf','Downloaded PDF '+inv.ref);bump('pdf');keyMoment('pdf');save();toast('PDF downloaded: '+invPdfName(inv));}
 function stmtPdfName(client){return safeName('Statement-'+client+'-'+today())+'.pdf';}
-function downloadStatementPdf(client){downloadBlob(buildStatementPdf(client),stmtPdfName(client),'application/pdf');log('pdf','Downloaded statement PDF for '+client);save();toast('PDF downloaded: '+stmtPdfName(client));}
+function downloadStatementPdf(client){downloadBlob(buildStatementPdf(client),stmtPdfName(client),'application/pdf');log('pdf','Downloaded statement PDF for '+client);bump('pdf');keyMoment('pdf');save();toast('PDF downloaded: '+stmtPdfName(client));}
 function openSend(subject,body,email,phone,file,onSent){
   $('sendFile').textContent=file;$('sendPreview').textContent=body;
   $('sendEmail').href=mailtoFor(email,subject,body);$('sendWa').href=waFor(phone,body);
@@ -1981,14 +2017,14 @@ function sendInvoice(id){
   downloadInvoicePdf(id);
   const q=inv.type==='quote';const c=curOf(inv);const m=clientsMeta[inv.client]||{};const link=payLinkOf(inv);
   const subject=(q?'Quote ':'Invoice ')+inv.ref+' from '+(settings.business||'me');
-  const body=`Hello ${m.contact||inv.client},\n\nPlease find attached ${q?'quote':'invoice'} ${inv.ref} for ${money(total(inv),c)}${q?(inv.expiry?', valid until '+inv.expiry:''):', due '+inv.due}.`+(link&&!q?`\n\nYou can pay via ${providerLabel(link,inv.payProvider||settings.payProvider)}: ${link}`:'')+`\n\n[Attach ${invPdfName(inv)} before sending]\n\nThank you,\n${settings.business||''}`;
-  openSend(subject,body,m.email,m.phone,invPdfName(inv),ch=>{inv.contacts=inv.contacts||[];inv.contacts.unshift({date:today(),note:(q?'Quote':'Invoice')+' sent via '+ch});inv.lastContact=today();log('send',(q?'Quote ':'Invoice ')+inv.ref+' opened in '+ch);setTimeout(save,0);});
+  const body=`Hello ${m.contact||inv.client},\n\nPlease find attached ${q?'quote':'invoice'} ${inv.ref} for ${money(total(inv),c)}${q?(inv.expiry?', valid until '+inv.expiry:''):', due '+inv.due}.`+(link&&!q?`\n\nPay now via ${providerLabel(link,inv.payProvider||settings.payProvider)}: ${link}`:'')+`\n\n[Attach ${invPdfName(inv)} before sending]\n\nThank you,\n${settings.business||''}`;
+  openSend(subject,body,m.email,m.phone,invPdfName(inv),ch=>{inv.contacts=inv.contacts||[];inv.contacts.unshift({date:today(),note:(q?'Quote':'Invoice')+' sent via '+ch});inv.lastContact=today();log('send',(q?'Quote ':'Invoice ')+inv.ref+' opened in '+ch);bump('send');setTimeout(()=>{save();renderNudge();},0);});
 }
 function sendStatement(client){
   downloadStatementPdf(client);const m=clientsMeta[client]||{};
   const due=sumByCur(invoices.filter(i=>i.client===client&&isOpen(i)),i=>Math.max(0,remaining(i)));
   const body=`Hello ${m.contact||client},\n\nPlease find attached your statement as at ${today()}. Amount outstanding: ${due}.\n\n[Attach ${stmtPdfName(client)} before sending]\n\nThank you,\n${settings.business||''}`;
-  openSend('Statement from '+(settings.business||'me'),body,m.email,m.phone,stmtPdfName(client),ch=>{log('send','Statement for '+client+' opened in '+ch);setTimeout(save,0);});
+  openSend('Statement from '+(settings.business||'me'),body,m.email,m.phone,stmtPdfName(client),ch=>{log('send','Statement for '+client+' opened in '+ch);bump('send');setTimeout(save,0);});
 }
 
 safeOn('addClient',()=>openClient(null));safeOn('saveClient',saveClient);safeOn('cancelClient',close);
@@ -2043,7 +2079,7 @@ function confirmPay(){
   }
   inv.payments=inv.payments||[];inv.payments.push(rec);inv.lastContact=today();
   if(inv.draft){inv.draft=false;log('recurring','Draft '+inv.ref+' finalised by payment');}
-  log('payment','Payment on '+inv.ref+' via '+rec.method);
+  log('payment','Payment on '+inv.ref+' via '+rec.method);bump('payment');keyMoment('pay');
   toast(remaining(inv)<0?'Overpayment recorded':'Payment recorded'+(inv.recurring&&remaining(inv)<=0?' · next recurring draft is created on its issue date':''));
   save();close();refresh();
 }
@@ -2172,7 +2208,7 @@ function isQuota(e){return !!e&&(e.name==='QuotaExceededError'||e.name==='NS_ERR
 function dropOldestSnapshot(){const s=getSnaps();if(!s.length)return false;dropOneSnap(s);try{if(s.length)localStorage.setItem(SNAP_KEY,JSON.stringify(s));else localStorage.removeItem(SNAP_KEY);}catch{localStorage.removeItem(SNAP_KEY);}return true;}
 function save(){
   if(snapPaused){toast('Saving paused: stored data was unreadable. Restore a snapshot or export first.');return false;}
-  const str=JSON.stringify(payload());let ok=false,err=null,trimmed=0;
+  maybePersist();const str=JSON.stringify(payload());let ok=false,err=null,trimmed=0;
   for(let k=0;k<SNAP_MAX+2;k++){try{localStorage.setItem(KEY,str);ok=true;break;}catch(e){err=e;if(!isQuota(e)||!dropOldestSnapshot())break;trimmed++;}}
   if(!ok){storageFull=true;window._lastSaveError=err&&err.name;renderStorageWarn();return false;}
   if(trimmed)toast('Storage nearly full — removed '+plural(trimmed,'old snapshot')+' to save');
@@ -2202,7 +2238,7 @@ function renderStorageWarn(){
 }
 function deleteAllSnapshots(){if(!confirm('Delete all automatic snapshots in this browser? Your current data is not affected.'))return;localStorage.removeItem(SNAP_KEY);snapsOff=false;log('snapshot','Deleted all snapshots');renderBackups();renderStorageWarn();toast('Snapshots deleted');}
 function exportBackup(){
-  settings.lastBackup=new Date().toISOString();settings.nagSnooze=0;
+  settings.lastBackup=new Date().toISOString();settings.nagSnooze=0;bump('backup');
   save();
   const data={...payload(),logo:localStorage.getItem(LOGO_KEY)||null,exported:new Date().toISOString()};
   downloadBlob(JSON.stringify(data,null,2),'paper-ledger-backup-'+today()+'.json','application/json');
@@ -2212,6 +2248,7 @@ function renderBackups(){
   if(!$('snapList'))return;
   const snaps=getSnaps();
   $('lastExported').textContent=settings.lastBackup?('Last exported '+new Date(settings.lastBackup).toLocaleString()):'Never exported';
+  renderPersistStatus();renderBackupEvery();
   if($('storageMeter'))$('storageMeter').textContent='Browser storage used: about '+Math.round(storageUsage()/1024)+' KB (most browsers allow about 5,000 KB per site). Snapshots are trimmed automatically when space runs low.';
   $('snapList').innerHTML=snaps.length?snaps.map((s,k)=>`<div class="safety snaprow"><strong>${escape(new Date(s.at).toLocaleString())}</strong>${s.pin?' · '+escape(s.label||'Kept before upgrade'):''} · ${plural(s.n,'invoice')} · ${Math.round(s.data.length/1024)} KB <button class="btn small secondary" data-act="restoreSnapshot" data-id="${escape(k)}">Restore</button></div>`).join(''):'<div class="empty">No snapshots yet.</div>';
 }
@@ -2432,7 +2469,7 @@ function saveInv(){
   if(!isISODate(issued)||!isISODate(due)){toast('Enter valid dates');return;}
   if(due<issued&&!confirm('The due date ('+due+') is before the issue date ('+issued+'). Save anyway?')){$('mDue').focus();return;}
   const mp=$('mPriority').value.trim();
-  const pl=$('mPayLink').value.trim();if(pl&&!safeUrl(pl)){toast('Payment link must start with https://');return;}
+  const pl=$('mPayLink').value.trim();if(pl&&!strictPayUrl(pl)){toast(payLinkProblem(pl));return;}
   if(typedRef&&invoices.some(x=>x.ref===typedRef&&x.id!==editingId)){if(!confirm('Invoice number '+typedRef+' already exists. Save a second invoice with the same number anyway?'))return;}
   const old=editingId?invoices.find(x=>x.id===editingId):null;
   if(old&&(old.payments||[]).length&&curOf(old)!==cur){if(!confirm(old.ref+' already has '+plural(old.payments.length,'payment')+' recorded in '+curOf(old)+'. Change the currency to '+cur+'? Payment amounts are not converted.'))return;}
@@ -2464,7 +2501,7 @@ function confirmPay(){
   if(editing){inv.payments[editingPay.idx]={...inv.payments[editingPay.idx],...rec};log('payment','Edited payment on '+inv.ref);editingPay=null;save();close();refresh();toast('Payment updated');return;}
   inv.payments=inv.payments||[];inv.payments.push(rec);inv.lastContact=today();
   if(inv.draft){inv.draft=false;log('recurring','Draft '+inv.ref+' finalised by payment');}
-  log('payment','Payment on '+inv.ref+' via '+rec.method);
+  log('payment','Payment on '+inv.ref+' via '+rec.method);bump('payment');keyMoment('pay');
   toast(remaining(inv)<0?'Payment recorded · credit '+money(-remaining(inv),c):'Payment recorded'+(remaining(inv)>0?' · '+money(remaining(inv),c)+' still due':'')+(inv.recurring&&remaining(inv)<=0?' · next recurring draft is created on its issue date':''));
   save();close();refresh();
 }
@@ -2754,7 +2791,7 @@ if($('undoBar')){$('undoBar').setAttribute('role','region');$('undoBar').setAttr
 
 
 // ================= v4.1: private feedback to the Paper Ledger Desk team (email only, nothing stored remotely) =================
-const APP_VERSION='4.2.2';
+const APP_VERSION='4.3';
 const FEEDBACK_TO='paperledgerdesk@gmail.com';
 const FB_KEY='pld_feedback_sent_v1';
 const FB_TYPES=['Complaint','Suggestion','Bug report','Praise','Other'];
@@ -2769,7 +2806,7 @@ function fbCompose(){
   const msg=$('fbMsg').value.trim();const name=$('fbName').value.trim();const email=$('fbEmail').value.trim();
   const subject='[Feedback] '+type;
   const reply=name||email?('Reply to: '+(name||'')+(email?(name?' <'+email+'>':email):'')):'Reply to: no reply requested';
-  const body='Type: '+type+'\n\n'+msg+'\n\n'+reply+($('fbInfo').checked?'\n\n--- Basic app info (no invoice or client data) ---\n'+fbAppInfo():'')+'\n\nSent from the Paper Ledger Desk feedback form.';
+  const body='Type: '+type+'\n\n'+fbFoldMessage(msg)+'\n\n'+reply+($('fbInfo').checked?'\n\n--- Basic app info (no invoice or client data) ---\n'+fbAppInfo():'')+'\n\nSent from the Paper Ledger Desk feedback form.';
   return {type,msg,name,email,subject,body,href:'mailto:'+FEEDBACK_TO+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body)};
 }
 function renderFbList(){
@@ -2778,14 +2815,14 @@ function renderFbList(){
   el.innerHTML=l.slice(0,20).map(x=>`<li><strong>${escape(String(x.date||''))}</strong> · ${escape(String(x.type||''))} · ${escape(String(x.snippet||''))}</li>`).join('');
 }
 function openFeedback(){
-  $('fbErr').textContent='';$('fbFallback').hidden=true;$('fbDone').textContent='';
+  fbExtra=null;renderFbExtraNote();$('fbErr').textContent='';$('fbFallback').hidden=true;$('fbDone').textContent='';if($('fbUsage'))$('fbUsage').checked=false;renderUsageList();
   if(!$('fbMsg').value)$('fbType').value='Suggestion';
   updateFbCount();renderFbList();$('feedbackModal').classList.add('show');
 }
 function updateFbCount(){const n=$('fbMsg').value.length;$('fbCount').textContent=n+' / '+FB_MAX;}
 function sendFeedback(){
   const f=fbCompose();
-  if(!f.msg){$('fbErr').textContent='Please write your message first.';$('fbMsg').focus();return;}
+  if(!f.msg&&!fbExtraLine()){$('fbErr').textContent='Please write your message first.';$('fbMsg').focus();return;}
   if(f.email&&!EMAIL_RE.test(f.email)){$('fbErr').textContent='That email address does not look right (or leave it empty).';$('fbEmail').focus();return;}
   $('fbErr').textContent='';
   const a=$('fbMailto');a.href=f.href;
@@ -2894,20 +2931,20 @@ function fbQueue(entry,payload,r){
 }
 async function sendFeedback(){
   const f=fbCompose();
-  if(!f.msg){$('fbErr').textContent='Please write your message first.';$('fbMsg').focus();return;}
+  if(!f.msg&&!fbExtraLine()){$('fbErr').textContent='Please write your message first.';$('fbMsg').focus();return;}
   if(f.email&&!EMAIL_RE.test(f.email)){$('fbErr').textContent='That email address does not look right (or leave it empty).';$('fbEmail').focus();return;}
   $('fbErr').textContent='';$('fbFallback').hidden=true;
-  const snippet=f.msg.slice(0,80)+(f.msg.length>80?'…':'');
+  const snippet=fbSnippet(f);
   if($('fbWebsite')&&$('fbWebsite').value){$('fbDone').textContent='Sent ✓ thank you!';return;} // honeypot filled: a bot, send nothing
   const btn=$('fbSend');btn.disabled=true;$('fbDone').textContent='Sending…';
   const payload=fbPayload(f);const r=await fbPost(payload);btn.disabled=false;
   const list=fbSent();const entry={id:Date.now(),date:today(),type:f.type,snippet};
   if(r.ok){entry.status='sent';list.unshift(entry);fbStore(list);
     $('fbDone').textContent=FB_TXT.sent+(f.email?' We will reply to '+f.email+'.':'');
-    $('fbMsg').value='';updateFbCount();}
+    $('fbMsg').value='';updateFbCount();fbExtra=null;renderFbExtraNote();}
   else{fbQueue(entry,payload,r);list.unshift(entry);const stored=fbStore(list);
     $('fbDone').textContent=!stored?FB_TXT.unsaved:r.origin?FB_TXT.origin:r.error==='offline'?FB_TXT.offline:FB_TXT.failed;
-    fbShowFallback(f);scheduleFbRetry();}
+    fbShowFallback(f);fbExtra=null;renderFbExtraNote();scheduleFbRetry();}
   renderFbList();
 }
 // One-time on first v4.2.2 load (and harmless afterwards): notes that v4.2.1 queued for its previous relay are re-cleaned to
@@ -2947,6 +2984,400 @@ window.addEventListener('online',()=>flushFeedbackQueue(true));
 safeOn('fbSend',sendFeedback);
 safeOn('fbRetry',()=>{flushFeedbackQueue('force').then(()=>{const q=fbSent().filter(x=>x.status==='queued');$('fbDone').textContent=!q.length?'Sent ✓ thank you!':q.every(x=>x.origin)?FB_TXT.stillOrigin:FB_TXT.stillFailed;if(!q.length)$('fbFallback').hidden=true;});});
 
+// ================= v4.3: Pay now (link + QR), SA bank statement presets, safer storage, effortless feedback =================
+// ---------- strict payment links (https only) ----------
+const PAYLINK_MAX=500;
+function strictPayUrl(u){
+  if(typeof u!=='string')return '';const s=u.trim();
+  if(!s||s.length>PAYLINK_MAX)return '';
+  if(/[\s"'<>`\\{}|^\u0000-\u001f\u007f-\u009f\u2028\u2029]/.test(s))return '';
+  if(!/^https:\/\/[^\/]/i.test(s))return '';
+  let p;try{p=new URL(s);}catch{return '';}
+  if(p.protocol!=='https:'||p.username||p.password||(p.port&&p.port!=='443'))return '';
+  const h=p.hostname;
+  if(!h||h.length>253||!/^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+(?:[a-z]{2,63}|xn--[a-z0-9-]{1,59})$/i.test(h))return '';
+  const out=p.href;
+  if(out.length>PAYLINK_MAX+20||/[^\x21-\x7e]/.test(out))return '';
+  return out;
+}
+function payLinkProblem(s){
+  s=String(s||'').trim();if(!s)return '';
+  if(/^\s*(javascript|data|vbscript|file|blob):/i.test(s))return 'That is not a web link. Paste the https:// payment page link from your provider.';
+  if(/^http:\/\//i.test(s))return 'The link must be secure: use https://, not http://.';
+  if(!/^https:\/\//i.test(s))return 'Payment link must start with https://';
+  if(s.length>PAYLINK_MAX)return 'That link is too long (the limit is '+PAYLINK_MAX+' characters).';
+  if(/[\s"'<>`\\{}|^]/.test(s))return 'The link contains spaces or characters that are not allowed in a web address.';
+  return 'That does not look like a valid https:// web address. Check the domain name.';
+}
+function payLinkOf(inv){return strictPayUrl(inv&&inv.payLink)||strictPayUrl(settings.payLink);}
+function providerLabel(url,sel){if(sel&&sel!=='auto')return sel;const u=String(url||'').toLowerCase();if(/payfast|payf\.st/.test(u))return 'PayFast';if(/yoco/.test(u))return 'Yoco';if(/snapscan/.test(u))return 'SnapScan';if(/paypal/.test(u))return 'PayPal';return 'Pay online';}
+
+// ---------- QR code encoder (byte mode, error correction M, versions 1-40; runs locally, no network) ----------
+const QR_ECC_M=[-1,10,16,26,18,24,16,18,22,22,26,30,22,22,24,24,28,28,26,26,26,26,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28];
+const QR_BLK_M=[-1,1,1,1,2,2,4,4,4,5,5,5,8,9,9,10,10,11,13,14,16,17,17,18,20,21,23,25,26,28,29,31,33,35,37,38,40,43,45,47,49];
+function qrRawModules(v){let r=(16*v+128)*v+64;if(v>=2){const na=Math.floor(v/7)+2;r-=(25*na-10)*na-55;if(v>=7)r-=36;}return r;}
+function qrDataCw(v){return Math.floor(qrRawModules(v)/8)-QR_ECC_M[v]*QR_BLK_M[v];}
+function gfMul(x,y){let z=0;for(let i=7;i>=0;i--){z=((z<<1)^((z>>>7)*0x11D))&0xFF;z^=((y>>>i)&1)*x;}return z;}
+function rsDivisor(deg){const r=new Array(deg).fill(0);r[deg-1]=1;let root=1;for(let i=0;i<deg;i++){for(let j=0;j<r.length;j++){r[j]=gfMul(r[j],root);if(j+1<r.length)r[j]^=r[j+1];}root=gfMul(root,2);}return r;}
+function rsRemainder(data,div){const r=div.map(()=>0);for(const b of data){const f=b^r.shift();r.push(0);div.forEach((c,i)=>{r[i]^=gfMul(c,f);});}return r;}
+function qrPenalty(M,n){
+  let p=0;
+  for(let y=0;y<n;y++){let run=1;for(let x=1;x<=n;x++){if(x<n&&M[y][x]===M[y][x-1])run++;else{if(run>=5)p+=run-2;run=1;}}}
+  for(let x=0;x<n;x++){let run=1;for(let y=1;y<=n;y++){if(y<n&&M[y][x]===M[y-1][x])run++;else{if(run>=5)p+=run-2;run=1;}}}
+  for(let y=0;y<n-1;y++)for(let x=0;x<n-1;x++){const c=M[y][x];if(c===M[y][x+1]&&c===M[y+1][x]&&c===M[y+1][x+1])p+=3;}
+  const pat=[1,0,1,1,1,0,1,0,0,0,0],pr=pat.slice().reverse();
+  const chk=get=>{for(let a=0;a<n;a++)for(let b=0;b+11<=n;b++){let m1=true,m2=true;for(let k=0;k<11&&(m1||m2);k++){const v=get(a,b+k)?1:0;if(v!==pat[k])m1=false;if(v!==pr[k])m2=false;}if(m1)p+=40;if(m2)p+=40;}};
+  chk((a,b)=>M[a][b]);chk((a,b)=>M[b][a]);
+  let dark=0;for(let y=0;y<n;y++)for(let x=0;x<n;x++)if(M[y][x])dark++;
+  const tot=n*n;p+=Math.max(0,Math.ceil(Math.abs(dark*20-tot*10)/tot)-1)*10;
+  return p;
+}
+function qrMatrix(text){
+  const bytes=[...new TextEncoder().encode(String(text))];
+  let ver=0;for(let v=1;v<=40;v++){if(4+(v<=9?8:16)+bytes.length*8<=qrDataCw(v)*8){ver=v;break;}}
+  if(!ver)return null;
+  const bits=[];const put=(val,len)=>{for(let i=len-1;i>=0;i--)bits.push((val>>>i)&1);};
+  put(4,4);put(bytes.length,ver<=9?8:16);bytes.forEach(b=>put(b,8));
+  const capBits=qrDataCw(ver)*8;put(0,Math.min(4,capBits-bits.length));put(0,(8-bits.length%8)%8);
+  for(let pad=0xEC;bits.length<capBits;pad^=0xEC^0x11)put(pad,8);
+  const data=[];for(let i=0;i<bits.length;i+=8){let b=0;for(let j=0;j<8;j++)b=(b<<1)|bits[i+j];data.push(b);}
+  const nb=QR_BLK_M[ver],el=QR_ECC_M[ver],raw=Math.floor(qrRawModules(ver)/8),nShort=nb-raw%nb,shortLen=Math.floor(raw/nb);
+  const div=rsDivisor(el);const blocks=[];
+  for(let i=0,k=0;i<nb;i++){const dat=data.slice(k,k+shortLen-el+(i<nShort?0:1));k+=dat.length;const ecc=rsRemainder(dat,div);if(i<nShort)dat.push(0);blocks.push(dat.concat(ecc));}
+  const cw=[];for(let i=0;i<blocks[0].length;i++)blocks.forEach((b,j)=>{if(i!==shortLen-el||j>=nShort)cw.push(b[i]);});
+  const size=ver*4+17;const M=[],F=[];for(let i=0;i<size;i++){M.push(new Array(size).fill(false));F.push(new Array(size).fill(false));}
+  const set=(x,y,d)=>{M[y][x]=d;F[y][x]=true;};
+  for(let i=0;i<size;i++){set(6,i,i%2===0);set(i,6,i%2===0);}
+  const finder=(cx,cy)=>{for(let dy=-4;dy<=4;dy++)for(let dx=-4;dx<=4;dx++){const d=Math.max(Math.abs(dx),Math.abs(dy)),x=cx+dx,y=cy+dy;if(x>=0&&x<size&&y>=0&&y<size)set(x,y,d!==2&&d!==4);}};
+  finder(3,3);finder(size-4,3);finder(3,size-4);
+  const al=[];if(ver>1){const na=Math.floor(ver/7)+2;const step=ver===32?26:Math.ceil((ver*4+4)/(na*2-2))*2;al.push(6);for(let pos=size-7;al.length<na;pos-=step)al.splice(1,0,pos);}
+  al.forEach((ax,i)=>al.forEach((ay,j)=>{if((i===0&&j===0)||(i===0&&j===al.length-1)||(i===al.length-1&&j===0))return;for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++)set(ax+dx,ay+dy,Math.max(Math.abs(dx),Math.abs(dy))!==1);}));
+  const fmt=mask=>{const d=mask;let rem=d;for(let i=0;i<10;i++)rem=(rem<<1)^((rem>>>9)*0x537);const b=((d<<10)|rem)^0x5412;const g=i=>((b>>>i)&1)!==0;
+    for(let i=0;i<=5;i++)set(8,i,g(i));set(8,7,g(6));set(8,8,g(7));set(7,8,g(8));for(let i=9;i<15;i++)set(14-i,8,g(i));
+    for(let i=0;i<8;i++)set(size-1-i,8,g(i));for(let i=8;i<15;i++)set(8,size-15+i,g(i));set(8,size-8,true);};
+  fmt(0);
+  if(ver>=7){let rem=ver;for(let i=0;i<12;i++)rem=(rem<<1)^((rem>>>11)*0x1F25);const b=(ver<<12)|rem;for(let i=0;i<18;i++){const bit=((b>>>i)&1)!==0;const a=size-11+i%3,c=Math.floor(i/3);set(a,c,bit);set(c,a,bit);}}
+  let bi=0;for(let right=size-1;right>=1;right-=2){if(right===6)right=5;for(let vert=0;vert<size;vert++)for(let j=0;j<2;j++){const x=right-j,up=((right+1)&2)===0,y=up?size-1-vert:vert;if(!F[y][x]&&bi<cw.length*8){M[y][x]=((cw[bi>>>3]>>>(7-(bi&7)))&1)!==0;bi++;}}}
+  const MF=[(x,y)=>(x+y)%2===0,(x,y)=>y%2===0,(x,y)=>x%3===0,(x,y)=>(x+y)%3===0,(x,y)=>(Math.floor(x/3)+Math.floor(y/2))%2===0,(x,y)=>x*y%2+x*y%3===0,(x,y)=>(x*y%2+x*y%3)%2===0,(x,y)=>((x+y)%2+x*y%3)%2===0];
+  const applyMask=k=>{for(let y=0;y<size;y++)for(let x=0;x<size;x++)if(!F[y][x]&&MF[k](x,y))M[y][x]=!M[y][x];};
+  let best=0,bestP=Infinity;for(let k=0;k<8;k++){applyMask(k);fmt(k);const pen=qrPenalty(M,size);if(pen<bestP){bestP=pen;best=k;}applyMask(k);}
+  applyMask(best);fmt(best);
+  return M;
+}
+function qrSvg(text,px,label){
+  const m=qrMatrix(text);if(!m)return '';const n=m.length,q=4,N=n+2*q;let d='';
+  for(let r=0;r<n;r++){let c=0;while(c<n){if(!m[r][c]){c++;continue;}let e=c;while(e<n&&m[r][e])e++;d+='M'+(c+q)+' '+(r+q)+'h'+(e-c)+'v1h-'+(e-c)+'z';c=e;}}
+  return '<svg xmlns="http://www.w3.org/2000/svg" class="qr" viewBox="0 0 '+N+' '+N+'" width="'+(+px||120)+'" height="'+(+px||120)+'" role="img" aria-label="'+escape(label||'QR code')+'" shape-rendering="crispEdges"><rect width="'+N+'" height="'+N+'" fill="#fff"/><path fill="#000" d="'+d+'"/></svg>';
+}
+function payNowHtml(link,label){
+  const u=strictPayUrl(link);if(!u)return '';
+  return '<div class="paynow"><div><a class="paybtn" href="'+escape(u)+'" target="_blank" rel="noopener noreferrer">Pay now</a><div class="paysub">Pay online with '+escape(label)+'. Or scan the QR code with your phone camera.</div></div><figure class="payqr">'+qrSvg(u,120,'QR code: scan to pay with '+label)+'<figcaption>Scan to pay</figcaption></figure></div>';
+}
+
+// ---------- PDF: filled colour box, clickable link areas, vector QR ----------
+PDFDoc.prototype.fillRgb=function(x,y,w,h,c){this.cur.push(c.map(v=>(+v).toFixed(3)).join(' ')+` rg ${x.toFixed(2)} ${(this.H-y-h).toFixed(2)} ${w.toFixed(2)} ${h.toFixed(2)} re f 0 g`);};
+PDFDoc.prototype.link=function(x,y,w,h,url){const u=strictPayUrl(url);if(!u)return;(this.cur.links=this.cur.links||[]).push({r:[x,this.H-y-h,x+w,this.H-y],u});};
+PDFDoc.prototype.qr=function(x,y,size,m){
+  const n=m.length,q=4,cell=size/(n+2*q);let ops=`q 1 g ${x.toFixed(2)} ${(this.H-y-size).toFixed(2)} ${size.toFixed(2)} ${size.toFixed(2)} re f 0 g`;
+  for(let r=0;r<n;r++){let c=0;while(c<n){if(!m[r][c]){c++;continue;}let e=c;while(e<n&&m[r][e])e++;ops+=` ${(x+(q+c)*cell).toFixed(3)} ${(this.H-y-(q+r+1)*cell).toFixed(3)} ${((e-c)*cell).toFixed(3)} ${(cell+0.02).toFixed(3)} re`;c=e;}}
+  this.cur.push(ops+' f Q');
+};
+function pdfStr(s){return String(s).replace(/[\\()]/g,'\\$&');}
+function pdfHardWrap(s,maxW,size){const out=[];let line='';for(const ch of String(s)){if(line&&pdfTextW(line+ch,size)>maxW){out.push(line);line=ch;}else line+=ch;}if(line)out.push(line);return out;}
+function pdfPayNow(doc,inv,link,L,R,y,q){
+  const label=providerLabel(link,inv.payProvider||settings.payProvider);
+  if(q||!(remaining(inv)>0)){doc.text(L,y,'Pay online with '+label+':',{size:10,bold:true});y+=13;pdfHardWrap(link,480,9).forEach(t=>{doc.text(L,y,t,{size:9});doc.link(L,y-9,pdfTextW(t,9),12,link);y+=11;});return y+6;}
+  const QS=96;if(y>doc.H-80-QS){doc.addPage();y=60;}
+  const top=y,qx=R-QS;
+  doc.fillRgb(L,top,120,26,[0.122,0.302,0.227]);
+  doc.text(L+60-pdfTextW('Pay now',12,true)/2,top+17.5,'Pay now',{size:12,bold:true,gray:1});
+  doc.link(L,top,120,26,link);
+  let ty=top+42;doc.text(L,ty,'Pay online with '+label+':',{size:10,bold:true});ty+=13;
+  pdfHardWrap(link,qx-L-20,9).forEach(t=>{doc.text(L,ty,t,{size:9});doc.link(L,ty-9,pdfTextW(t,9),12,link);ty+=11;});
+  ty+=2;doc.text(L,ty,'Or scan the QR code with your phone camera.',{size:8,gray:0.35});ty+=10;
+  const m=qrMatrix(link);
+  if(m){doc.qr(qx,top-6,QS,m);doc.text(qx+QS/2-pdfTextW('Scan to pay',8)/2,top+QS+4,'Scan to pay',{size:8,gray:0.35});}
+  return Math.max(ty,top+QS+12)+8;
+}
+
+// ---------- Settings: live check + QR preview of the payment link ----------
+function renderPayLinkPreview(){
+  const el=$('payLinkPreview'),inp=$('setPayLink');if(!el||!inp)return;
+  const v=inp.value.trim();const ok=strictPayUrl(v);const prob=v&&!ok?payLinkProblem(v):'';
+  if($('payLinkErr'))$('payLinkErr').textContent=prob;
+  inp.setAttribute('aria-invalid',prob?'true':'false');
+  if(!ok){el.innerHTML=v?'':'<span class="reason">No payment link set. Invoices show your bank details only.</span>';return;}
+  const label=providerLabel(ok,$('setPayProvider')?$('setPayProvider').value:settings.payProvider);
+  el.innerHTML='<div class="payprev">'+qrSvg(ok,120,'QR code preview for your payment link')+'<div class="reason">Clients see a <strong>Pay now</strong> button and this QR code ('+escape(label)+') on every invoice, PDF and reminder. <a href="'+escape(ok)+'" target="_blank" rel="noopener noreferrer">Test the link</a>'+(ok!==v?'<br>Saved as: '+escape(ok):'')+'</div></div>';
+}
+
+// ---------- SA bank statement presets (CSV) ----------
+const BANKS={fnb:'FNB',absa:'Absa',standard:'Standard Bank',nedbank:'Nedbank',capitec:'Capitec'};
+const MONTHS={jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,oct:10,nov:11,dec:12};
+function okDate(y,mo,d){const s=String(y)+'-'+String(mo).padStart(2,'0')+'-'+String(d).padStart(2,'0');return isISODate(s)?s:null;}
+function bankDate(v){
+  v=String(v||'').trim();let m;
+  if((m=v.match(/^(\d{4})(\d{2})(\d{2})$/)))return okDate(m[1],m[2],m[3]);
+  if((m=v.match(/^(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})(?:[ T]\d{1,2}:\d{2}(?::\d{2})?)?$/)))return okDate(m[1],m[2],m[3]);
+  if((m=v.match(/^(\d{1,2})[-\/.](\d{1,2})[-\/.](\d{4})$/)))return okDate(m[3],m[2],m[1]);
+  if((m=v.match(/^(\d{1,2})[ \-]?([A-Za-z]{3})[A-Za-z]*[ \-]?(\d{4})$/))&&MONTHS[m[2].toLowerCase()])return okDate(m[3],MONTHS[m[2].toLowerCase()],m[1]);
+  return null;
+}
+function bankAmount(v){const t=String(v??'').replace(/[\s\u00a0]/g,'').replace(/^R/i,'');if(!/\d/.test(t))return NaN;return csvAmount(t);}
+const hnorm=s=>String(s||'').toLowerCase().replace(/[^a-z]/g,'');
+const BANK_SIGS=[
+  {id:'capitec',head:['nr','account','postingdate','transactiondate','description'],row:(c,H)=>{const inA=bankAmount(c[H.moneyin]),outA=bankAmount(c[H.moneyout]);return {date:c[H.transactiondate]||c[H.postingdate],amount:Number.isFinite(inA)&&inA>0?inA:(Number.isFinite(outA)?-Math.abs(outA):(Number.isFinite(inA)?inA:NaN)),desc:[c[H.description],c[H.originaldescription]&&c[H.originaldescription]!==c[H.description]?c[H.originaldescription]:''].filter(Boolean).join(' · ')};}},
+  {id:'nedbank',head:['transactiondate','description','debit','credit','balance'],row:(c,H)=>{const cr=bankAmount(c[H.credit]),dr=bankAmount(c[H.debit]);return {date:c[H.transactiondate],amount:Number.isFinite(cr)&&cr>0?cr:(Number.isFinite(dr)?-Math.abs(dr):NaN),desc:c[H.description]};}},
+  {id:'absa',head:['transactiondate','transactiondescription','amount','balance'],row:(c,H)=>({date:c[H.transactiondate],amount:bankAmount(c[H.amount]),desc:c[H.transactiondescription]})},
+  {id:'fnb',head:['date','amount','balance','description'],row:(c,H)=>({date:c[H.date],amount:bankAmount(c[H.amount]),desc:c[H.description]})}
+];
+function parseBankCsv(text,force){
+  const lines=String(text||'').replace(/^\uFEFF/,'').split(/\r?\n/).filter(l=>l.trim());
+  if(!lines.length)return null;
+  const out={rows:[],bad:0,debits:0};
+  const isStd=lines.some(l=>/^\s*"?HIST"?\s*,/i.test(l));
+  if((force==='standard')||(!force&&isStd)){
+    if(!isStd)return null;
+    out.id='standard';
+    lines.filter(l=>/^\s*"?HIST"?\s*,/i.test(l)).forEach(l=>{const c=splitCsvLine(l,',');out.rows.push({date:c[1],amount:bankAmount(c[3]),desc:[c[4],c[5]].filter(x=>x&&x.trim()).join(' · ')});});
+  }else{
+    let sig=null,hi=-1;
+    for(const s of BANK_SIGS){if(force&&s.id!==force)continue;for(let k=0;k<Math.min(lines.length,30);k++){const h=splitCsvLine(lines[k],',').map(hnorm);if(s.head.every((w,i)=>h[i]===w)){sig=s;hi=k;break;}}if(sig)break;}
+    if(!sig)return null;
+    out.id=sig.id;const H={};splitCsvLine(lines[hi],',').map(hnorm).forEach((h,i)=>{if(!(h in H))H[h]=i;});
+    lines.slice(hi+1).forEach(l=>{const c=splitCsvLine(l,',');if(c.length<sig.head.length-1){out.bad++;return;}out.rows.push(sig.row(c,H));});
+  }
+  out.label=BANKS[out.id];
+  out.rows=out.rows.map(r=>{const date=bankDate(r.date);const amount=r.amount;
+    if(!date||!Number.isFinite(amount)){out.bad++;return null;}
+    if(amount<=0){out.debits++;return null;}
+    return {date,amount,desc:String(r.desc||'').replace(/\s+/g,' ').trim().slice(0,300)};}).filter(Boolean);
+  return out;
+}
+const compactRef=s=>String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+const CLIENT_STOP=new Set(['PTY','LTD','INC','THE','AND','LLC','CO','CC','GROUP','HOLDINGS','TRADING','SERVICES']);
+function clientTokens(name){return String(name||'').toUpperCase().split(/[^A-Z0-9]+/).filter(t=>t.length>=3&&!CLIENT_STOP.has(t));}
+function bankMatchScore(tx,inv){
+  const c=curOf(inv),rem=Math.max(0,remaining(inv)),tot=total(inv);const reasons=[];let s=0;
+  const D=compactRef(tx.desc),R=compactRef(inv.ref);
+  if(R.length>=3&&D.includes(R)){s+=60;reasons.push('invoice number '+inv.ref+' in the bank reference');}
+  else{const dg=String(inv.ref||'').replace(/\D/g,'').replace(/^0+/,'');if(dg.length>=3&&new RegExp('(^|\\D)0*'+dg+'(\\D|$)').test(String(tx.desc||''))){s+=25;reasons.push('invoice digits '+dg+' in the bank reference');}}
+  const am=toMinor(tx.amount,c);
+  if(rem>0&&am===toMinor(rem,c)){s+=40;reasons.push('exact balance due');}
+  else if(am===toMinor(tot,c)){s+=30;reasons.push('exact invoice total');}
+  else{const pctTol=(settings.tolPct==null||settings.tolPct===''?10:+settings.tolPct)/100,absTol=settings.tolAbs==null||settings.tolAbs===''?5:+settings.tolAbs;const diff=Math.abs(rem-tx.amount);if(rem>0&&(diff/rem<=pctTol||diff<=absTol)){s+=15;reasons.push('amount close ('+matchLabel(tx,inv)+')');}}
+  const toks=clientTokens(inv.client),hits=toks.filter(t=>D.includes(t));
+  if(toks.length&&hits.length===toks.length){s+=20;reasons.push('client name');}else if(hits.length){s+=10;reasons.push('part of the client name');}
+  if(isISODate(inv.issued)&&dayDiff(inv.issued,tx.date)<-3){s-=25;reasons.push('paid before the invoice date');}
+  else if(isISODate(inv.due)&&dayDiff(inv.due,tx.date)<=120){s+=5;reasons.push('date fits');}
+  return {score:s,reasons};
+}
+function autoMatchBank(rows,cur){
+  const open=invoices.filter(i=>isOpen(i)&&curOf(i)===cur);const pairs=[];
+  rows.forEach((tx,ti)=>open.forEach(inv=>{const m=bankMatchScore(tx,inv);if(m.score>=50)pairs.push({ti,inv,score:m.score,reasons:m.reasons});}));
+  pairs.sort((a,b)=>b.score-a.score||a.ti-b.ti);
+  const usedT=new Set(),usedI=new Set(),props=[];
+  pairs.forEach(p=>{if(usedT.has(p.ti)||usedI.has(p.inv.id))return;usedT.add(p.ti);usedI.add(p.inv.id);props.push({ti:p.ti,invId:p.inv.id,score:p.score,reasons:p.reasons,decision:null});});
+  props.sort((a,b)=>a.ti-b.ti);return props;
+}
+var bankReview=null;
+function importBankOrCsv(text){
+  const want=($('csvBank')&&$('csvBank').value)||'auto';
+  if(want==='generic'){importCsv(text);return;}
+  const p=parseBankCsv(text,want==='auto'?null:want);
+  if(!p){if(want!=='auto'){toast('This file does not look like a '+BANKS[want]+' statement export. Nothing was imported.');return;}importCsv(text);return;}
+  const cur=($('csvCur')&&$('csvCur').value)||defCur();const rows=[];let dups=0;
+  p.rows.forEach(r=>{const t={id:Date.now()+Math.random(),date:r.date,amount:fromMinor(toMinor(r.amount,cur),cur),desc:r.desc,matched:false,currency:cur,bank:p.label};
+    const same=x=>x.date===t.date&&curOf(x)===cur&&Math.abs(x.amount-t.amount)<0.01&&(x.desc||'')===(t.desc||'');
+    if(transactions.some(same)||rows.some(same))dups++;else rows.push(t);});
+  if(!rows.length){toast(p.label+' statement: no new incoming payments ('+plural(dups,'duplicate')+', '+plural(p.debits,'debit')+' ignored'+(p.bad?', '+plural(p.bad,'unreadable row'):'')+'). Nothing was changed.');return;}
+  bankReview={id:p.id,label:p.label,cur,rows,dups,bad:p.bad,debits:p.debits,props:autoMatchBank(rows,cur)};
+  renderBankReview();$('bankModal').classList.add('show');
+}
+function renderBankReview(){
+  const R=bankReview;if(!R||!$('bankList'))return;
+  $('bankSummary').innerHTML='<strong>'+escape(R.label)+'</strong> statement detected ('+escape(R.cur)+'). '+plural(R.rows.length,'new incoming payment')+' to import'+(R.dups?', '+plural(R.dups,'duplicate')+' already imported (skipped)':'')+(R.debits?', '+plural(R.debits,'debit')+' ignored':'')+(R.bad?', '+plural(R.bad,'unreadable row')+' skipped':'')+'. Nothing changes until you press Import.';
+  const matched=new Set(R.props.map(p=>p.ti));
+  $('bankList').innerHTML=R.props.length?R.props.map((p,k)=>{const t=R.rows[p.ti],inv=invoices.find(x=>x.id===p.invId);if(!inv)return '';
+    return `<fieldset class="bmrow" data-k="${escape(k)}"><legend>Match ${k+1}: ${escape(t.date)} · ${money(t.amount,R.cur)} → ${escape(inv.ref)}</legend>
+      <div class="reason">Bank description: ${escape(t.desc||'—')}</div>
+      <div>Invoice <strong>${escape(inv.ref)}</strong> · ${escape(inv.client)} · balance ${money(Math.max(0,remaining(inv)),curOf(inv))} · due ${escape(inv.due||'—')}</div>
+      <div class="reason">Why: ${escape(p.reasons.join(', '))} · ${p.score>=80?'high':'medium'} confidence</div>
+      <div class="bmchoice"><label><input type="radio" name="bm${k}" value="accept" data-bm="${escape(k)}"${p.decision==='accept'?' checked':''}> Accept — record this payment</label> <label><input type="radio" name="bm${k}" value="reject" data-bm="${escape(k)}"${p.decision==='reject'?' checked':''}> Reject</label></div></fieldset>`;}).join(''):'<p class="reason">No confident matches. The payments are imported unmatched; match them by hand in the list below the import button.</p>';
+  const un=R.rows.filter((t,i)=>!matched.has(i));
+  $('bankUnmatched').innerHTML=un.length?`<details><summary>${plural(un.length,'payment')} without a confident match (imported for manual matching)</summary><ul class="reason">${un.map(t=>`<li>${escape(t.date)} · ${money(t.amount,R.cur)} · ${escape(t.desc||'')}</li>`).join('')}</ul></details>`:'';
+  updateBankApply();
+}
+function updateBankApply(){
+  const R=bankReview;if(!R)return;const left=R.props.filter(p=>!p.decision).length,acc=R.props.filter(p=>p.decision==='accept').length;
+  $('bankApply').disabled=left>0;
+  $('bankApply').textContent='Import '+plural(R.rows.length,'transaction')+(acc?' and record '+plural(acc,'payment'):'');
+  $('bankLeft').textContent=left?'Accept or reject each match first ('+left+' left).':(R.props.length?acc+' accepted, '+(R.props.length-acc)+' rejected. Ready to import.':'Ready to import.');
+}
+function setAllBank(dec){if(!bankReview)return;bankReview.props.forEach(p=>p.decision=dec);renderBankReview();}
+function applyBankReview(){
+  const R=bankReview;if(!R)return;
+  if(R.props.some(p=>!p.decision)){updateBankApply();toast('Accept or reject each match first');return;}
+  const before=JSON.stringify(payload());let rec=0;
+  R.rows.forEach(t=>transactions.push(t));
+  R.props.forEach(p=>{if(p.decision!=='accept')return;const inv=invoices.find(x=>x.id===p.invId);const t=R.rows[p.ti];if(!inv||!t||t.matched)return;
+    inv.payments=inv.payments||[];inv.payments.push({date:t.date,amount:t.amount,note:'Bank import ('+R.label+')',method:'Bank transfer',ref:String(t.desc||'').slice(0,140)});
+    inv.lastContact=today();t.matched=true;t.matchedTo=inv.ref;rec++;});
+  undoStack.push({label:'Bank import',before});if(undoStack.length>20)undoStack.shift();
+  log('bank-import',R.label+' statement: imported '+plural(R.rows.length,'transaction')+', recorded '+plural(rec,'payment')+', '+plural(R.props.length-rec,'match')+' rejected, skipped '+plural(R.dups,'duplicate'));
+  bump('bankImport');if(rec){bump('payment',rec);keyMoment('pay');}
+  bankReview=null;save();close();refresh();showUndo('Bank import');
+  toast('Imported '+plural(R.rows.length,'transaction')+(rec?', recorded '+plural(rec,'payment'):'')+(R.dups?', skipped '+plural(R.dups,'duplicate'):''));
+}
+function cancelBankReview(){const had=!!bankReview;bankReview=null;$('bankModal').classList.remove('show');if(had)toast('Bank import cancelled. Nothing was changed.');}
+
+// ---------- safer storage: persistent storage request + configurable backup reminder ----------
+var persistState='unknown';
+function storageApi(){try{return (navigator.storage&&typeof navigator.storage.persist==='function')?navigator.storage:null;}catch{return null;}}
+async function requestPersist(){
+  const s=storageApi();if(!s){persistState='unsupported';renderPersistStatus();return persistState;}
+  try{let ok=false;if(typeof s.persisted==='function')ok=await s.persisted();if(!ok)ok=await s.persist();persistState=ok?'granted':'denied';}
+  catch{persistState='unavailable';}
+  renderPersistStatus();return persistState;
+}
+async function checkPersist(){
+  const s=storageApi();if(!s){persistState='unsupported';renderPersistStatus();return;}
+  try{persistState=(typeof s.persisted==='function'&&await s.persisted())?'granted':'not-yet';}catch{persistState='unavailable';}
+  renderPersistStatus();
+}
+function maybePersist(){if(settings.persistAsked||!invoices.length)return;settings.persistAsked=Date.now();try{requestPersist();}catch{}}
+function renderPersistStatus(){
+  const el=$('persistStatus');if(!el)return;
+  const t={granted:'Storage protection is ON: this browser has agreed not to clear Paper Ledger Desk data on its own. Clearing browser data by hand still removes it, so keep exporting backups.',
+    denied:'Storage protection was not granted. The browser may clear data when the device runs low on space. Export backups regularly (or install the app, which often allows protection).',
+    'not-yet':'Storage protection is not on yet. Ask the browser to keep your data, and export backups regularly.',
+    unsupported:'This browser cannot protect stored data. Export backups regularly.',
+    unavailable:'Storage protection could not be checked here. Export backups regularly.',
+    unknown:'Checking storage protection…'}[persistState]||'';
+  el.textContent=t;
+  if($('persistBtn'))$('persistBtn').hidden=persistState==='granted'||persistState==='unsupported';
+}
+function backupEveryDays(){const v=settings.backupEvery;if(v===undefined||v===null||v==='')return 7;const n=Math.round(+v);return Number.isFinite(n)?Math.max(0,Math.min(365,n)):7;}
+const BACKUP_EVERY=[0,1,3,7,14,30];
+function everyOpts(cur){const list=BACKUP_EVERY.includes(cur)?BACKUP_EVERY:BACKUP_EVERY.concat([cur]).sort((a,b)=>a-b);return list.map(n=>`<option value="${n}"${n===cur?' selected':''}>${n?plural(n,'day'):'Never (off)'}</option>`).join('');}
+function fmtDate(iso){const d=new Date(iso);return isNaN(d)?'':d.toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'});}
+function setBackupEvery(n){n=Math.round(+n);if(!Number.isFinite(n)||n<0||n>365)return;settings.backupEvery=n;settings.nagSnooze=0;log('settings','Backup reminder '+(n?'every '+plural(n,'day'):'turned off'));save();refresh();renderBackupEvery();toast(n?'I will remind you to back up every '+plural(n,'day'):'Backup reminder turned off');}
+function renderBackupEvery(){
+  const sel=$('backupEvery');if(sel){const cur=backupEveryDays();sel.innerHTML=everyOpts(cur);}
+  const el=$('backupStatus');if(!el)return;
+  const every=backupEveryDays();const last=settings.lastBackup;const days=last?Math.floor((Date.now()-new Date(last))/86400000):null;
+  el.textContent=(last?'Last backup file: '+fmtDate(last)+' ('+(days<=0?'today':plural(days,'day')+' ago')+').':'No backup file exported yet.')+' '+(every?(last&&days<every?'Next reminder in '+plural(every-days,'day')+'.':'A reminder shows on the Today page.'):'Backup reminders are off.');
+}
+function renderBackupNag(){
+  const el=$('backupNag');
+  if(el){
+    const every=backupEveryDays();const base=settings.lastBackup||settings.createdAt;
+    const days=base?Math.floor((Date.now()-new Date(base))/86400000):0;
+    const snoozed=settings.nagSnooze&&Date.now()<settings.nagSnooze;
+    if(!every||!invoices.length||!base||days<every||snoozed){el.innerHTML='';el.style.display='none';}
+    else{
+      el.style.display='block';
+      el.innerHTML=`<div class="nag"><strong>Back up your data.</strong> ${settings.lastBackup?'Last exported '+plural(days,'day')+' ago (last backup file: '+escape(fmtDate(settings.lastBackup))+').':'No backup exported yet ('+plural(days,'day')+' of data).'} Browser storage can be wiped — export a backup file and keep it on your phone, computer or cloud drive. <button class="btn small" id="nagExport">Export now</button> <button class="btn small secondary" id="nagLater">Remind me tomorrow</button> <label class="nagevery">Remind me every <select id="nagEvery">${everyOpts(every)}</select></label></div>`;
+      $('nagExport').onclick=exportBackup;
+      $('nagLater').onclick=()=>{settings.nagSnooze=Date.now()+86400000;save();renderBackupNag();};
+      $('nagEvery').onchange=e=>setBackupEvery(e.target.value);
+    }
+  }
+  renderNudge();
+}
+
+// ---------- effortless feedback: one-time rating, thumbs after key moments, local usage counts ----------
+const USAGE=[['pdf','usePdf','PDFs downloaded'],['send','useSend','Invoices or statements opened in email/WhatsApp'],['reminder','useReminder','Reminders opened'],['print','usePrint','Invoice print views opened'],['payment','usePayment','Payments recorded'],['bankImport','useBankImport','SA bank statement imports'],['csvImport','useCsvImport','Other CSV statement imports'],['backup','useBackup','Backup files exported']];
+function bump(k,n){const u=USAGE.find(x=>x[0]===k);if(!u)return;const v=Math.floor(+settings[u[1]]);settings[u[1]]=(Number.isFinite(v)&&v>=0?v:0)+(n||1);}
+function usageText(){return USAGE.map(u=>{const v=Math.floor(+settings[u[1]]);return u[2]+': '+(Number.isFinite(v)&&v>=0?v:0);}).join('\n');}
+function renderUsageList(){if($('fbUsageList'))$('fbUsageList').textContent=usageText();}
+function sentInvoiceCount(){return invoices.filter(i=>i.type!=='quote'&&(i.contacts||[]).some(c=>/^Invoice sent via /.test(String((c&&c.note)||'')))).length;}
+var thumbNow=null;
+const THUMB_Q={pdf:'Was making that PDF easy?',pay:'Was recording that payment easy?'};
+function keyMoment(kind){const f=kind==='pdf'?'fbThumbPdf':'fbThumbPay';if(settings[f])return;settings[f]=true;thumbNow=kind;renderNudge();}
+function renderNudge(){
+  const el=$('nudge');if(!el)return;let h='';
+  if(thumbNow&&THUMB_Q[thumbNow])h+=`<div class="nudge" role="region" aria-label="Quick feedback"><span>${THUMB_Q[thumbNow]}</span> <button type="button" class="btn small secondary" data-thumb="up"><span aria-hidden="true">👍</span> Yes</button> <button type="button" class="btn small secondary" data-thumb="down"><span aria-hidden="true">👎</span> Not really</button> <button type="button" class="btn small secondary" data-thumb="close">Dismiss</button></div>`;
+  if(!settings.fbRated&&sentInvoiceCount()>=3)h+=`<div class="nudge" role="region" aria-labelledby="rateTitle"><p id="rateTitle"><strong>How is Paper Ledger Desk working for you?</strong> You've sent 3 invoices — a quick rating helps us improve it.</p>
+    <fieldset class="stars"><legend class="sr-only">Your rating, 1 to 5 stars</legend>${[1,2,3,4,5].map(n=>`<label><input type="radio" name="rateStar" value="${n}"> <span aria-hidden="true">${'★'.repeat(n)}</span><span class="sr-only">${plural(n,'star')}</span></label>`).join(' ')}</fieldset>
+    <div class="ratecomment"><label for="rateComment">One-line comment (optional)</label> <input id="rateComment" maxlength="140" autocomplete="off"></div>
+    <div id="rateErr" role="alert" class="rateerr"></div>
+    <div><button type="button" class="btn small" id="rateSend">Send rating…</button> <button type="button" class="btn small secondary" id="rateDismiss">No thanks</button></div>
+    <p class="reason">Opens the feedback form. Nothing is sent until you press Send there, and invoices, clients and amounts are never included. We won't ask again.</p></div>`;
+  if(el._h===h)return;
+  const keep=el.contains(document.activeElement)?document.activeElement.id:null;
+  const star=el.querySelector('input[name=rateStar]:checked'),com=$('rateComment')?$('rateComment').value:'';
+  el._h=h;el.innerHTML=h;el.hidden=!h;
+  if(star&&el.querySelector('input[name=rateStar][value="'+star.value+'"]'))el.querySelector('input[name=rateStar][value="'+star.value+'"]').checked=true;
+  if($('rateComment'))$('rateComment').value=com;
+  if(keep&&$(keep))$(keep).focus();
+}
+function openFeedbackWith(type,msg,extra){
+  $('fbType').value=FB_TYPES.includes(type)?type:'Other';$('fbMsg').value=String(msg||'').slice(0,FB_MAX);
+  openFeedback();$('fbType').value=FB_TYPES.includes(type)?type:'Other';fbExtra=extra||null;renderFbExtraNote();requestAnimationFrame(()=>{const m=$('fbMsg');if(m){m.focus();m.setSelectionRange(m.value.length,m.value.length);}});
+}
+function nudgeClick(e){
+  const t=e.target.closest('button');if(!t)return;
+  if(t.dataset.thumb){const kind=thumbNow;thumbNow=null;renderNudge();if($('main'))$('main').focus();
+    if(t.dataset.thumb==='close'||!kind)return;const up=t.dataset.thumb==='up';
+    openFeedbackWith(up?'Praise':'Other','',{reaction:up?'up':'down',context:kind==='pdf'?'first-pdf':'first-payment'});return;}
+  if(t.id==='rateDismiss'){settings.fbRated='dismissed';save();renderNudge();if($('main'))$('main').focus();toast('Thanks. We won\u2019t ask again.');return;}
+  if(t.id==='rateSend'){const s=document.querySelector('#nudge input[name=rateStar]:checked');if(!s){$('rateErr').textContent='Choose 1 to 5 stars first (or press No thanks).';return;}
+    const n=Math.max(1,Math.min(5,Math.round(+s.value)||1));const com=String($('rateComment').value||'').replace(/\s+/g,' ').trim().slice(0,140);
+    settings.fbRated='submitted';save();renderNudge();
+    openFeedbackWith(n>=4?'Praise':'Other',com,{rating:n,context:'invoice-sent'});}
+}
+function close(){
+  if(bankReview&&$('bankModal')&&$('bankModal').classList.contains('show'))bankReview=null;
+  ['clientModal','workModal','sendModal','modal','payModal','actionModal','importModal','expModal','feedbackModal','bankModal'].forEach(m=>$(m)&&$(m).classList.remove('show'));editingPay=null;editingExp=null;editingWork=null;
+}
+// ---------- v4.3 wiring ----------
+if($('nudge'))$('nudge').addEventListener('click',nudgeClick);
+if($('setPayLink'))$('setPayLink').addEventListener('input',renderPayLinkPreview);
+if($('setPayProvider'))$('setPayProvider').addEventListener('change',renderPayLinkPreview);
+safeOn('bankApply',applyBankReview);safeOn('bankCancel',cancelBankReview);
+safeOn('bankAcceptAll',()=>setAllBank('accept'));safeOn('bankRejectAll',()=>setAllBank('reject'));
+if($('bankList'))$('bankList').addEventListener('change',e=>{const r=e.target;if(!r||r.name==null||r.dataset.bm==null||!bankReview)return;const p=bankReview.props[+r.dataset.bm];if(p){p.decision=r.value==='accept'?'accept':'reject';updateBankApply();}});
+safeOn('persistBtn',async()=>{settings.persistAsked=settings.persistAsked||Date.now();const s=await requestPersist();toast(s==='granted'?'Storage protection is on':s==='unsupported'?'This browser cannot protect stored data':'The browser did not grant storage protection');});
+if($('backupEvery'))$('backupEvery').onchange=e=>setBackupEvery(e.target.value);
+safeOn('fbUsageReset',()=>{if(!confirm('Reset the feature usage counts on this device?'))return;USAGE.forEach(u=>settings[u[1]]=0);save();renderUsageList();toast('Usage counts reset');});
+
+
+// ---------- v4.3: rating / thumbs / usage folded into the feedback message (no server schema change) ----------
+// The ONLY place that decides how the extras are sent. The first line of `message` is a structured line:
+//   Rating: 4/5 | Context: invoice-sent | Usage: pdf=3, send=2, …
+// (thumbs are "Rating: thumbs-up" / "Rating: thumbs-down"), followed by the user's own text. Parts that do not apply are
+// left out; Usage only when "Include my feature usage counts" is ticked. When the server gets dedicated fields, change
+// fbFold() to return them instead of folding them into the message.
+var fbExtra=null;
+const FB_CONTEXTS=['invoice-sent','first-pdf','first-payment'];
+function fbUsageLine(){return USAGE.map(u=>{const v=Math.floor(+settings[u[1]]);return u[0]+'='+(Number.isFinite(v)&&v>=0?v:0);}).join(', ');}
+function fbExtraLine(){
+  const x=fbExtra||{},parts=[];
+  const n=Math.round(+x.rating);if(n>=1&&n<=5)parts.push('Rating: '+n+'/5');
+  else if(x.reaction==='up'||x.reaction==='down')parts.push('Rating: thumbs-'+x.reaction);
+  if(FB_CONTEXTS.includes(x.context))parts.push('Context: '+x.context);
+  if($('fbUsage')&&$('fbUsage').checked)parts.push('Usage: '+fbUsageLine());
+  return parts.join(' | ');
+}
+function fbFold(f){
+  const x=fbExtra||{};const line=fbExtraLine();const n=Math.round(+x.rating);
+  const isQuick=(n>=1&&n<=5)||x.reaction==='up'||x.reaction==='down';
+  const category=isQuick?((n>=4&&n<=5)||x.reaction==='up'?'Praise':'Other'):fbCategory(f.type);
+  const text=(f.name?'Name: '+f.name+'\n\n':'')+(f.msg||'');
+  return {message:line?line+(text?'\n'+text:''):text,category};
+}
+function fbFoldMessage(msg){const line=fbExtraLine();return line?line+(msg?'\n'+msg:''):msg;}
+function fbPayload(f){
+  const fo=fbFold(f);const p={message:fo.message,category:fo.category,app_version:APP_VERSION,website:''};
+  if(f.email)p.email=f.email;
+  if($('fbInfo')&&$('fbInfo').checked){p.include_info=true;p.page=location.pathname;}
+  return fbClean(p);
+}
+function fbSnippet(f){const t=f.msg||fbExtraLine();return t.slice(0,80)+(t.length>80?'…':'');}
+function renderFbExtraNote(){const el=$('fbExtraNote');if(!el)return;const line=fbExtraLine();el.hidden=!line;el.textContent=line?'Also sent with your message: '+line:'';}
+if($('fbUsage'))$('fbUsage').addEventListener('change',renderFbExtraNote);
+
 // Reliable startup
 window._reachedEnd = true;
 setTimeout(function(){
@@ -2954,7 +3385,7 @@ setTimeout(function(){
   try{
     load();
     refresh();
-    setTimeout(()=>{fbMigrateQueue();flushFeedbackQueue('open');},1500);
+    checkPersist();renderBackupEvery();setTimeout(()=>{fbMigrateQueue();flushFeedbackQueue('open');},1500);
     window._readyAt=performance.now();
   }catch(e){
     window._startupError = e.message;

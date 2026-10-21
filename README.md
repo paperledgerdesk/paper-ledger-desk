@@ -94,6 +94,12 @@ Praise or Other), an optional reply email, the app version and, only if the user
 If sending fails or the device is offline, the note is kept on the device and retried automatically; emailing it
 by hand is offered as a last resort.
 
+Quick ratings (1–5 stars after the 3rd invoice is sent) and thumbs up/down (after the first PDF and the first
+recorded payment) open this same dialog. Until the server has dedicated fields, they are folded into the first line
+of `message`, e.g. `Rating: 4/5 | Context: invoice-sent | Usage: pdf=3, send=2, …` (Usage only if the user ticks
+"Include my feature usage counts"), with the user's own text on the following lines. Category is Praise for a 4–5
+rating or a thumbs up and Other otherwise. The folding lives in one function, `fbFold()`, in `app/index.html`.
+
 - The endpoint is `FEEDBACK_ENDPOINT` in `config.js`. The app is a single offline file and cannot read
   `config.js`, so `app/index.html` has the same value in its own `FEEDBACK_ENDPOINT` constant, and its
   Content-Security-Policy allows `connect-src https://zovatyzvqmszrgoacpum.supabase.co` only. Change all three together.
