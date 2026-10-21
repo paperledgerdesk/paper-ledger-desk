@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://paperledgerdesk.github.io/paper-ledger-desk/sitemap.xml
