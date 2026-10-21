@@ -117,6 +117,12 @@ label.chk{display:inline-flex;align-items:center;justify-content:center}
   .clientrow span[style*="float"]{float:none!important;display:block}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* v4 */
+td,th,.clientrow,.topact,.exprow,.payrow,.workrow,.reason,.card,.kpi,.safety,#preview{overflow-wrap:anywhere;word-break:break-word}
+td strong,.clientrow strong{display:inline-block;max-width:100%}
+.firstrun .btn{margin-top:0.2rem}
+@media (max-width:760px){#invoices .tablewrap table{position:relative;display:block}#invoices table thead{position:absolute;top:0;left:0;right:0;width:auto;height:2.8rem;overflow:visible;clip:auto;display:block}#invoices table thead tr{display:flex;align-items:center;padding:0.2rem 0.6rem;height:100%}#invoices table thead th{display:none}#invoices table thead th:first-child{display:flex;align-items:center;gap:0.4rem;border:0;padding:0}#invoices table thead th:first-child::after{content:"Select all";font-size:0.8rem;font-weight:normal}#invoices table tbody{display:block;padding-top:2.8rem}}
 </style>
 </head>
 <body>
@@ -342,18 +348,18 @@ label.chk{display:inline-flex;align-items:center;justify-content:center}
       <div><label style="font-size:0.6rem;color:var(--soft)">Client</label><input id="mClient" list="clientList" autocomplete="off" style="width:100%"><datalist id="clientList"></datalist></div>
     </div>
     <div style="margin-top:0.25rem"><label style="font-size:0.6rem;color:var(--soft)">Title</label><input id="mProject" style="width:100%"></div>
-    <div id="lines" style="margin:0.35rem 0"></div>
-    <button class="btn secondary small" id="addLine">+ Line</button>
+    <div class="reason lineshead" style="margin-top:0.35rem">Each line: description · quantity · rate (price each) · hours (optional, multiplies the rate)</div><div id="lines" style="margin:0.2rem 0 0.35rem"></div>
+    <button class="btn secondary small" id="addLine">+ Line</button> <select id="presetPick" aria-label="Add a saved item" style="width:auto;max-width:60%"></select>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.35rem;margin-top:0.35rem">
-      <div><label style="font-size:0.6rem;color:var(--soft)">Tax %</label><input type="number" id="mTax" value="0" step="0.1" style="width:100%"></div>
+      <div><label style="font-size:0.6rem;color:var(--soft)">VAT / Tax %</label><input type="number" id="mTax" value="0" step="0.1" style="width:100%"></div>
       <div><label style="font-size:0.6rem;color:var(--soft)">Discount %</label><input type="number" id="mDisc" value="0" step="0.1" style="width:100%"></div>
-      <div><label style="font-size:0.6rem;color:var(--soft)">Due</label><input type="date" id="mDue" style="width:100%"></div>
+      <div><label style="font-size:0.6rem;color:var(--soft)">Due</label><input type="date" id="mDue" style="width:100%"><select id="mTerms" aria-label="Payment terms" style="width:100%;margin-top:0.15rem"><option value="">Terms…</option><option value="0">Due on receipt</option><option value="7">Net 7</option><option value="14">Net 14</option><option value="30">Net 30</option><option value="60">Net 60</option></select></div>
       <div><label style="font-size:0.6rem;color:var(--soft)">Issue date</label><input type="date" id="mIssued" style="width:100%"></div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.35rem;margin-top:0.25rem">
       <div><label style="font-size:0.6rem;color:var(--soft)">Currency</label><select id="mCur" style="width:100%"><option>ZAR</option><option>USD</option><option>EUR</option><option>GBP</option><option>AUD</option><option>CAD</option></select></div>
       <div><label style="font-size:0.6rem;color:var(--soft)">Type</label><select id="mType" style="width:100%"><option value="invoice">Invoice</option><option value="quote">Quote</option></select></div>
-      <div><label style="font-size:0.6rem;color:var(--soft)">Cost</label><input type="number" id="mCost" value="0" step="0.01" style="width:100%"></div>
+      <div><label style="font-size:0.6rem;color:var(--soft)">Your cost (private)</label><input type="number" id="mCost" title="Only used for your margin; never shown to the client" value="0" step="0.01" style="width:100%"></div>
     </div>
     <div style="margin-top:0.25rem"><label style="font-size:0.6rem;color:var(--soft)">Quote expiry (quotes only)</label><input type="date" id="mExpiry" style="width:100%"></div>
     <div style="margin-top:0.25rem"><label style="font-size:0.6rem;color:var(--soft)">Next action</label><input type="date" id="mNext" style="width:100%"></div>
@@ -372,7 +378,7 @@ label.chk{display:inline-flex;align-items:center;justify-content:center}
 
 <div class="modal-backdrop" id="payModal">
   <div class="modal">
-    <div id="payTitle" style="font-family:var(--serif);margin-bottom:0.3rem">Record payment</div>
+    <div id="payTitle" style="font-family:var(--serif);margin-bottom:0.3rem">Record payment</div><div id="payBal" class="reason" style="margin-bottom:0.35rem"></div>
     <div><label style="font-size:0.6rem">Amount</label><input type="number" id="payAmt" step="0.01" style="width:100%"></div>
     <div style="margin-top:0.25rem"><label style="font-size:0.6rem">Date</label><input type="date" id="payDate" style="width:100%"></div>
     <div style="margin-top:0.25rem"><label style="font-size:0.6rem">Method</label><select id="payMethod" style="width:100%"><option>Bank transfer</option><option>Card</option><option>Cash</option><option>PayPal</option><option>Other</option></select></div>
@@ -386,7 +392,7 @@ label.chk{display:inline-flex;align-items:center;justify-content:center}
   <div class="modal">
     <div style="font-family:var(--serif);margin-bottom:0.3rem">Quick action</div>
     <select id="actionType" aria-label="Action type" style="width:100%"><option value="promise">Client promised to pay</option><option value="sent">Payment was sent</option><option value="disputed">Invoice disputed</option><option value="resolve">Resolve dispute</option><option value="clarify">Awaiting clarification</option><option value="plan">Payment plan agreed</option><option value="snooze">Snooze follow-up</option><option value="writtenoff">Mark written off</option></select>
-    <div style="margin-top:0.25rem"><input id="actionNote" placeholder="Date or note" aria-label="Date or note" style="width:100%"></div>
+    <div style="margin-top:0.25rem"><input id="actionNote" placeholder="Date (YYYY-MM-DD) or note" aria-label="Date (YYYY-MM-DD) or note" style="width:100%"></div>
     <div style="margin-top:0.4rem;display:flex;gap:0.25rem"><button class="btn" id="saveAction">Save</button><button class="btn secondary" id="cancelAction">Cancel</button></div>
   </div>
 </div>
@@ -637,8 +643,8 @@ function load(){
   loadSettingsUI();
   if($('schemaNo'))$('schemaNo').textContent=SCHEMA;
   if($('themeBtn'))$('themeBtn').textContent=settings.dark?'Light':'Dark';
-  if($('tolPct'))$('tolPct').value=settings.tolPct||10;
-  if($('tolAbs'))$('tolAbs').value=settings.tolAbs||5;
+  if($('tolPct'))$('tolPct').value=settings.tolPct??10;
+  if($('tolAbs'))$('tolAbs').value=settings.tolAbs??5;
   const incomplete=invoices.filter(i=>!i.client||!i.ref).length;
   if(incomplete) toast(plural(incomplete,'invoice')+' missing client or ref');
   if(!snapPaused)save();
@@ -663,11 +669,11 @@ function renderBriefing(){
   if(!lines.length) lines.push('No open invoices. Cash position is clear.');
   $('briefing').innerHTML=lines.map(l=>'<div>'+l+'</div>').join('');
 }
-function renderCommand(){
+function renderCommand_v3(){
   const open=invoices.filter(i=>isOpen(i));
   const todayF=open.filter(i=>(i.nextAction&&i.nextAction<=today())||daysOver(i)>0||(i.promiseDate&&i.promiseDate<=today()));
   const top=[...open].sort((a,b)=>priorityScore(b).score-priorityScore(a).score)[0];
-  const week=sumByCur(open.filter(i=>(new Date(i.promiseDate||i.due)-new Date())/86400000<=7),i=>Math.max(0,remaining(i)));
+  const week=sumByCur(open.filter(i=>dayDiff(today(),i.promiseDate||i.due)<=7),i=>Math.max(0,remaining(i)));
   $('command').innerHTML=`
     <div class="cmd-card"><strong>Follow up today</strong><br>${todayF.length}</div>
     <div class="cmd-card"><strong>Highest priority</strong><br>${top?escape(top.client)+' '+money(Math.max(0,remaining(top)),top.currency):'None'}<br><span class="reason">Score ${top?priorityScore(top).score:''}</span></div>
@@ -700,7 +706,7 @@ function renderKPIs(){
   $('kpis').innerHTML=`
     <div class="kpi"><div class="label">Outstanding</div><div class="value">${curLines}</div></div>
     <div class="kpi"><div class="label">Overdue</div><div class="value" style="color:var(--rust)">${ov}</div></div>
-    <div class="kpi"><div class="label">Received</div><div class="value" style="color:var(--grove)">${sumByCur(invoices,paid)}</div></div>
+    <div class="kpi"><div class="label">Received</div><div class="value" style="color:var(--grove)">${sumByCur(invoices.filter(i=>i.type!=='quote'),paid)}</div></div>
     <div class="kpi"><div class="label">Expenses</div><div class="value">${sumByCur(expenses,e=>+e.amount||0)}</div></div>
   `;
 }
@@ -751,10 +757,10 @@ function applySequenceAll(){
 }
 function renderDueWindows(){
   const open=invoices.filter(isOpen);
-  const within=n=>open.filter(i=>{const d=Math.ceil((new Date(i.due)-new Date())/86400000);return d>=0&&d<=n;});
+  const within=n=>open.filter(i=>{const d=dayDiff(today(),i.due);return d>=0&&d<=n;});
   return `<div style="font-size:0.74rem;margin-top:0.3rem;color:var(--soft)">Due in 7 days ${sumByCur(within(7),i=>Math.max(0,remaining(i)))} · 14 days ${sumByCur(within(14),i=>Math.max(0,remaining(i)))} · 30 days ${sumByCur(within(30),i=>Math.max(0,remaining(i)))}</div>`;
 }
-function renderWeekly(){
+function renderWeekly_v3(){
   const target=+settings.weeklyTarget||0;const dc=defCur();
   const now=new Date();const start=new Date(now);start.setDate(now.getDate()-now.getDay());const startStr=localISO(start);
   const pays=allPayments().filter(p=>(p.date||'')>=startStr);
@@ -864,8 +870,8 @@ function renderCash(){
   const B={},E={};curs.forEach(c=>{B[c]={7:0,14:0,30:0,60:0,90:0};E[c]=0;});
   openInvs.forEach(i=>{
     let r=Math.max(0,remaining(i));if(preset==='half'&&largest&&i.id===largest.id)r*=0.5;
-    const base=new Date(i.promiseDate||i.due);let extra=shift+whatif;if(preset==='biggest14'&&topC&&i.client===topC[0])extra+=14;
-    base.setDate(base.getDate()+extra);const d=(base-now)/86400000;const b=B[curOf(i)];
+    let extra=shift+whatif;if(preset==='biggest14'&&topC&&i.client===topC[0])extra+=14;
+    const d=isISODate(i.promiseDate||i.due)?dayDiff(today(),addDaysISO(i.promiseDate||i.due,extra)):0;const b=B[curOf(i)];
     [7,14,30,60,90].forEach(p=>{if(d<=p)b[p]+=r;});
   });
   expenses.forEach(e=>{E[curOf(e)]+=(+e.amount||0);});
@@ -878,7 +884,7 @@ function renderCash(){
 }
 function suggestMatches(tx){
   const open=invoices.filter(i=>isOpen(i)&&curOf(i)===curOf(tx));
-  const pctTol=(+settings.tolPct||10)/100;const absTol=+settings.tolAbs||5;
+  const pctTol=(settings.tolPct==null||settings.tolPct===''?10:+settings.tolPct)/100;const absTol=settings.tolAbs==null||settings.tolAbs===''?5:+settings.tolAbs;
   return open.map(i=>{const rem=Math.max(0,remaining(i));const diff=Math.abs(rem-tx.amount);const pct=rem>0?diff/rem:1;
     const refHit=(tx.desc||'').toLowerCase().includes((i.ref||'').toLowerCase())&&i.ref;return {inv:i,diff,refHit,fuzzy:pct<=pctTol||diff<=absTol};})
     .filter(m=>m.fuzzy||m.refHit).sort((a,b)=>(b.refHit?1:0)-(a.refHit?1:0)||a.diff-b.diff).map(m=>m.inv);
@@ -991,9 +997,7 @@ function renderEffectiveness(){
   if(!paidInvs.length){$('effList').innerHTML='<div class="empty">No paid invoices yet. Record payments to see collection time.</div>';return;}
   const delays=paidInvs.map(i=>{
     const first=i.payments[0];
-    const due=new Date(i.due);
-    const paid=new Date(first.date||today());
-    return Math.round((paid-due)/86400000);
+    return dayDiff(i.due,first.date||today());
   });
   const avg=Math.round(delays.reduce((a,b)=>a+b,0)/delays.length);
   const onTime=delays.filter(d=>d<=0).length;
@@ -1008,7 +1012,7 @@ function renderEffectiveness(){
 function showContacts(id){
   const inv=invoices.find(x=>x.id===id);
   if(!inv||!(inv.contacts||[]).length){toast('No contacts logged');return;}
-  const w=window.open('','_blank');
+  const w=openWin();
   w.document.write('<!DOCTYPE html><html><head><title>Contacts '+escape(inv.ref)+'</title><style>body{font-family:Georgia,serif;padding:1.5rem;background:#F4F0E6}</style></head><body><h1>Contacts — '+escape(inv.ref)+'</h1>'+inv.contacts.map(c=>'<p><strong>'+escape(c.date)+'</strong><br>'+escape(c.note)+'</p>').join('')+'</body></html>');
   w.document.close();
 }
@@ -1027,7 +1031,7 @@ function renderHealth(){
   $('healthContent').innerHTML=`
     <div class="kpi-grid">
       <div class="kpi"><div class="label">Outstanding</div><div class="value">${sumByCur(open,i=>Math.max(0,remaining(i)))}</div></div>
-      <div class="kpi"><div class="label">Received (all)</div><div class="value" style="color:var(--grove)">${sumByCur(invoices,paid)}</div></div>
+      <div class="kpi"><div class="label">Received (all)</div><div class="value" style="color:var(--grove)">${sumByCur(invoices.filter(i=>i.type!=='quote'),paid)}</div></div>
       <div class="kpi"><div class="label">Est. DSO</div><div class="value">${dso}</div></div>
       <div class="kpi"><div class="label">Avg margin</div><div class="value">${avgMargin}</div></div>
     </div>
@@ -1075,9 +1079,9 @@ function dailySheet(){
   const projected=cash+open.filter(i=>curOf(i)===dc).reduce((s,i)=>s+Math.max(0,remaining(i)),0)-exp;
   const reserve=+$('reserve').value||0;
   const short=reserve>0&&projected<reserve;
-  const w=window.open('','_blank');
+  const w=openWin();
   w.document.write(`<!DOCTYPE html><html><head><title>Daily Action Sheet</title><style>body{font-family:Georgia,serif;padding:1.5rem;background:#F4F0E6;color:#1C1915}h1{font-size:1.3rem}table{width:100%;border-collapse:collapse;font-size:0.85rem;margin-top:0.5rem}th,td{padding:0.3rem;border-bottom:1px solid #D4CDBE;text-align:left}.warn{color:#8F3D2C}</style></head><body>
-  <h1>Daily Action Sheet</h1>
+  ${PRINT_BAR}<h1>Daily Action Sheet</h1>
   <p>${escape(settings.business||'Paper Ledger Desk')} · ${today()}</p>
   ${short?'<p class="warn"><strong>Cash below reserve.</strong> Projected ~'+money(projected,dc)+' vs reserve '+money(reserve,dc)+' ('+dc+' only)</p>':''}
   <h2>Top actions</h2>
@@ -1097,7 +1101,7 @@ function clientReliability(name){
   if(list.length<2) return {label:'Limited',note:'Fewer than 2 paid invoices'};
   const delays=list.map(i=>{
     const first=i.payments[0];
-    return Math.round((new Date(first.date||today())-new Date(i.due))/86400000);
+    return dayDiff(i.due,first.date||today());
   });
   const avg=Math.round(delays.reduce((a,b)=>a+b,0)/delays.length);
   if(avg<=0) return {label:'Reliable',note:'Usually on time or early'};
@@ -1113,11 +1117,11 @@ function clientRisk(name){
   return Math.max(0,Math.min(100,risk));
 }
 function statement(client){
-  const list=invoices.filter(i=>i.client===client);
+  const list=invoices.filter(i=>i.client===client&&i.type!=='quote'&&!i.draft);
   const open=list.filter(i=>isOpen(i)).reduce((s,i)=>s+Math.max(0,remaining(i)),0);
   const rec=list.reduce((s,i)=>s+paid(i),0);
-  const w=window.open('','_blank');
-  w.document.write(`<!DOCTYPE html><html><head><title>Statement — ${escape(client)}</title><style>body{font-family:Georgia,serif;padding:1.5rem;background:#F4F0E6;color:#1C1915}table{width:100%;border-collapse:collapse;font-size:0.85rem}th,td{padding:0.35rem;border-bottom:1px solid #D4CDBE;text-align:left}</style></head><body><h1>Statement</h1><p><strong>${escape(settings.business||'Paper Ledger Desk')}</strong>${settings.vatNo?' · VAT No '+escape(settings.vatNo):''}<br>${escape(settings.address||'').replace(/\n/g,'<br>')}</p><p>Date: ${today()}</p><p>${escape(client)}</p><p>Open: ${sumByCur(list.filter(isOpen),i=>Math.max(0,remaining(i)))} · Received: ${sumByCur(list,paid)}</p><table><thead><tr><th>Ref</th><th>Due</th><th>Total</th><th>Remaining</th><th>Status</th></tr></thead><tbody>${list.map(i=>`<tr><td>${escape(i.ref)}</td><td>${escape(i.due)}</td><td>${money(total(i),i.currency)}</td><td>${money(Math.max(0,remaining(i)),i.currency)}</td><td>${statusOf(i)}</td></tr>`).join('')}</tbody></table><p style="margin-top:1rem;font-size:0.75rem">Generated by Paper Ledger Desk. Print or save as PDF from the browser.</p></body></html>`);
+  const w=openWin();
+  w.document.write(`<!DOCTYPE html><html><head><title>Statement — ${escape(client)}</title><style>body{font-family:Georgia,serif;padding:1.5rem;background:#F4F0E6;color:#1C1915}table{width:100%;border-collapse:collapse;font-size:0.85rem}th,td{padding:0.35rem;border-bottom:1px solid #D4CDBE;text-align:left}</style></head><body>${PRINT_BAR}<h1>Statement</h1><p><strong>${escape(settings.business||'Paper Ledger Desk')}</strong>${settings.vatNo?' · VAT No '+escape(settings.vatNo):''}<br>${escape(settings.address||'').replace(/\n/g,'<br>')}</p><p>Date: ${today()}</p><p>${escape(client)}</p><p>Open: ${sumByCur(list.filter(isOpen),i=>Math.max(0,remaining(i)))} · Received: ${sumByCur(list,paid)}</p><table><thead><tr><th>Ref</th><th>Due</th><th>Total</th><th>Remaining</th><th>Status</th></tr></thead><tbody>${list.map(i=>`<tr><td>${escape(i.ref)}</td><td>${escape(i.due)}</td><td>${money(total(i),i.currency)}</td><td>${money(Math.max(0,remaining(i)),i.currency)}</td><td>${statusOf(i)}</td></tr>`).join('')}</tbody></table><p style="margin-top:1rem;font-size:0.75rem">Generated by Paper Ledger Desk. Print or save as PDF from the browser.</p></body></html>`);
   w.document.close();
   log('statement','Statement for '+client);
   save();
@@ -1129,7 +1133,7 @@ function duplicate(id){
   invoices.push(copy);log('duplicate','Duplicated '+inv.ref);save();refresh();toast('Duplicated');
 }
 
-function openEdit(id){
+function openEdit_v3(id){
   editingId=id;const inv=invoices.find(x=>x.id===id)||{lines:[{desc:'',qty:1,rate:0}],tax:+settings.defaultTax||0,discount:0,cost:0,currency:defCur(),type:'invoice',issued:today(),due:dueFromTerms(),nextAction:today(),recurring:false,plan:false,instalments:1,manualPriority:null,payProvider:''};
   $('mTitle').textContent=id?'Edit '+(inv.type==='quote'?'quote':'invoice'):'Add invoice';
   $('mRef').value=inv.ref||'';$('mClient').value=inv.client||'';$('mProject').value=inv.project||'';$('mTax').value=inv.tax||0;$('mDisc').value=inv.discount||0;$('mCost').value=inv.cost||0;$('mDue').value=inv.due||today();$('mIssued').value=inv.issued||today();$('mCur').value=curOf(inv);$('mType').value=inv.type||'invoice';$('mPromise').value=inv.promiseDate||'';$('mNext').value=inv.nextAction||'';$('mExpiry').value=inv.expiry||'';$('mTags').value=inv.tags||'';$('mFile').value=inv.fileRef||'';$('mPayLink').value=inv.payLink||'';$('mPayProvider').value=inv.payProvider||'';$('mInstructions').value=inv.instructions||'';$('mPriority').value=inv.manualPriority??'';$('mRecurring').checked=!!inv.recurring;$('mPlan').checked=!!inv.plan;$('mInst').value=inv.instalments||1;
@@ -1155,7 +1159,7 @@ function updatePreview(){
 }
 $('addLine').onclick=()=>{const d=document.createElement('div');d.className='line-item';d.innerHTML=`<input placeholder="Description" data-d><input type="number" value="1" data-q step="0.01"><input type="number" value="0" data-r step="0.01"><input type="number" placeholder="Hrs" data-h step="0.1"><button class="btn small secondary" onclick="this.parentElement.remove();updatePreview()">×</button>`;$('lines').appendChild(d);d.querySelectorAll('input').forEach(el=>el.addEventListener('input',updatePreview));};
 
-function openPay(id){editingPay=null;$('payTitle').textContent='Record payment';payingId=id;const inv=invoices.find(x=>x.id===id);$('payAmt').value=Math.max(0,remaining(inv)).toFixed(2);$('payDate').value=today();$('payNote').value='';$('payRef').value='';$('payMethod').value='Bank transfer';$('payModal').classList.add('show');}
+function openPay_v3(id){editingPay=null;$('payTitle').textContent='Record payment';payingId=id;const inv=invoices.find(x=>x.id===id);$('payAmt').value=Math.max(0,remaining(inv)).toFixed(2);$('payDate').value=today();$('payNote').value='';$('payRef').value='';$('payMethod').value='Bank transfer';$('payModal').classList.add('show');}
 function openAction(id){actionTarget=id;$('actionNote').value='';$('actionModal').classList.add('show');}
 function close(){['clientModal','workModal','sendModal'].forEach(m=>$(m)&&$(m).classList.remove('show'));editingPay=null;editingExp=null;editingWork=null;$('modal').classList.remove('show');$('payModal').classList.remove('show');$('actionModal').classList.remove('show');$('importModal').classList.remove('show');$('expModal').classList.remove('show');}
 
@@ -1185,7 +1189,7 @@ function confirmPay(){
   else toast(remaining(inv)<0?'Overpayment recorded':'Payment recorded');
   save();close();refresh();
 }
-function saveAction(){
+function saveAction_v3(){
   const inv=invoices.find(x=>x.id===actionTarget);if(!inv)return;
   const typ=$('actionType').value;const note=$('actionNote').value.trim();
   if(typ==='promise'){inv.promiseDate=note||today();inv.nextAction=inv.promiseDate;}
@@ -1210,12 +1214,12 @@ function convert(id){
 function printInvoice(id){
   const inv=invoices.find(x=>x.id===id);if(!inv)return;
   const c=curOf(inv);const q=inv.type==='quote';const m=clientsMeta[inv.client]||{};const logo=getLogo();
-  const title=q?'Quote':(settings.vatNo&&(+inv.tax>0)?'Tax Invoice':'Invoice');
+  const title=(inv.draft?'Draft ':'')+(q?'Quote':(settings.vatNo&&(+inv.tax>0)?'Tax Invoice':'Invoice'));
   const subM=toMinor(subtotal(inv),c),aM=toMinor(afterDisc(inv),c),totM=toMinor(total(inv),c);
   const link=payLinkOf(inv);
   const lines=(inv.lines||[]).map(l=>`<tr><td>${escape(l.desc||'')}</td><td class="r">${escape(l.qty||1)}${l.hours?' × '+escape(l.hours)+' h':''}</td><td class="r">${money(l.rate||0,c)}</td><td class="r">${money(lineAmt(l),c)}</td></tr>`).join('');
   const nl=t=>escape(t||'').replace(/\n/g,'<br>');
-  const w=window.open('','_blank');
+  const w=openWin();
   w.document.write(`<!DOCTYPE html><html><head><title>${escape(title+' '+inv.ref)}</title><style>
   @page{size:A4;margin:16mm}*{box-sizing:border-box}body{font-family:Georgia,'Times New Roman',serif;color:#1C1915;margin:0;padding:24px;font-size:13px}
   .top{display:flex;justify-content:space-between;align-items:flex-start;gap:24px}.biz{font-size:12px;line-height:1.45}.biz strong{font-size:15px}h1{font-size:26px;margin:0 0 8px;text-align:right;letter-spacing:0.04em;text-transform:uppercase}
@@ -1277,7 +1281,7 @@ function integrityCheck(){
   invoices.filter(i=>isOpen(i)).forEach(i=>{byCur[i.currency]=(byCur[i.currency]||0)+1;});
   if(Object.keys(byCur).length>1) issues.push({sev:'info',msg:'Multiple currencies in open invoices — totals are shown separately'});
   if(!issues.length) issues.push({sev:'ok',msg:'No issues found'});
-  const w=window.open('','_blank');
+  const w=openWin();
   w.document.write('<!DOCTYPE html><html><head><title>Integrity</title><style>body{font-family:Georgia,serif;padding:1.5rem;background:#F4F0E6} .error{color:#8F3D2C} .warn{color:#8F3D2C} .ok{color:#1F4D3A}</style></head><body><h1>Financial integrity</h1>'+issues.map(x=>'<p class="'+x.sev+'">'+x.sev.toUpperCase()+': '+escape(x.msg)+'</p>').join('')+'<p style="margin-top:1rem;font-size:0.75rem">Review only. No records were changed.</p></body></html>');
   w.document.close();
 }
@@ -1350,7 +1354,7 @@ if($('tolPct'))$('tolPct').oninput=()=>{settings.tolPct=+$('tolPct').value||10;s
 if($('tolAbs'))$('tolAbs').oninput=()=>{settings.tolAbs=+$('tolAbs').value||5;save();renderTransactions();};
 safeOn('saveExp',saveExpense);
 safeOn('cancelExp',close);
-safeOn('sample',()=>{if(confirm('Replace current data with sample data? You can Undo straight after.')){const before=JSON.stringify(payload());undoStack.push({label:'Loaded sample data',before});invoices=seed();expenses=[];followups=[];activity=[];wipNotes=[];checklistDone.clear();selected.clear();save();refresh();toast('Sample loaded');}});
+safeOn('sample',()=>{if(confirm('Replace current data with sample data? You can Undo straight after.')){const before=JSON.stringify(payload());undoStack.push({label:'Loaded sample data',before});invoices=seed();expenses=[];followups=[];activity=[];wipNotes=[];checklistDone.clear();selected.clear();save();refresh();showUndo('Loaded sample data');toast('Sample loaded');}});
 safeOn('clearBtn',()=>{if(confirm('Clear all data? A snapshot is kept in More › Backups and you can Undo straight after.')){withUndo('Cleared all data',()=>{invoices=[];expenses=[];transactions=[];followups=[];activity=[];wipNotes=[];workItems=[];presets=[];checklistDone.clear();clientsMeta={};selected.clear();});}});
 safeOn('export',exportBackup);
 safeOn('exportFiltered',exportFiltered);
@@ -1516,7 +1520,7 @@ function openClient(name){
   $('cName').value=name||'';$('cContact').value=m.contact||'';$('cEmail').value=m.email||'';$('cPhone').value=m.phone||'';$('cVat').value=m.vat||'';$('cAddress').value=m.address||'';$('cTerms').value=parseInt(m.terms)||'';$('cCurrency').value=m.currency||defCur();$('cNotes').value=m.notes||'';
   $('clientModal').classList.add('show');
 }
-function saveClient(){
+function saveClient_v3(){
   const name=$('cName').value.trim();if(!name){toast('Client name required');return;}
   const exists=allClientNames(true).includes(name);
   if(!editingClient&&exists){toast('A client with that name already exists');return;}
@@ -1626,7 +1630,7 @@ function deleteExpense(id){const e=expenses.find(x=>x.id===id);if(!e)return;if(!
 function renderExpenses(){
   $('expList').innerHTML=expenses.length?expenses.map(e=>{
     let next='';
-    if(e.recurring&&e.date){const d=new Date(e.date);let g=0;while(localISO(d)<today()&&g++<600)d.setMonth(d.getMonth()+1);next=' · next '+localISO(d);}
+    if(e.recurring&&isISODate(e.date)){let n=e.date,g=0;const day=+e.date.slice(8,10);while(n<today()&&g<600){g++;n=addMonthsDay(e.date,g,day);}next=' · next '+n;}
     return `<div class="exprow" style="padding:0.3rem 0;border-bottom:1px solid var(--line);font-size:0.76rem"><strong>${escape(e.desc)}</strong> ${money(e.amount,curOf(e))} · ${escape(e.date)}${e.recurring?' ↻':''}${next}<br><span class="reason">${escape(e.category||'')}</span> <button class="btn small secondary" onclick="openExpense(${e.id})">Edit</button> <button class="btn small secondary danger" onclick="deleteExpense(${e.id})">Delete</button></div>`;
   }).join(''):'<div class="empty">No expenses yet. Add commitments that affect cash forecasts.</div>';
 }
@@ -1720,9 +1724,9 @@ function prepareNote(id){goView('notes');$('noteSelect').value=id;const inv=invo
 function prepareAllNotes(){
   const list=invoices.filter(isOpen).filter(i=>(i.nextAction&&i.nextAction<=today())||daysOver(i)>0||(i.promiseDate&&i.promiseDate<=today())).slice(0,10);
   if(!list.length){toast('Nothing needs a note today');return;}
-  const w=window.open('','_blank');
+  const w=openWin();
   const items=list.map(i=>{const r=reminderText(i);return `<div class="note"><pre>${escape('Subject: '+r.subject+'\n\n'+r.body)}</pre><p><a href="${escape(mailtoHref(i))}">Open in email</a> · <a href="${escape(waHref(i))}" target="_blank" rel="noopener">Open in WhatsApp</a></p></div>`;}).join('<hr>');
-  w.document.write(`<!DOCTYPE html><html><head><title>Today's notes</title><style>body{font-family:Georgia,serif;padding:1.5rem;background:#F4F0E6;color:#1C1915}pre{font-family:Georgia,serif;white-space:pre-wrap}</style></head><body><h1>Today's follow-up notes</h1><p>${escape(settings.business||'Paper Ledger Desk')} · ${today()}</p>${items}</body></html>`);
+  w.document.write(`<!DOCTYPE html><html><head><title>Today's notes</title><style>body{font-family:Georgia,serif;padding:1.5rem;background:#F4F0E6;color:#1C1915}pre{font-family:Georgia,serif;white-space:pre-wrap}</style></head><body>${PRINT_BAR}<h1>Today's follow-up notes</h1><p>${escape(settings.business||'Paper Ledger Desk')} · ${today()}</p>${items}</body></html>`);
   w.document.close();
   log('notes','Prepared '+plural(list.length,'note'));save();
 }
@@ -1748,7 +1752,7 @@ function showWizard(){$('wizBusiness').value=settings.business||'';$('wizCurrenc
 function finishWizard(skip){
   if(!skip){
     settings.business=$('wizBusiness').value.trim();settings.currency=$('wizCurrency').value;
-    if($('wizVat').checked){settings.vatNo=$('wizVatNo').value.trim();settings.defaultTax=+$('wizVatRate').value||15;}else{settings.vatNo='';settings.defaultTax=0;}
+    if($('wizVat').checked){settings.vatNo=$('wizVatNo').value.trim();{const r=$('wizVatRate').value.trim();settings.defaultTax=r===''?15:Math.max(0,Math.min(100,+r||0));}}else{settings.vatNo='';settings.defaultTax=0;}
     settings.opening=+$('wizOpening').value||0;
   }
   settings.onboarded=true;settings.createdAt=settings.createdAt||new Date().toISOString();
@@ -1853,7 +1857,7 @@ function pdfHeader(doc,title){
 }
 function buildInvoicePdf(inv){
   const doc=new PDFDoc();const L=50,R=545;const c=curOf(inv);const q=inv.type==='quote';
-  const title=q?'QUOTE':(settings.vatNo&&(+inv.tax>0)?'TAX INVOICE':'INVOICE');
+  const title=(inv.draft?'DRAFT ':'')+(q?'QUOTE':(settings.vatNo&&(+inv.tax>0)?'TAX INVOICE':'INVOICE'));
   let y=pdfHeader(doc,title);
   let ry=80;[[q?'Quote no':'Invoice no',inv.ref],['Date',inv.issued||today()],[q?'Valid until':'Due date',q?(inv.expiry||'-'):inv.due],['Currency',c]].forEach(([k,v])=>{doc.text(420,ry,k,{size:9,gray:0.35});doc.text(R,ry,v,{size:9,bold:true,align:'right'});ry+=13;});
   y=Math.max(y,ry+10);
@@ -2276,6 +2280,337 @@ if($('setRemOffsets'))$('setRemOffsets').onchange=()=>{const v=$('setRemOffsets'
 setupDialogs();a11yLabel();
 new MutationObserver(muts=>{if(a11yLabel._q)return;a11yLabel._q=requestAnimationFrame(()=>{a11yLabel._q=0;a11yLabel();});}).observe(document.body,{childList:true,subtree:true});
 setupManifest();
+// ================= v4: correctness + safety fixes (later declarations override earlier ones) =================
+const MAX_AMOUNT=1e12;
+const KNOWN_CUR=['ZAR','USD','EUR','GBP','AUD','CAD','JPY','KRW'];
+const RESERVED_NAMES=['__proto__','constructor','prototype','hasOwnProperty','toString','valueOf'];
+function isISODate(s){if(typeof s!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(s))return false;const [y,m,d]=s.split('-').map(Number);const t=new Date(y,m-1,d);return t.getFullYear()===y&&t.getMonth()===m-1&&t.getDate()===d;}
+function validCur(c){if(typeof c!=='string'||!/^[A-Z]{3}$/.test(c))return false;try{new Intl.NumberFormat('en-US',{style:'currency',currency:c});return true;}catch{return false;}}
+function money(n,c){c=c||defCur();if(!validCur(c))c='ZAR';
+  const m=toMinor(n,c);const v=fromMinor(m,c);
+  try{return new Intl.NumberFormat('en-US',{style:'currency',currency:c,maximumFractionDigits:minorDigits(c)}).format(v||0);}catch{return c+' '+(v||0).toFixed(minorDigits(c));}
+}
+// timezone-safe day maths (calendar days in the user's own zone)
+function daysOver(i){return i&&i.due&&isISODate(i.due)?Math.max(0,dayDiff(i.due,today())):0;}
+function addMonthsDay(iso,n,day){const [y,m]=iso.split('-').map(Number);const t=new Date(y,m-1+n,1);const last=new Date(t.getFullYear(),t.getMonth()+1,0).getDate();t.setDate(Math.min(day,last));return localISO(t);}
+function nextInstalmentDue(i){
+  if(!i.plan||(+i.instalments||1)<=1||!isISODate(i.due))return null;
+  const inst=+i.instalments||1;const paidCount=(i.payments||[]).length;
+  if(paidCount>=inst)return null;
+  return addMonthsISO(i.due,paidCount);
+}
+// invoice numbering: never reuse a number that already exists, and only consume one on a successful save
+function fmtRef(n){return 'INV-'+String(n).padStart(3,'0');}
+function peekRef(){let n=Math.max(1,+settings.nextNum||1);const used=new Set(invoices.map(i=>i.ref));while(used.has(fmtRef(n)))n++;return fmtRef(n);}
+function nextRef(){let n=Math.max(1,+settings.nextNum||1);const used=new Set(invoices.map(i=>i.ref));while(used.has(fmtRef(n)))n++;settings.nextNum=n+1;return fmtRef(n);}
+// recurring drafts keep their original day of month (31 Jan -> 28 Feb -> 31 Mar)
+function generateRecurringDrafts(){
+  const t=today();const made=[];
+  for(let pass=0;pass<12;pass++){
+    let any=false;
+    for(const i of [...invoices]){
+      if(!i.recurring||i.rolledTo||i.type==='quote'||i.writtenOff)continue;
+      const anchor=i.issued||i.due;if(!isISODate(anchor))continue;
+      const day=+i.recurDay||+anchor.slice(8,10);
+      const nextIssue=addMonthsDay(anchor,1,day);if(nextIssue>t)continue;
+      const gap=(isISODate(i.issued)&&isISODate(i.due))?Math.max(0,dayDiff(i.issued,i.due)):(+settings.defaultTerms||30);
+      const next=JSON.parse(JSON.stringify(i));
+      Object.assign(next,{id:newId(),ref:nextRef(),issued:nextIssue,due:addDaysISO(nextIssue,gap),recurDay:day,payments:[],contacts:[],promiseDate:null,nextAction:null,lastContact:null,disputed:false,writtenOff:false,awaitingClarification:false,manualPriority:null,draft:true,generatedFrom:i.ref});
+      delete next.rolledTo;i.rolledTo=next.ref;invoices.push(next);made.push(next.ref);any=true;
+    }
+    if(!any)break;
+  }
+  if(made.length){log('recurring','Drafted '+plural(made.length,'recurring invoice')+': '+made.join(', '));setTimeout(()=>toast(plural(made.length,'recurring draft')+' ready to review: '+made.join(', ')),50);}
+  return made;
+}
+// ---------- invoice editor ----------
+function readLines(){
+  return [...$('lines').querySelectorAll('.line-item')].map(r=>{const v=s=>{const e=r.querySelector(s);return e?e.value.trim():'';};const q=v('[data-q]'),rt=v('[data-r]'),h=v('[data-h]');
+    return {desc:v('[data-d]'),qty:q===''?1:+q,rate:rt===''?0:+rt,hours:h===''?0:+h};});
+}
+function updatePreview(){
+  const raw=readLines();const cu=$('mCur').value||defCur();
+  const lines=raw.map(l=>({...l,qty:Number.isFinite(l.qty)?l.qty:0,rate:Number.isFinite(l.rate)?l.rate:0,hours:Number.isFinite(l.hours)?l.hours:0}));
+  const dRaw=+$('mDisc').value||0,tRaw=+$('mTax').value||0;
+  const d=Math.max(0,Math.min(100,dRaw)),tx=Math.max(0,Math.min(100,tRaw));
+  const tmp={lines,discount:d,tax:tx,currency:cu};
+  const sub=subtotal(tmp);const disc=sub*d/100;const after=sub-disc;const tax=after*tx/100;const tot=total(tmp);
+  const cost=+$('mCost').value||0;const m=tot>0?((tot-cost)/tot)*100:0;
+  const inst=Math.max(1,+$('mInst').value||1);
+  const warn=[];
+  if(dRaw<0||dRaw>100)warn.push('Discount must be between 0 and 100%');
+  if(tRaw<0||tRaw>100)warn.push('Tax must be between 0 and 100%');
+  if(tot<=0&&lines.some(l=>l.rate))warn.push('Total must be more than zero');
+  if(Math.abs(sub)>MAX_AMOUNT||lines.some(l=>Math.abs(lineAmt(l))>MAX_AMOUNT))warn.push('Amount is too large');
+  const iss=$('mIssued').value,due=$('mDue').value;if(iss&&due&&due<iss)warn.push('Due date is before the issue date');
+  $('preview').style.whiteSpace='pre-line';
+  $('preview').textContent=`Sub ${money(sub,cu)} − disc ${money(disc,cu)} + tax ${money(tax,cu)} = ${money(tot,cu)}\nMargin ${m.toFixed(1)}% · ${inst} instalment${inst>1?'s':''} of ${money(tot/inst,cu)}`+(warn.length?'\n⚠ '+warn.join(' · '):'');
+}
+function openEdit(id){
+  openEdit_v3(id);
+  const inv=invoices.find(x=>x.id===id);
+  $('mRef').placeholder=id?'':peekRef()+' (automatic)';
+  if($('presetPick'))$('presetPick').innerHTML='<option value="">Add a saved item…</option>'+presets.map((p,k)=>`<option value="${k}">${escape(p.desc)} · ${escape(money(+p.rate||0,$('mCur').value))}</option>`).join('')+(presets.length?'':'<option value="" disabled>No saved items yet (More actions › Save line preset)</option>');
+  if($('mTerms'))$('mTerms').value='';
+  if(!id){const c=clientsMeta[$('mClient').value]||{};void c;}
+  updatePreview();
+}
+function addPresetLine(k){
+  const p=presets[+k];if(!p)return;
+  const items=[...$('lines').querySelectorAll('.line-item')];const blank=items.find(r=>!r.querySelector('[data-d]').value.trim()&&!(+r.querySelector('[data-r]').value));
+  let row=blank;if(!row){$('addLine').click();const all=$('lines').querySelectorAll('.line-item');row=all[all.length-1];}
+  row.querySelector('[data-d]').value=p.desc||'';row.querySelector('[data-r]').value=+p.rate||0;row.querySelector('[data-q]').value=row.querySelector('[data-q]').value||1;
+  updatePreview();
+}
+function saveInv(){
+  const client=$('mClient').value.trim();if(!client){toast('Client required');$('mClient').focus();return;}
+  if(RESERVED_NAMES.includes(client)){toast('Please use a different client name');return;}
+  const typedRef=$('mRef').value.trim();
+  const raw=readLines();
+  if(raw.some(l=>!Number.isFinite(l.qty)||!Number.isFinite(l.rate)||!Number.isFinite(l.hours))){toast('Check the line amounts: numbers only');return;}
+  const lines=raw.filter(l=>l.desc||l.rate!==0).map(l=>({desc:l.desc||'Work',qty:l.qty,rate:l.rate,hours:l.hours}));
+  if(!lines.length){toast('Need a line with an amount');return;}
+  if(lines.some(l=>Math.abs(l.rate)>MAX_AMOUNT||Math.abs(lineAmt(l))>MAX_AMOUNT||Math.abs(l.qty)>1e9)){toast('Amount too large — the maximum per invoice is 1,000,000,000,000');return;}
+  const tax=+$('mTax').value||0,discount=+$('mDisc').value||0;
+  if(!Number.isFinite(tax)||tax<0||tax>100){toast('Tax / VAT must be between 0 and 100%');$('mTax').focus();return;}
+  if(!Number.isFinite(discount)||discount<0||discount>100){toast('Discount must be between 0 and 100%');$('mDisc').focus();return;}
+  const cur=$('mCur').value;
+  const tot=total({lines,tax,discount,currency:cur});
+  if(!(tot>0)){toast('Invoice total must be more than zero. Use a negative line only as a discount on other work.');return;}
+  if(tot>MAX_AMOUNT){toast('Amount too large — the maximum per invoice is 1,000,000,000,000');return;}
+  const issued=$('mIssued').value||today();const due=$('mDue').value||dueFromTerms();
+  if(!isISODate(issued)||!isISODate(due)){toast('Enter valid dates');return;}
+  if(due<issued&&!confirm('The due date ('+due+') is before the issue date ('+issued+'). Save anyway?')){$('mDue').focus();return;}
+  const mp=$('mPriority').value.trim();
+  const pl=$('mPayLink').value.trim();if(pl&&!safeUrl(pl)){toast('Payment link must start with https://');return;}
+  if(typedRef&&invoices.some(x=>x.ref===typedRef&&x.id!==editingId)){if(!confirm('Invoice number '+typedRef+' already exists. Save a second invoice with the same number anyway?'))return;}
+  const old=editingId?invoices.find(x=>x.id===editingId):null;
+  if(old&&(old.payments||[]).length&&curOf(old)!==cur){if(!confirm(old.ref+' already has '+plural(old.payments.length,'payment')+' recorded in '+curOf(old)+'. Change the currency to '+cur+'? Payment amounts are not converted.'))return;}
+  const ref=typedRef||(old&&old.ref)||nextRef();
+  const data={ref,client,issued,payProvider:$('mPayProvider').value,project:$('mProject').value.trim(),lines,tax,discount,cost:+$('mCost').value||0,due,currency:cur,type:$('mType').value,promiseDate:$('mPromise').value||null,nextAction:$('mNext').value||null,expiry:$('mExpiry').value||null,tags:$('mTags').value.trim(),fileRef:$('mFile').value.trim(),payLink:pl,instructions:$('mInstructions').value.trim(),recurring:$('mRecurring').checked,plan:$('mPlan').checked,instalments:Math.max(1,+$('mInst').value||1),manualPriority:mp===''?null:+mp,payments:old?(old.payments||[]):[],disputed:old?(old.disputed||false):false,lastContact:old?(old.lastContact||null):null};
+  if(old&&old.recurDay&&old.issued!==issued)data.recurDay=+issued.slice(8,10);
+  if(old){const idx=invoices.findIndex(x=>x.id===editingId);invoices[idx]={...invoices[idx],...data};log('edit','Edited '+ref);}else{invoices.push({id:newId(),contacts:[],...data});log('add','Added '+ref);}
+  save();close();refresh();toast('Saved '+ref);
+}
+function openPay(id){
+  openPay_v3(id);const inv=invoices.find(x=>x.id===id);if(!inv||!$('payBal'))return;
+  const c=curOf(inv);const rem=remaining(inv);
+  $('payBal').textContent=rem>0?'Balance due: '+money(rem,c)+' of '+money(total(inv),c)+(paid(inv)>0?' ('+money(paid(inv),c)+' already paid)':''):(rem<0?'Already overpaid — client has a credit of '+money(-rem,c):'This invoice is fully paid.');
+}
+function confirmPay(){
+  const inv=invoices.find(x=>x.id===payingId);if(!inv)return;
+  const amt=+$('payAmt').value;
+  if(!Number.isFinite(amt)||amt<=0){toast('Enter a positive amount');return;}
+  if(amt>MAX_AMOUNT){toast('Amount too large');return;}
+  const date=$('payDate').value||today();if(!isISODate(date)){toast('Enter a valid payment date');return;}
+  const c=curOf(inv);const editing=editingPay&&editingPay.invId===inv.id&&inv.payments[editingPay.idx];
+  const others=fromMinor(toMinor(paid(inv),c)-(editing?toMinor(+inv.payments[editingPay.idx].amount||0,c):0),c);
+  const owed=fromMinor(toMinor(total(inv),c)-toMinor(others,c),c);
+  if(toMinor(amt,c)>toMinor(owed,c)){
+    const extra=fromMinor(toMinor(amt,c)-toMinor(Math.max(0,owed),c),c);
+    if(!confirm(money(amt,c)+' is '+money(extra,c)+' more than the '+money(Math.max(0,owed),c)+' still owed on '+inv.ref+'. Record it anyway? The extra shows as a credit for '+inv.client+'.'))return;
+  }
+  const rec={date,amount:fromMinor(toMinor(amt,c),c),note:$('payNote').value.trim(),method:$('payMethod').value,ref:$('payRef').value.trim()};
+  if(editing){inv.payments[editingPay.idx]={...inv.payments[editingPay.idx],...rec};log('payment','Edited payment on '+inv.ref);editingPay=null;save();close();refresh();toast('Payment updated');return;}
+  inv.payments=inv.payments||[];inv.payments.push(rec);inv.lastContact=today();
+  if(inv.draft){inv.draft=false;log('recurring','Draft '+inv.ref+' finalised by payment');}
+  log('payment','Payment on '+inv.ref+' via '+rec.method);
+  toast(remaining(inv)<0?'Payment recorded · credit '+money(-remaining(inv),c):'Payment recorded'+(remaining(inv)>0?' · '+money(remaining(inv),c)+' still due':'')+(inv.recurring&&remaining(inv)<=0?' · next recurring draft is created on its issue date':''));
+  save();close();refresh();
+}
+function termsFor(client){const t=(clientsMeta[client]||{}).terms;return t===''||t==null||!Number.isFinite(+t)?(+settings.defaultTerms||30):+t;}
+function duplicate(id){
+  const inv=invoices.find(x=>x.id===id);if(!inv)return;
+  const copy=JSON.parse(JSON.stringify(inv));const t=today();
+  const gap=(isISODate(inv.issued)&&isISODate(inv.due))?Math.max(0,dayDiff(inv.issued,inv.due)):termsFor(inv.client);
+  Object.assign(copy,{id:newId(),ref:inv.type==='quote'?quoteRef():nextRef(),issued:t,due:addDaysISO(t,gap),payments:[],contacts:[],nextAction:t,promiseDate:null,lastContact:null,disputed:false,writtenOff:false,awaitingClarification:false,manualPriority:null,draft:false});
+  delete copy.rolledTo;delete copy.generatedFrom;delete copy.recurDay;if(copy.expiry)copy.expiry=addDaysISO(t,Math.max(0,dayDiff(inv.issued||t,inv.expiry)));
+  invoices.push(copy);log('duplicate','Duplicated '+inv.ref+' as '+copy.ref);save();refresh();toast('Duplicated as '+copy.ref+' — dated today');
+}
+function quoteRef(){let n=1;const used=new Set(invoices.map(i=>i.ref));while(used.has('QT-'+String(n).padStart(3,'0')))n++;return 'QT-'+String(n).padStart(3,'0');}
+function convert(id){
+  const inv=invoices.find(x=>x.id===id);if(!inv||inv.type!=='quote')return;
+  const old=inv.ref;const t=today();let ref=(inv.ref||'').replace(/^QT-/,'INV-');
+  if(!ref||ref===old||invoices.some(x=>x.ref===ref&&x.id!==id))ref=nextRef();
+  Object.assign(inv,{type:'invoice',ref,issued:t,due:addDaysISO(t,termsFor(inv.client)),nextAction:t,convertedFrom:old});
+  log('convert','Converted '+old+' to '+ref);
+  save();refresh();toast('Quote '+old+' is now invoice '+ref+', dated today');
+}
+function saveAction(){
+  const inv=invoices.find(x=>x.id===actionTarget);if(!inv)return;
+  const typ=$('actionType').value;const note=$('actionNote').value.trim();
+  if(['promise','plan','snooze'].includes(typ)&&note&&!isISODate(note)){toast('Enter the date as YYYY-MM-DD, for example '+addDaysISO(today(),7));$('actionNote').focus();return;}
+  saveAction_v3();
+}
+// ---------- backups: validate and repair before anything is replaced ----------
+function isObj(x){return !!x&&typeof x==='object'&&!Array.isArray(x);}
+function num(x,d){const n=+x;return Number.isFinite(n)?n:d;}
+function sanitizeInvoice(i,probs,k){
+  if(!isObj(i)){probs.push('record '+(k+1)+' is not an invoice (skipped)');return null;}
+  const o={...i};const tag=(o.ref||'record '+(k+1));
+  if(typeof o.client!=='string'||!o.client.trim()){o.client=String(o.client||'').trim()||'Unknown client';probs.push(tag+': no client');}
+  if(RESERVED_NAMES.includes(o.client)){o.client=o.client+' (renamed)';probs.push(tag+': reserved client name renamed');}
+  if(o.ref!=null&&typeof o.ref!=='string')o.ref=String(o.ref);
+  if(!Array.isArray(o.lines)){if(o.lines!==undefined)probs.push(tag+': lines were not a list');o.lines=[{desc:'Work',qty:1,rate:0}];}
+  o.lines=o.lines.filter(isObj).map(l=>({...l,desc:String(l.desc??''),qty:num(l.qty,1),rate:Math.max(-MAX_AMOUNT,Math.min(MAX_AMOUNT,num(l.rate,0))),...(l.hours!=null?{hours:num(l.hours,0)}:{})}));
+  if(!o.lines.length)o.lines=[{desc:'Work',qty:1,rate:0}];
+  if(!Array.isArray(o.payments)){if(o.payments!==undefined)probs.push(tag+': payments were not a list');o.payments=[];}
+  const np=o.payments.length;o.payments=o.payments.filter(p=>isObj(p)&&Number.isFinite(+p.amount)).map(p=>({...p,amount:+p.amount}));if(o.payments.length!==np)probs.push(tag+': '+plural(np-o.payments.length,'unreadable payment')+' dropped');
+  if(o.currency!==undefined&&!validCur(o.currency)){probs.push(tag+': unknown currency "'+String(o.currency).slice(0,8)+'"');o.currency=defCur();}
+  ['tax','discount'].forEach(f=>{if(o[f]!==undefined){const v=num(o[f],0);if(v!==o[f]&&String(v)!==String(o[f]))probs.push(tag+': '+f+' not a number');o[f]=Math.max(0,Math.min(100,v));}});
+  if(o.cost!==undefined)o.cost=num(o.cost,0);
+  ['issued','due','expiry','promiseDate','nextAction','lastContact'].forEach(f=>{if(o[f]!=null&&o[f]!==''&&!isISODate(o[f])){if(f==='due'||f==='issued')probs.push(tag+': bad '+f+' date');o[f]=f==='due'?(isISODate(o.issued)?o.issued:today()):null;}});
+  if(!Array.isArray(o.contacts))o.contacts=[];
+  if(o.tags!=null&&typeof o.tags!=='string')o.tags=String(o.tags);
+  return o;
+}
+function sanitizePayload(raw,probs){
+  probs=probs||[];const d=isObj(raw)?{...raw}:{};
+  const list=Array.isArray(d.invoices)?d.invoices:[];
+  d.invoices=list.map((i,k)=>sanitizeInvoice(i,probs,k)).filter(Boolean);
+  const ids=new Set();d.invoices.forEach(i=>{if(i.id==null||ids.has(i.id)){i.id=newId();while(ids.has(i.id))i.id=newId();}ids.add(i.id);});
+  if(d.clientsMeta!==undefined&&!isObj(d.clientsMeta)){probs.push('client list was unreadable (rebuilt from invoices)');d.clientsMeta={};}
+  if(isObj(d.clientsMeta)){const cm=Object.create(null);Object.keys(d.clientsMeta).forEach(n=>{if(RESERVED_NAMES.includes(n))return;const m=d.clientsMeta[n];cm[n]=isObj(m)?{...m}:{};if(cm[n].currency&&!validCur(cm[n].currency))delete cm[n].currency;});d.clientsMeta=Object.assign({},cm);}
+  const arr=(k,keep)=>{if(d[k]===undefined)return;if(!Array.isArray(d[k])){probs.push(k+' was not a list');d[k]=[];return;}const n=d[k].length;d[k]=d[k].filter(keep);if(d[k].length!==n)probs.push(plural(n-d[k].length,'unreadable '+k.replace(/s$/,'')+' entry')+' skipped');};
+  arr('expenses',e=>isObj(e)&&Number.isFinite(+e.amount));(d.expenses||[]).forEach(e=>{e.amount=+e.amount;if(e.currency&&!validCur(e.currency))e.currency=defCur();});
+  arr('transactions',t=>isObj(t)&&Number.isFinite(+t.amount));(d.transactions||[]).forEach(t=>{t.amount=+t.amount;});
+  arr('work',w=>isObj(w)&&Number.isFinite(+w.amount));arr('presets',isObj);arr('followups',isObj);arr('activity',isObj);arr('wip',isObj);
+  if(d.checklist!==undefined&&!Array.isArray(d.checklist))d.checklist=[];
+  if(d.settings!==undefined){if(!isObj(d.settings)){probs.push('settings were unreadable (kept current settings)');d.settings={};}else{d.settings={...d.settings};if(d.settings.currency!==undefined&&!validCur(d.settings.currency)){probs.push('unknown default currency "'+String(d.settings.currency).slice(0,8)+'" (kept '+defCur()+')');delete d.settings.currency;}['opening','reserve','whatif','weeklyTarget','defaultTax','defaultTerms','nextNum','tolPct','tolAbs'].forEach(f=>{if(d.settings[f]!==undefined&&!Number.isFinite(+d.settings[f]))delete d.settings[f];});}}
+  return d;
+}
+function applyPayload(raw){
+  const d=sanitizePayload(raw,[]);
+  invoices=d.invoices||[];clientsMeta=d.clientsMeta||{};expenses=d.expenses||[];transactions=d.transactions||[];followups=d.followups||[];activity=d.activity||[];wipNotes=d.wip||[];workItems=d.work||[];presets=d.presets||[];checklistDone=new Set(d.checklist||[]);settings=Object.assign(settings,d.settings||{});
+}
+$('importFile').onchange=e=>{
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    let data;try{data=JSON.parse(ev.target.result);}catch{toast('This file is not a readable backup (invalid or cut-off JSON). Nothing was changed.');return;}
+    if(!isObj(data)||!Array.isArray(data.invoices)){toast('This file is not a Paper Ledger backup (no invoice list). Nothing was changed.');return;}
+    const probs=[];const clean=sanitizePayload(data,probs);clean.logo=data.logo;
+    const list=clean.invoices;pendingImport=clean;
+    const shown=probs.slice(0,6).map(p=>'<li>'+escape(p)+'</li>').join('')+(probs.length>6?'<li>…and '+(probs.length-6)+' more</li>':'');
+    $('importPreview').innerHTML=`Found ${plural(list.length,'invoice')}${data.settings?' (full backup)':''}.`+(probs.length?`<div class="nag" role="alert" style="margin:0.4rem 0"><strong>${plural(probs.length,'problem')} found — these will be skipped or fixed:</strong><ul style="margin:0.2rem 0 0 1rem">${shown}</ul></div>`:'<br>')+list.slice(0,5).map(i=>escape(i.ref||'?')+' · '+escape(i.client||'?')).join('<br>')+(list.length>5?'<br>…':'');
+    $('importModal').classList.add('show');
+  };
+  r.readAsText(f);e.target.value='';
+};
+$('confirmImport').onclick=()=>{
+  if(!pendingImport)return;
+  const data=pendingImport;const full=isObj(data.settings)&&Object.keys(data.settings).length>0;
+  if(!snapPaused)autoSnapshot(JSON.stringify(payload()),true);
+  if(full&&confirm('Restore this full backup? This REPLACES all current data on this device (invoices, clients, expenses, transactions, work, settings). Cancel to merge invoices only.')){
+    applyPayload(data);snapPaused=false;
+    log('import','Restored full backup ('+invoices.length+' invoices)');
+    if(data.logo){try{localStorage.setItem(LOGO_KEY,data.logo);}catch{}}
+    pendingImport=null;save();close();load();refresh();toast('Backup restored: '+plural(invoices.length,'invoice'));return;
+  }
+  const existing=new Set(invoices.map(i=>i.ref));const ids=new Set(invoices.map(i=>i.id));
+  let added=0,skipped=0;
+  data.invoices.forEach(i=>{if(!i.client||!i.ref)return;if(existing.has(i.ref))skipped++;else{let id=i.id;while(id==null||ids.has(id))id=newId();ids.add(id);invoices.push({...i,id});existing.add(i.ref);added++;}});
+  log('import','Imported '+added+' invoices, skipped '+skipped+' duplicates');
+  pendingImport=null;save();close();load();refresh();toast('Imported '+added+', skipped '+skipped);
+};
+function restoreSnapshot(k){
+  const snaps=getSnaps();const s=snaps[k];if(!s)return;
+  if(!confirm('Restore the snapshot from '+new Date(s.at).toLocaleString()+'?'+(snapPaused?' Your stored data could not be read, so this replaces it.':' Your current data is snapshotted first, so you can switch back.')))return;
+  let data;try{data=JSON.parse(s.data);}catch{toast('That snapshot is damaged — try another one');return;}
+  if(!snapPaused)autoSnapshot(JSON.stringify(payload()),true);
+  applyPayload(data);snapPaused=false;log('snapshot','Restored snapshot from '+new Date(s.at).toLocaleString());
+  save();load();refresh();toast('Snapshot restored');
+}
+// ---------- CSV exports: quoted, formula-safe, Excel-friendly ----------
+function csvRow(a){return a.map(v=>typeof v==='number'?String(v):csvCell(v)).join(',');}
+function csvDownload(rows,name){downloadBlob('\uFEFF'+rows.join('\r\n'),name,'text/csv');}
+function exportFiltered(){
+  const rows=getFiltered();const out=['Ref,Client,Total,Remaining,Due,Status,Score,Currency'];
+  rows.forEach(i=>{const dg=minorDigits(curOf(i));out.push(csvRow([i.ref||'',i.client,+total(i).toFixed(dg),+Math.max(0,remaining(i)).toFixed(dg),i.due||'',statusOf(i),priorityScore(i).score,curOf(i)]));});
+  csvDownload(out,'paper-ledger-filtered-'+today()+'.csv');log('export','Filtered CSV ('+plural(rows.length,'invoice')+')');toast('Exported '+plural(rows.length,'invoice'));
+}
+function exportPriority(){
+  const out=['Rank,Ref,Client,Remaining,Score,Recommended,Currency'];
+  invoices.filter(i=>isOpen(i)&&!i.writtenOff).sort((a,b)=>priorityScore(b).score-priorityScore(a).score)
+    .forEach((i,n)=>out.push(csvRow([n+1,i.ref||'',i.client,+Math.max(0,remaining(i)).toFixed(minorDigits(curOf(i))),priorityScore(i).score,recommended(i),curOf(i)])));
+  csvDownload(out,'paper-ledger-priority-'+today()+'.csv');toast('Priority list exported');
+}
+function exportActivity(){
+  const out=['Date,Type,Detail'];
+  activity.forEach(a=>out.push(csvRow([new Date(a.at).toISOString(),a.type||'',a.detail||''])));
+  csvDownload(out,'paper-ledger-activity-'+today()+'.csv');toast('Activity exported');
+}
+if($('exportActivity'))$('exportActivity').onclick=exportActivity;
+// ---------- pop-up windows: never crash when the browser blocks them ----------
+function openWin(){
+  let w=null;try{w=window.open('','_blank');}catch{}
+  if(!w){toast('Your browser blocked the pop-up. Allow pop-ups for this page, or use the PDF button instead.');return {document:{write(){},close(){},title:''},focus(){},print(){},close(){},blocked:true};}
+  return w;
+}
+const PRINT_BAR='<div class="noprint" style="margin-bottom:12px"><button onclick="window.print()" style="padding:6px 12px">Print / Save as PDF</button></div><style>@media print{.noprint{display:none}}</style>';
+// ---------- clients ----------
+const EMAIL_RE=/^[^\s@<>(),;:"]+@[^\s@<>(),;:".]+(\.[^\s@<>(),;:".]+)+$/;
+function saveClient(){
+  const name=$('cName').value.trim().replace(/\s+/g,' ');
+  if(!name){toast('Client name required');return;}
+  if(RESERVED_NAMES.includes(name)){toast('Please use a different client name');return;}
+  if(name.length>200){toast('Client name is too long (200 characters max)');return;}
+  const email=$('cEmail').value.trim();
+  if(email&&!email.split(/[;,]\s*/).every(x=>EMAIL_RE.test(x))){toast('That email address does not look right');$('cEmail').focus();return;}
+  const clash=allClientNames(true).find(n=>n.toLowerCase()===name.toLowerCase()&&n!==editingClient);
+  if(clash){toast(editingClient?'Another client already has that name':'A client with that name already exists');return;}
+  $('cName').value=name;saveClient_v3();
+}
+// ---------- search: client, ref, tags, title, line descriptions, amount ----------
+function getFiltered(){
+  const q=($('search').value||'').toLowerCase().trim(),f=$('filter').value,cl=$('filterClient').value,tg=$('filterTag').value;
+  const qn=q.replace(/[^\d.]/g,'');
+  return invoices.filter(i=>{
+    const s=statusOf(i);
+    const needs=f==='needs'&&((i.nextAction&&i.nextAction<=today())||daysOver(i)>0||(i.promiseDate&&i.promiseDate<=today()));
+    const hay=!q||[i.client,i.tags,i.ref,i.project,i.fileRef,...(i.lines||[]).map(l=>l.desc)].some(x=>String(x||'').toLowerCase().includes(q))||(qn&&/^\d+(\.\d+)?$/.test(qn)&&qn.length>=2&&[total(i),remaining(i)].some(v=>v.toFixed(2).startsWith(qn)||String(v).startsWith(qn)));
+    const tagMatch=!tg||(i.tags||'').split(',').map(t=>t.trim()).includes(tg);
+    return hay&&tagMatch&&(!f||s===f||needs)&&(!cl||i.client===cl);
+  });
+}
+// ---------- Today: empty state + weekly target that keeps focus ----------
+function renderCommand(){
+  renderCommand_v3();
+  if(!invoices.length&&$('command')){
+    $('command').insertAdjacentHTML('afterbegin','<div class="card firstrun" style="grid-column:1/-1"><div style="font-family:var(--serif);font-size:1.05rem">Welcome — let’s get you paid</div><p class="reason" style="margin:0.3rem 0 0.5rem">1. Add your first invoice · 2. Download the PDF or send it by email/WhatsApp · 3. Record the payment when it arrives. Everything stays on this device.</p><button class="btn" id="firstInvBtn" onclick="openEdit(null)">Create your first invoice</button> <button class="btn secondary" onclick="goView(\'settings\')">Add your business details</button></div>');
+  }
+}
+function renderWeekly(){
+  const a=document.activeElement;if(a&&a.id==='weeklyTargetInput'&&$('weeklyTarget').contains(a))return;
+  renderWeekly_v3();
+  const inp=$('weeklyTargetInput');if(inp){inp.oninput=()=>{const v=+inp.value;settings.weeklyTarget=Number.isFinite(v)&&v>0?Math.min(v,MAX_AMOUNT):0;save();};inp.onchange=()=>{inp.blur();renderWeekly();};inp.onblur=()=>setTimeout(renderWeekly,0);}
+}
+// ---------- small fixes + wiring ----------
+function copyText(t){
+  const fallback=()=>{const r=document.createRange();r.selectNodeContents($('notePreview'));const s=getSelection();s.removeAllRanges();s.addRange(r);toast('Copy was blocked by the browser — the note is selected, press Ctrl+C (or long-press › Copy)');};
+  try{if(!navigator.clipboard||!navigator.clipboard.writeText){fallback();return;}navigator.clipboard.writeText(t).then(()=>toast('Copied'),fallback);}catch{fallback();}
+}
+safeOn('copyNote',()=>{const t=$('notePreview').textContent;if(!t||t.startsWith('Select')){toast('Pick an invoice first, then press Generate');return;}copyText(t);});
+if($('tolPct'))$('tolPct').oninput=()=>{const v=$('tolPct').value;settings.tolPct=v===''?10:Math.max(0,Math.min(50,+v||0));save();renderTransactions();};
+if($('tolAbs'))$('tolAbs').oninput=()=>{const v=$('tolAbs').value;settings.tolAbs=v===''?5:Math.max(0,+v||0);save();renderTransactions();};
+safeOn('bulkNext',()=>{
+  if(!selected.size){toast('Select invoices first');return;}
+  const d=prompt('Next action date (YYYY-MM-DD)',today());
+  if(d==null||d==='')return;
+  if(!isISODate(d.trim())){toast('Use a date like '+today()+' — nothing was changed');return;}
+  invoices.forEach(i=>{if(selected.has(i.id))i.nextAction=d.trim();});
+  log('bulk','Set next action on '+selected.size+' invoices');
+  selected.clear();save();refresh();toast('Next action set');
+});
+if($('presetPick'))$('presetPick').onchange=e=>{const v=e.target.value;e.target.value='';if(v!=='')addPresetLine(v);};
+if($('mTerms'))$('mTerms').onchange=e=>{const v=e.target.value;if(v==='')return;const iss=$('mIssued').value||today();$('mDue').value=addDaysISO(iss,+v);updatePreview();};
+['mIssued','mDue','mCur','mInst','mCost'].forEach(id=>{if($(id))$(id).addEventListener('input',updatePreview);});
+if($('mClient'))$('mClient').addEventListener('change',()=>{if(editingId)return;const m=clientsMeta[$('mClient').value.trim()];if(m&&m.terms!==''&&m.terms!=null&&Number.isFinite(+m.terms)){$('mDue').value=addDaysISO($('mIssued').value||today(),+m.terms);updatePreview();}});
+// "More actions" menu closes after a choice or a click elsewhere, so it never covers the invoice list
+document.addEventListener('click',e=>{document.querySelectorAll('details.tools[open]').forEach(d=>{if(!d.contains(e.target)||(e.target.closest('.toolmenu')&&e.target.closest('button')))d.open=false;});});
+if($('undoBar')){$('undoBar').setAttribute('role','region');$('undoBar').setAttribute('aria-label','Undo');$('undoMsg').setAttribute('aria-live','polite');}
+
+
 // Reliable startup
 window._reachedEnd = true;
 setTimeout(function(){
