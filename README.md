@@ -84,20 +84,22 @@ The waitlist buttons send email to **paperledgerdesk@gmail.com**. To change it,
 edit `WAITLIST_EMAIL` in `config.js` and the same address in the two `mailto:`
 links in `index.html` (they are used if a visitor's browser has JavaScript turned off).
 
-## Feedback relay (one-tap "Send" in the app)
+## Feedback (one-tap "Send" in the app)
 
-In the app, **More › Settings › Feedback & suggestions › Send** posts the message straight to the team
-inbox through [FormSubmit](https://formsubmit.co) (no backend of our own). Only what the user types is
-sent: the message, an optional name and reply email, the app version, and (only if the user ticks
-the box) basic app info. Invoices,
-clients, amounts and settings are never sent. If sending fails or the device is offline, the note is
-kept on the device and retried automatically; emailing it by hand is offered as a last resort.
+In the app, **More › Settings › Feedback & suggestions › Send** posts the message privately to the team's own
+secure feedback inbox (the `feedback` Supabase Edge Function, `backend/supabase/functions/feedback`). Only what the
+user types is sent: the message (a typed name is added at the top), a category (Complaint, Suggestion, Bug report,
+Praise or Other), an optional reply email, the app version and, only if the user ticks the box, the page path
+(the server then also keeps the browser's user-agent). Invoices, clients, amounts and settings are never sent.
+If sending fails or the device is offline, the note is kept on the device and retried automatically; emailing it
+by hand is offered as a last resort.
 
 - The endpoint is `FEEDBACK_ENDPOINT` in `config.js`. The app is a single offline file and cannot read
   `config.js`, so `app/index.html` has the same value in its own `FEEDBACK_ENDPOINT` constant, and its
-  Content-Security-Policy allows `connect-src https://formsubmit.co` only. Change all three together.
-- **One-time activation:** the first real submission makes FormSubmit email paperledgerdesk@gmail.com
-  a confirmation link. Click it once; until then messages are not delivered.
+  Content-Security-Policy allows `connect-src https://zovatyzvqmszrgoacpum.supabase.co` only. Change all three together.
+- The function only accepts the origin `https://paperledgerdesk.github.io`. A copy of the app opened as a local
+  file (or from any other site) gets 403: the note stays saved on the device, the copy/email option is shown, and
+  it is not retried in the background (it is tried once on each app open, so it goes through when opened from the site).
 
 ## Important: what paying does and does not do today
 
