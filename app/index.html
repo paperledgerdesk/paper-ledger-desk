@@ -4,11 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Paper Ledger Desk</title>
-<meta name="description" content="The smartest way for freelancers to get paid.">
+<script>if(window.top!==window.self){document.documentElement.style.display='none';}</script>
+<meta name="description" content="Free, private invoicing for freelancers and small businesses. Runs in your browser; your data stays on your device.">
+<meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#1F4D3A">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; font-src 'none'; manifest-src blob:; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-nP8PhJ39bz5PLHFir0ELndwvzeCHsYEu6CJvc8zOpv4=' 'sha256-vX+fI0Xp2TpmbgKREFma0vRyHWMdV4GRiKdUXs417sw='; style-src 'unsafe-inline'; img-src data: blob:; font-src 'none'; manifest-src blob:; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
 <style>
 :root{--paper:#F4F0E6;--ink:#1C1915;--grove:#1F4D3A;--rust:#8F3D2C;--soft:#5C5348;--line:#D4CDBE;--white:#FFFcf7}
 body.dark{--paper:#1C1915;--ink:#F4F0E6;--grove:#7BAF8A;--rust:#E08A7A;--soft:#A89F90;--line:#3A342C;--white:#252019}
@@ -252,6 +254,7 @@ body.dark .linkbtn{color:inherit}
         <p><strong>Payments</strong> — paste your own payment link. No payment is processed here.</p>
         <p><strong>Integrity</strong> — review-only check. It does not change records.</p>
         <p style="margin-top:0.3rem;color:var(--soft)">Schema <span id="schemaNo"></span>. Single-file, local-first.</p>
+        <p id="ownerLine" style="margin-top:0.4rem;color:var(--soft);display:flex;align-items:center;gap:0.45rem"><img src="data:image/webp;base64,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" width="28" height="28" alt="VXR mark of XINGUAR" style="border-radius:3px;flex:none"><span>© 2026 XINGUAR · Xinguang Vita Renata Ventures &amp; Legacy</span></p>
       </div>
     </div>
   </section>
@@ -489,9 +492,12 @@ body.dark .linkbtn{color:inherit}
 <footer style="text-align:center;font-size:0.62rem;color:var(--soft);padding-top:0.5rem">Paper Ledger Desk · Month-end reconciliation · Forecast vs actual · <button type="button" class="linkbtn" id="footFeedback">Feedback &amp; suggestions</button></footer>
 
 <script>
+// v4.2: refuse to run inside a frame (clickjacking). Meta CSP cannot carry frame-ancestors, so this check is the protection.
+if(window.top!==window.self){document.documentElement.style.display='';document.body.textContent='';const p=document.createElement('p');p.style.cssText='font:16px system-ui;padding:2rem';p.textContent='Paper Ledger Desk does not run inside another page. ';const a=document.createElement('a');a.href=location.href;a.target='_top';a.rel='noopener';a.textContent='Open it directly';p.appendChild(a);document.body.appendChild(p);throw new Error('Paper Ledger Desk refused to run inside a frame');}
+
 window.onerror=function(msg,url,line){window._err=msg+' at '+line;return false;};
 const KEY='paperLedgerConsolidated38';
-const SCHEMA=39;
+const SCHEMA=40;
 window._scriptStarted = true;
 let invoices=[], clientsMeta={}, expenses=[], transactions=[], editingId=null, payingId=null, actionTarget=null, checklistDone=new Set(), followups=[], activity=[], wipNotes=[], workItems=[], presets=[], settings={opening:0,reserve:0,whatif:0,dark:false,tolPct:10,tolAbs:5,nextNum:1,defaultTerms:30,business:'',lastBackup:null,weeklyTarget:0,currency:'ZAR',defaultTax:0,vatNo:'',regNo:'',address:'',email:'',phone:'',bank:'',payLink:'',payProvider:'auto',onboarded:false,createdAt:null,nagSnooze:0}, pendingImport=null, selected=new Set();
 const $=id=>document.getElementById(id);
@@ -652,8 +658,8 @@ function load(){
   window._loaded = true;
   let firstRun=false;
   try{
-    const raw=JSON.parse(localStorage.getItem(KEY)||'null');
-    if(raw&&raw.invoices){applyPayload(raw);if(raw.invoices.length&&!settings.onboarded){settings.onboarded=true;settings.createdAt=settings.createdAt||new Date().toISOString();}}
+    const rawStr=localStorage.getItem(KEY);const raw=JSON.parse(rawStr||'null');
+    if(raw&&raw.invoices){const mig=migrateSnapshot(rawStr,raw);applyPayload(raw);if(mig!=null)log('upgrade','Data format upgraded from '+mig+' to '+SCHEMA+' (v'+APP_VERSION+'); the previous data is kept as a pinned snapshot in More › Backups');if(raw.invoices.length&&!settings.onboarded){settings.onboarded=true;settings.createdAt=settings.createdAt||new Date().toISOString();}}
     else firstRun=true;
   }catch{toast('Stored data could not be read — restore a snapshot from More › Backups');snapPaused=true;}
   invoices.forEach(i=>{if(!i.lines)i.lines=[{desc:'Work',qty:1,rate:0}];if(!i.payments)i.payments=[];if(!i.type)i.type='invoice';if(!i.currency)i.currency='USD';if(i.issued===undefined)i.issued=null;if(i.payProvider===undefined)i.payProvider='';if(i.discount===undefined)i.discount=0;if(i.cost===undefined)i.cost=0;if(i.recurring===undefined)i.recurring=false;if(i.plan===undefined)i.plan=false;if(i.instalments===undefined)i.instalments=1;if(i.disputed===undefined)i.disputed=false;if(i.lastContact===undefined)i.lastContact=null;if(i.manualPriority===undefined)i.manualPriority=null;if(i.writtenOff===undefined)i.writtenOff=false;if(i.tags===undefined)i.tags='';if(i.fileRef===undefined)i.fileRef='';if(i.contacts===undefined)i.contacts=[];if(i.payLink===undefined)i.payLink='';if(i.instructions===undefined)i.instructions='';if(i.awaitingClarification===undefined)i.awaitingClarification=false;});
@@ -706,7 +712,7 @@ function renderCommand_v3(){
     <div class="cmd-card"><strong>Received</strong><br>${sumByCur(invoices,paid)}</div>
   `;
   const items=todayF.slice(0,5);
-  $('checklist').innerHTML=items.length?items.map(i=>`<label><input type="checkbox" data-id="${i.id}" ${checklistDone.has(i.id)?'checked':''}> ${escape(i.client)} (${escape(i.ref)}) — ${escape(recommended(i))} (${priorityScore(i).score})</label>`).join(''):'<div style="font-size:0.76rem;color:var(--soft)">Nothing due today.</div>';
+  $('checklist').innerHTML=items.length?items.map(i=>`<label><input type="checkbox" data-id="${escape(i.id)}" ${checklistDone.has(i.id)?'checked':''}> ${escape(i.client)} (${escape(i.ref)}) — ${escape(recommended(i))} (${priorityScore(i).score})</label>`).join(''):'<div style="font-size:0.76rem;color:var(--soft)">Nothing due today.</div>';
   $('checklist').querySelectorAll('input').forEach(cb=>cb.onchange=e=>{const id=+e.target.dataset.id;if(e.target.checked)checklistDone.add(id);else checklistDone.delete(id);save();updateProgress(items.length);});
   updateProgress(items.length);
   renderBriefing();
@@ -741,7 +747,7 @@ function renderPriority(){
     const rem=remaining(i);
     const ps=priorityScore(i);
     const nextInst=nextInstalmentDue(i);
-    return `<div style="display:flex;justify-content:space-between;padding:0.3rem 0;border-bottom:1px solid var(--line);font-size:0.78rem"><div><strong>${escape(i.client)}</strong> ${escape(i.ref)}<br><span class="reason">Score ${ps.score} · ${ps.reason} · ${recommended(i)}${nextInst?' · next inst '+nextInst:''}</span></div><div>${rem<0?'<span class="overpay">Credit '+money(-rem,i.currency)+'</span>':money(rem,i.currency)} <button class="btn small secondary" onclick="openAction(${i.id})">Action</button> <button class="btn small secondary" onclick="openPay(${i.id})">Pay</button>${(i.payments&&i.payments.length)?' <button class="btn small secondary" onclick="cancelLastPayment('+i.id+')">Delete payment</button>':''}</div></div>`;
+    return `<div style="display:flex;justify-content:space-between;padding:0.3rem 0;border-bottom:1px solid var(--line);font-size:0.78rem"><div><strong>${escape(i.client)}</strong> ${escape(i.ref)}<br><span class="reason">Score ${ps.score} · ${ps.reason} · ${recommended(i)}${nextInst?' · next inst '+nextInst:''}</span></div><div>${rem<0?'<span class="overpay">Credit '+money(-rem,i.currency)+'</span>':money(rem,i.currency)} <button class="btn small secondary" data-act="openAction" data-id="${escape(i.id)}">Action</button> <button class="btn small secondary" data-act="openPay" data-id="${escape(i.id)}">Pay</button>${(i.payments&&i.payments.length)?' <button class="btn small secondary" data-act="cancelLastPayment" data-id="'+escape(i.id)+'">Delete payment</button>':''}</div></div>`;
   }).join('')||'<div class="empty">None</div>';
 }
 function renderSequence(){
@@ -756,7 +762,7 @@ function renderSequence(){
   const html=stages.map(s=>{
     const dt=new Date();dt.setDate(dt.getDate()+s.days);
     const ds=localISO(dt);
-    return `<div style="font-size:0.74rem;padding:0.15rem 0">${s.label} → ${ds} <button class="btn small secondary" onclick="setNext(${top.id},${jsArg(ds)})">Set</button></div>`;
+    return `<div style="font-size:0.74rem;padding:0.15rem 0">${s.label} → ${ds} <button class="btn small secondary" data-act="setNext" data-args="${escape(JSON.stringify([top.id,ds]))}">Set</button></div>`;
   }).join('');
   $('sequence').innerHTML='<div style="font-size:0.7rem;color:var(--soft)">Suggested sequence for '+escape(top.client)+' · '+escape(top.ref)+'</div>'+html;
 }
@@ -792,7 +798,7 @@ function renderWeekly_v3(){
   const received=pays.filter(p=>p.currency===dc).reduce((a,p)=>a+(+p.amount||0),0);
   const other=pays.filter(p=>p.currency!==dc);
   const pct=target>0?Math.min(100,Math.round(received/target*100)):0;
-  $('weeklyTarget').innerHTML=`<div style="font-size:0.7rem;color:var(--soft)">Weekly target (${dc})</div><input type="number" id="weeklyTargetInput" aria-label="Weekly collection target" value="${target}" step="100" style="width:100px;margin:0.2rem 0"><div class="progress"><div style="width:${pct}%"></div></div><div class="reason">${money(received,dc)} of ${money(target,dc)}${other.length?' · also received '+sumCurPairs(other.map(p=>[p.currency,+p.amount||0])):''}</div>`;
+  $('weeklyTarget').innerHTML=`<div style="font-size:0.7rem;color:var(--soft)">Weekly target (${dc})</div><input type="number" id="weeklyTargetInput" aria-label="Weekly collection target" value="${escape(target)}" step="100" style="width:100px;margin:0.2rem 0"><div class="progress"><div style="width:${escape(pct)}%"></div></div><div class="reason">${money(received,dc)} of ${money(target,dc)}${other.length?' · also received '+sumCurPairs(other.map(p=>[p.currency,+p.amount||0])):''}</div>`;
   if($('weeklyTargetInput'))$('weeklyTargetInput').oninput=()=>{settings.weeklyTarget=+$('weeklyTargetInput').value||0;save();renderWeekly();};
 }
 function doneToday(){
@@ -807,7 +813,7 @@ function renderCollectionsProgress(){
   allPayments().filter(p=>(p.date||'')>=startStr).forEach(p=>{rec[p.currency]=(rec[p.currency]||0)+(+p.amount||0);});
   invoices.filter(isOpen).filter(i=>(i.promiseDate||i.due)>=startStr).forEach(i=>{const c=curOf(i);exp[c]=(exp[c]||0)+Math.max(0,remaining(i));});
   const curs=[...new Set([...Object.keys(rec),...Object.keys(exp)])];if(!curs.length)curs.push(defCur());
-  return curs.map(c=>{const r=rec[c]||0,e=exp[c]||0;const pct=e>0?Math.min(100,Math.round(r/e*100)):100;return `<div style="margin-top:0.4rem;font-size:0.74rem">This week: received ${money(r,c)} of ~${money(e,c)} expected <div class="progress"><div style="width:${pct}%"></div></div></div>`;}).join('');
+  return curs.map(c=>{const r=rec[c]||0,e=exp[c]||0;const pct=e>0?Math.min(100,Math.round(r/e*100)):100;return `<div style="margin-top:0.4rem;font-size:0.74rem">This week: received ${money(r,c)} of ~${money(e,c)} expected <div class="progress"><div style="width:${escape(pct)}%"></div></div></div>`;}).join('');
 }
 function renderPromises(){
   const list=invoices.filter(i=>i.promiseDate&&isOpen(i));
@@ -872,7 +878,7 @@ function renderTable(){
   $('emptyHint').style.display=invoices.length===0?'block':'none';
   $('table').innerHTML=rows.map(i=>{
     const s=statusOf(i);const rem=remaining(i);const ps=priorityScore(i);
-    return `<tr><td><input type="checkbox" class="rowchk" data-id="${i.id}" ${selected.has(i.id)?'checked':''}></td><td>${escape(i.ref||'—')}${i.recurring?' ↻':''}</td><td><strong>${escape(i.client)}</strong>${i.tags?'<br><span class="reason">'+escape(i.tags)+'</span>':''}</td><td>${money(total(i),i.currency)}<br><small>${rem<0?'<span class="overpay">Credit '+money(-rem,i.currency)+'</span>':'Rem '+money(rem,i.currency)}</small></td><td>${escape(i.due)}</td><td>${escape(i.nextAction||'—')}</td><td>${ps.score}</td><td><span class="status ${s}">${s}</span></td><td>${i.type==='quote'?'<button class="btn small" onclick="convert('+i.id+')">Convert</button>':''}<button class="btn small secondary" onclick="duplicate(${i.id})">Dup</button> <button class="btn small secondary" onclick="openPay(${i.id})">Pay</button> <button class="btn small secondary" onclick="openAction(${i.id})">Action</button> <button class="btn small secondary" onclick="openEdit(${i.id})">Edit</button> <button class="btn small secondary" onclick="printInvoice(${i.id})">Print</button> <button class="btn small secondary" onclick="downloadInvoicePdf(${i.id})">PDF</button> <button class="btn small secondary" onclick="sendInvoice(${i.id})">Send</button> <button class="btn small secondary" onclick="logContact(${i.id})">Contact</button> <button class="btn small secondary" onclick="showContacts(${i.id})">History</button> <button class="btn small secondary" onclick="statement(${jsArg(i.client)})">Stmt</button> <button class="btn small secondary danger" onclick="deleteInvoice(${i.id})">Del</button></td></tr>`;
+    return `<tr><td><input type="checkbox" class="rowchk" data-id="${escape(i.id)}" ${selected.has(i.id)?'checked':''}></td><td>${escape(i.ref||'—')}${i.recurring?' ↻':''}</td><td><strong>${escape(i.client)}</strong>${i.tags?'<br><span class="reason">'+escape(i.tags)+'</span>':''}</td><td>${money(total(i),i.currency)}<br><small>${rem<0?'<span class="overpay">Credit '+money(-rem,i.currency)+'</span>':'Rem '+money(rem,i.currency)}</small></td><td>${escape(i.due)}</td><td>${escape(i.nextAction||'—')}</td><td>${ps.score}</td><td><span class="status ${escape(s)}">${s}</span></td><td>${i.type==='quote'?'<button class="btn small" data-act="convert" data-id="'+escape(i.id)+'">Convert</button>':''}<button class="btn small secondary" data-act="duplicate" data-id="${escape(i.id)}">Dup</button> <button class="btn small secondary" data-act="openPay" data-id="${escape(i.id)}">Pay</button> <button class="btn small secondary" data-act="openAction" data-id="${escape(i.id)}">Action</button> <button class="btn small secondary" data-act="openEdit" data-id="${escape(i.id)}">Edit</button> <button class="btn small secondary" data-act="printInvoice" data-id="${escape(i.id)}">Print</button> <button class="btn small secondary" data-act="downloadInvoicePdf" data-id="${escape(i.id)}">PDF</button> <button class="btn small secondary" data-act="sendInvoice" data-id="${escape(i.id)}">Send</button> <button class="btn small secondary" data-act="logContact" data-id="${escape(i.id)}">Contact</button> <button class="btn small secondary" data-act="showContacts" data-id="${escape(i.id)}">History</button> <button class="btn small secondary" data-act="statement" data-arg="${escape(i.client)}">Stmt</button> <button class="btn small secondary danger" data-act="deleteInvoice" data-id="${escape(i.id)}">Del</button></td></tr>`;
   }).join('');
   $('table').querySelectorAll('.rowchk').forEach(cb=>cb.onchange=e=>{const id=+e.target.dataset.id;if(e.target.checked)selected.add(id);else selected.delete(id);});
 }
@@ -903,7 +909,7 @@ function renderCash(){
   const f=scen==='stress'?1:0.5;
   const proj=c=>(c===dc?opening:0)+B[c][30]-E[c]*f;
   const projDc=proj(dc);const alert=reserve>0&&projDc<reserve?' <span style="color:var(--rust)">Below reserve</span>':'';
-  $('cash').innerHTML=`<div class="tablewrap" tabindex="0" role="region" aria-label="Cash forecast by currency"><table class="curtable"><thead><tr><th>Currency</th><th>Next 7</th><th>Next 14</th><th>Next 30</th><th>Next 60</th><th>Next 90</th><th>Known expenses</th><th>Projected (30d)</th></tr></thead><tbody>${curs.map(c=>`<tr data-cur="${c}"><td data-label="Currency"><strong>${c}</strong>${c===dc?' (opening '+money(opening,c)+')':''}</td>${[7,14,30,60,90].map(p=>`<td data-label="Next ${p} days">${money(B[c][p],c)}</td>`).join('')}<td data-label="Known expenses">${money(E[c],c)}</td><td data-label="Projected (30d)"><strong>${money(proj(c),c)}</strong>${c===dc?alert:''}</td></tr>`).join('')}</tbody></table></div>
+  $('cash').innerHTML=`<div class="tablewrap" tabindex="0" role="region" aria-label="Cash forecast by currency"><table class="curtable"><thead><tr><th>Currency</th><th>Next 7</th><th>Next 14</th><th>Next 30</th><th>Next 60</th><th>Next 90</th><th>Known expenses</th><th>Projected (30d)</th></tr></thead><tbody>${curs.map(c=>`<tr data-cur="${escape(c)}"><td data-label="Currency"><strong>${c}</strong>${c===dc?' (opening '+money(opening,c)+')':''}</td>${[7,14,30,60,90].map(p=>`<td data-label="Next ${escape(p)} days">${money(B[c][p],c)}</td>`).join('')}<td data-label="Known expenses">${money(E[c],c)}</td><td data-label="Projected (30d)"><strong>${money(proj(c),c)}</strong>${c===dc?alert:''}</td></tr>`).join('')}</tbody></table></div>
     <p class="reason" style="margin-top:0.3rem">${scen==='stress'?'Stress: +21d and full expenses. ':scen==='delayed'?'Delayed +14d. ':scen==='best'?'Best –7d. ':'Expected. '}${preset?preset+' preset applied. ':''}${whatif?'What-if +'+plural(whatif,'day')+'. ':''}Each currency is projected separately; opening cash and reserve are in ${dc}. Estimates only — not cash in bank.</p>`;
   $('timeline').innerHTML='<div style="font-size:0.76rem;margin-bottom:0.3rem">Projected balance path (collections − '+(f===1?'all':'half')+' expenses by day 30)</div>'+[7,14,30,60,90].map(p=>`<div class="safety">Day ${p}: ${curs.map(c=>money((c===dc?opening:0)+B[c][p]-(p>=30?E[c]*f:0),c)).join(' · ')}</div>`).join('');
 }
@@ -1039,7 +1045,7 @@ function showContacts(id){
   if(!inv||!(inv.contacts||[]).length){toast('No contacts logged');return;}
   const w=openWin();
   w.document.write('<!DOCTYPE html><html><head><title>Contacts '+escape(inv.ref)+'</title><style>body{font-family:Georgia,serif;padding:1.5rem;background:#F4F0E6}</style></head><body><h1>Contacts — '+escape(inv.ref)+'</h1>'+inv.contacts.map(c=>'<p><strong>'+escape(c.date)+'</strong><br>'+escape(c.note)+'</p>').join('')+'</body></html>');
-  w.document.close();
+  w.document.close();bindPrint(w);
 }
 function renderHealth(){
   const open=invoices.filter(i=>isOpen(i));
@@ -1078,7 +1084,7 @@ function renderReview(){
 }
 function populateNotes(){
   const open=invoices.filter(i=>isOpen(i));
-  $('noteSelect').innerHTML='<option value="">— select —</option>'+open.map(i=>`<option value="${i.id}">${escape(i.ref)} · ${escape(i.client)}</option>`).join('');
+  $('noteSelect').innerHTML='<option value="">— select —</option>'+open.map(i=>`<option value="${escape(i.id)}">${escape(i.ref)} · ${escape(i.client)}</option>`).join('');
 }
 function escape(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function jsArg(v){return escape(JSON.stringify(v));}
@@ -1117,7 +1123,7 @@ function dailySheet(){
   ${promises.length?promises.map(i=>`<p>${escape(i.client)} · ${escape(i.ref)} · ${escape(i.promiseDate)} · ${money(Math.max(0,remaining(i)),i.currency)}</p>`).join(''):'<p>None</p>'}
   <p style="margin-top:1.5rem;font-size:0.75rem">Print or save as PDF. Estimates only.</p>
   </body></html>`);
-  w.document.close();
+  w.document.close();bindPrint(w);
   log('daily','Opened daily action sheet');
   save();
 }
@@ -1147,7 +1153,7 @@ function statement(client){
   const rec=list.reduce((s,i)=>s+paid(i),0);
   const w=openWin();
   w.document.write(`<!DOCTYPE html><html><head><title>Statement — ${escape(client)}</title><style>body{font-family:Georgia,serif;padding:1.5rem;background:#F4F0E6;color:#1C1915}table{width:100%;border-collapse:collapse;font-size:0.85rem}th,td{padding:0.35rem;border-bottom:1px solid #D4CDBE;text-align:left}</style></head><body>${PRINT_BAR}<h1>Statement</h1><p><strong>${escape(settings.business||'Paper Ledger Desk')}</strong>${settings.vatNo?' · VAT No '+escape(settings.vatNo):''}<br>${escape(settings.address||'').replace(/\n/g,'<br>')}</p><p>Date: ${today()}</p><p>${escape(client)}</p><p>Open: ${sumByCur(list.filter(isOpen),i=>Math.max(0,remaining(i)))} · Received: ${sumByCur(list,paid)}</p><table><thead><tr><th>Ref</th><th>Due</th><th>Total</th><th>Remaining</th><th>Status</th></tr></thead><tbody>${list.map(i=>`<tr><td>${escape(i.ref)}</td><td>${escape(i.due)}</td><td>${money(total(i),i.currency)}</td><td>${money(Math.max(0,remaining(i)),i.currency)}</td><td>${statusOf(i)}</td></tr>`).join('')}</tbody></table><p style="margin-top:1rem;font-size:0.75rem">Generated by Paper Ledger Desk. Print or save as PDF from the browser.</p></body></html>`);
-  w.document.close();
+  w.document.close();bindPrint(w);
   log('statement','Statement for '+client);
   save();
 }
@@ -1166,7 +1172,7 @@ function openEdit_v3(id){
   renderLines(inv.lines||[]);updatePreview();$('modal').classList.add('show');
 }
 function renderLines(lines){
-  $('lines').innerHTML=lines.map((l,i)=>`<div class="line-item"><input placeholder="Description" value="${escape(l.desc||'')}" data-d="${i}"><input type="number" value="${escape(l.qty||1)}" data-q="${i}" step="0.01"><input type="number" value="${escape(l.rate||0)}" data-r="${i}" step="0.01"><input type="number" value="${escape(l.hours||'')}" data-h="${i}" placeholder="Hrs" step="0.1"><button class="btn small secondary" onclick="this.parentElement.remove();updatePreview()">×</button></div>`).join('');
+  $('lines').innerHTML=lines.map((l,i)=>`<div class="line-item"><input placeholder="Description" value="${escape(l.desc||'')}" data-d="${escape(i)}"><input type="number" value="${escape(l.qty||1)}" data-q="${escape(i)}" step="0.01"><input type="number" value="${escape(l.rate||0)}" data-r="${escape(i)}" step="0.01"><input type="number" value="${escape(l.hours||'')}" data-h="${escape(i)}" placeholder="Hrs" step="0.1"><button class="btn small secondary" data-act="rmLine">×</button></div>`).join('');
   $('lines').querySelectorAll('input').forEach(el=>el.addEventListener('input',updatePreview));
 }
 function updatePreview(){
@@ -1182,7 +1188,7 @@ function updatePreview(){
   $('preview').style.whiteSpace='pre-line';
   $('preview').textContent=`Sub ${money(sub,cu)} − disc ${money(disc,cu)} + tax ${money(tax,cu)} = ${money(tot,cu)}\nMargin ${m.toFixed(1)}% · ${inst} instalment${inst>1?'s':''} of ${money(tot/inst,cu)}`;
 }
-$('addLine').onclick=()=>{const d=document.createElement('div');d.className='line-item';d.innerHTML=`<input placeholder="Description" data-d><input type="number" value="1" data-q step="0.01"><input type="number" value="0" data-r step="0.01"><input type="number" placeholder="Hrs" data-h step="0.1"><button class="btn small secondary" onclick="this.parentElement.remove();updatePreview()">×</button>`;$('lines').appendChild(d);d.querySelectorAll('input').forEach(el=>el.addEventListener('input',updatePreview));};
+$('addLine').onclick=()=>{const d=document.createElement('div');d.className='line-item';d.innerHTML=`<input placeholder="Description" data-d><input type="number" value="1" data-q step="0.01"><input type="number" value="0" data-r step="0.01"><input type="number" placeholder="Hrs" data-h step="0.1"><button class="btn small secondary" data-act="rmLine">×</button>`;$('lines').appendChild(d);d.querySelectorAll('input').forEach(el=>el.addEventListener('input',updatePreview));};
 
 function openPay_v3(id){editingPay=null;$('payTitle').textContent='Record payment';payingId=id;const inv=invoices.find(x=>x.id===id);$('payAmt').value=Math.max(0,remaining(inv)).toFixed(2);$('payDate').value=today();$('payNote').value='';$('payRef').value='';$('payMethod').value='Bank transfer';$('payModal').classList.add('show');}
 function openAction(id){actionTarget=id;$('actionNote').value='';$('actionModal').classList.add('show');}
@@ -1254,8 +1260,8 @@ function printInvoice(id){
   .pay{margin-top:22px;line-height:1.5}.foot{margin-top:30px;font-size:10px;color:#5C5348}.noprint{margin-bottom:16px}.noprint button{padding:6px 12px}
   img.logo{max-height:70px;max-width:220px;display:block;margin-bottom:8px}@media print{.noprint{display:none}body{padding:0}}
   </style></head><body>
-  <div class="noprint"><button onclick="window.print()">Print / Save as PDF</button></div>
-  <div class="top"><div class="biz">${logo?'<img class="logo" alt="logo" src="'+(logo.png||logo.data)+'">':''}<strong>${escape(settings.business||'Your business')}</strong><br>${nl(settings.address)}${settings.email?'<br>'+escape(settings.email):''}${settings.phone?'<br>'+escape(settings.phone):''}${settings.vatNo?'<br>VAT No: '+escape(settings.vatNo):''}${settings.regNo?'<br>Reg No: '+escape(settings.regNo):''}</div>
+  <div class="noprint"><button data-pld-print>Print / Save as PDF</button></div>
+  <div class="top"><div class="biz">${logo?'<img class="logo" alt="logo" src="'+escape((logo.png||logo.data))+'">':''}<strong>${escape(settings.business||'Your business')}</strong><br>${nl(settings.address)}${settings.email?'<br>'+escape(settings.email):''}${settings.phone?'<br>'+escape(settings.phone):''}${settings.vatNo?'<br>VAT No: '+escape(settings.vatNo):''}${settings.regNo?'<br>Reg No: '+escape(settings.regNo):''}</div>
   <div><h1>${escape(title)}</h1><table class="meta"><tr><td>${q?'Quote no':'Invoice no'}</td><td><strong>${escape(inv.ref)}</strong></td></tr><tr><td>Date</td><td>${escape(inv.issued||today())}</td></tr><tr><td>${q?'Valid until':'Due date'}</td><td>${escape(q?(inv.expiry||'—'):inv.due)}</td></tr><tr><td>Currency</td><td>${escape(c)}</td></tr></table></div></div>
   <div class="bill"><span style="color:#5C5348">${q?'Quote for':'Bill to'}</span><br><strong>${escape(inv.client)}</strong>${m.contact?'<br>'+escape(m.contact):''}${m.address?'<br>'+nl(m.address):''}${m.email?'<br>'+escape(m.email):''}${m.vat?'<br>VAT No: '+escape(m.vat):''}${inv.project?'<br>Re: '+escape(inv.project):''}</div>
   <table class="lines"><thead><tr><th>Description</th><th class="r">Qty</th><th class="r">Rate</th><th class="r">Amount</th></tr></thead><tbody>${lines}</tbody></table>
@@ -1263,7 +1269,7 @@ function printInvoice(id){
   <div class="pay">${link?'<strong>Pay online with '+escape(providerLabel(link,inv.payProvider||settings.payProvider))+':</strong> <a href="'+escape(link)+'" rel="noopener">'+escape(link)+'</a><br>':''}${(inv.instructions||settings.bank)?'<strong>Payment details</strong><br>'+nl(inv.instructions||settings.bank)+'<br>':''}${q?'':'Please use <strong>'+escape(inv.ref)+'</strong> as your payment reference.'}</div>
   <div class="foot">Generated by Paper Ledger Desk. This app does not process payments.</div>
   </body></html>`);
-  w.document.close();
+  w.document.close();bindPrint(w);
 }
 function logContact(id){
   const inv=invoices.find(x=>x.id===id);
@@ -1307,8 +1313,8 @@ function integrityCheck(){
   if(Object.keys(byCur).length>1) issues.push({sev:'info',msg:'Multiple currencies in open invoices — totals are shown separately'});
   if(!issues.length) issues.push({sev:'ok',msg:'No issues found'});
   const w=openWin();
-  w.document.write('<!DOCTYPE html><html><head><title>Integrity</title><style>body{font-family:Georgia,serif;padding:1.5rem;background:#F4F0E6} .error{color:#8F3D2C} .warn{color:#8F3D2C} .ok{color:#1F4D3A}</style></head><body><h1>Financial integrity</h1>'+issues.map(x=>'<p class="'+x.sev+'">'+x.sev.toUpperCase()+': '+escape(x.msg)+'</p>').join('')+'<p style="margin-top:1rem;font-size:0.75rem">Review only. No records were changed.</p></body></html>');
-  w.document.close();
+  w.document.write('<!DOCTYPE html><html><head><title>Integrity</title><style>body{font-family:Georgia,serif;padding:1.5rem;background:#F4F0E6} .error{color:#8F3D2C} .warn{color:#8F3D2C} .ok{color:#1F4D3A}</style></head><body><h1>Financial integrity</h1>'+issues.map(x=>'<p class="'+escape(x.sev)+'">'+x.sev.toUpperCase()+': '+escape(x.msg)+'</p>').join('')+'<p style="margin-top:1rem;font-size:0.75rem">Review only. No records were changed.</p></body></html>');
+  w.document.close();bindPrint(w);
 }
 function runSelfTests(){
   const results=[];
@@ -1370,7 +1376,7 @@ safeOn('save',saveInv);safeOn('cancel',close);safeOn('confirmPay',confirmPay);sa
 safeOn('addExp',()=>openExpense(null));
 safeOn('importCsvBtn',()=>$('csvFile').click());
 $('csvFile').onchange=e=>{
-  const f=e.target.files[0];if(!f)return;
+  const f=e.target.files[0];if(!f)return;if(f.size>MAX_IMPORT_BYTES){e.target.value='';toast('That file is too large to import ('+Math.round(f.size/1048576)+' MB; the limit is 5 MB). Nothing was changed.');return;}
   const r=new FileReader();
   r.onload=ev=>importCsv(ev.target.result);
   r.readAsText(f);e.target.value='';
@@ -1507,7 +1513,7 @@ function renderBackups(){
   if(!$('snapList'))return;
   const snaps=getSnaps();
   $('lastExported').textContent=settings.lastBackup?('Last exported '+new Date(settings.lastBackup).toLocaleString()):'Never exported';
-  $('snapList').innerHTML=snaps.length?snaps.map((s,k)=>`<div class="safety snaprow"><strong>${escape(new Date(s.at).toLocaleString())}</strong> · ${plural(s.n,'invoice')} · ${Math.round(s.data.length/1024)} KB <button class="btn small secondary" onclick="restoreSnapshot(${k})">Restore</button></div>`).join(''):'<div class="empty">No snapshots yet.</div>';
+  $('snapList').innerHTML=snaps.length?snaps.map((s,k)=>`<div class="safety snaprow"><strong>${escape(new Date(s.at).toLocaleString())}</strong>${s.pin?' · '+escape(s.label||'Kept before upgrade'):''} · ${plural(s.n,'invoice')} · ${Math.round(s.data.length/1024)} KB <button class="btn small secondary" data-act="restoreSnapshot" data-id="${escape(k)}">Restore</button></div>`).join(''):'<div class="empty">No snapshots yet.</div>';
 }
 function restoreSnapshot(k){
   const snaps=getSnaps();const s=snaps[k];if(!s)return;
@@ -1596,13 +1602,13 @@ function renderClientsV2(){
     <span style="float:right">Open ${sumByCur(list.filter(isOpen),i=>Math.max(0,remaining(i)))}</span><br>
     <span class="reason">${[m.contact,m.email,m.phone,m.vat?'VAT '+m.vat:'',m.terms!==''&&m.terms!=null?m.terms+(isNaN(+m.terms)?'':' days'):'',m.currency].filter(Boolean).map(escape).join(' · ')||'No contact details'}${m.notes?' · note: '+escape(m.notes):''}</span><br>
     <span class="reason">${h.notes}${avg!==null?' · ~'+avg+' days late'+(days.length<2?' (limited)':''):''}${conc>40?' · '+conc+'% of open':''} · last contact ${escape(last)} · ${rel.note}</span><br>
-    <button class="btn small secondary" onclick="openClient(${jsArg(n)})">Edit</button>
-    <button class="btn small secondary" onclick="statement(${jsArg(n)})">Statement</button>
-    <button class="btn small secondary" onclick="downloadStatementPdf(${jsArg(n)})">Statement PDF</button>
-    <button class="btn small secondary" onclick="sendStatement(${jsArg(n)})">Send statement</button>
-    ${m.email?'<button class="btn small secondary" onclick="copyEmail('+jsArg(n)+')">Copy email</button>':''}
-    ${m.archived?`<button class="btn small secondary" onclick="archiveClient(${jsArg(n)},false)">Unarchive</button>`:`<button class="btn small secondary" onclick="archiveClient(${jsArg(n)},true)">Archive</button>`}
-    <button class="btn small secondary danger" onclick="deleteClient(${jsArg(n)})">Delete</button></div>`).join('')||'<div class="empty">No clients yet. Add one, or create an invoice.</div>';
+    <button class="btn small secondary" data-act="openClient" data-arg="${escape(n)}">Edit</button>
+    <button class="btn small secondary" data-act="statement" data-arg="${escape(n)}">Statement</button>
+    <button class="btn small secondary" data-act="downloadStatementPdf" data-arg="${escape(n)}">Statement PDF</button>
+    <button class="btn small secondary" data-act="sendStatement" data-arg="${escape(n)}">Send statement</button>
+    ${m.email?'<button class="btn small secondary" data-act="copyEmail" data-arg="'+escape(n)+'">Copy email</button>':''}
+    ${m.archived?`<button class="btn small secondary" data-act="archiveClient" data-args="${escape(JSON.stringify([n,false]))}">Unarchive</button>`:`<button class="btn small secondary" data-act="archiveClient" data-args="${escape(JSON.stringify([n,true]))}">Archive</button>`}
+    <button class="btn small secondary danger" data-act="deleteClient" data-arg="${escape(n)}">Delete</button></div>`).join('')||'<div class="empty">No clients yet. Add one, or create an invoice.</div>';
   populateClientList();
 }
 function exportClients(){
@@ -1656,13 +1662,13 @@ function renderExpenses(){
   $('expList').innerHTML=expenses.length?expenses.map(e=>{
     let next='';
     if(e.recurring&&isISODate(e.date)){let n=e.date,g=0;const day=+e.date.slice(8,10);while(n<today()&&g<600){g++;n=addMonthsDay(e.date,g,day);}next=' · next '+n;}
-    return `<div class="exprow" style="padding:0.3rem 0;border-bottom:1px solid var(--line);font-size:0.76rem"><strong>${escape(e.desc)}</strong> ${money(e.amount,curOf(e))} · ${escape(e.date)}${e.recurring?' ↻':''}${next}<br><span class="reason">${escape(e.category||'')}</span> <button class="btn small secondary" onclick="openExpense(${e.id})">Edit</button> <button class="btn small secondary danger" onclick="deleteExpense(${e.id})">Delete</button></div>`;
+    return `<div class="exprow" style="padding:0.3rem 0;border-bottom:1px solid var(--line);font-size:0.76rem"><strong>${escape(e.desc)}</strong> ${money(e.amount,curOf(e))} · ${escape(e.date)}${e.recurring?' ↻':''}${next}<br><span class="reason">${escape(e.category||'')}</span> <button class="btn small secondary" data-act="openExpense" data-id="${escape(e.id)}">Edit</button> <button class="btn small secondary danger" data-act="deleteExpense" data-id="${escape(e.id)}">Delete</button></div>`;
   }).join(''):'<div class="empty">No expenses yet. Add commitments that affect cash forecasts.</div>';
 }
 let editingWork=null;
 function renderWork(){
   const ready=workItems.filter(w=>!w.invoiced);
-  $('workList').innerHTML=ready.length?ready.map(w=>`<div class="workrow" style="padding:0.25rem 0;border-bottom:1px solid var(--line);font-size:0.76rem"><strong>${escape(w.client)}</strong> ${escape(w.desc)} · ${money(w.amount,curOf(w))} <button class="btn small" onclick="invoiceWork(${w.id})">Invoice</button> <button class="btn small secondary" onclick="openWork(${w.id})">Edit</button> <button class="btn small secondary danger" onclick="deleteWork(${w.id})">Delete</button></div>`).join(''):'<div class="empty">No uninvoiced work.</div>';
+  $('workList').innerHTML=ready.length?ready.map(w=>`<div class="workrow" style="padding:0.25rem 0;border-bottom:1px solid var(--line);font-size:0.76rem"><strong>${escape(w.client)}</strong> ${escape(w.desc)} · ${money(w.amount,curOf(w))} <button class="btn small" data-act="invoiceWork" data-id="${escape(w.id)}">Invoice</button> <button class="btn small secondary" data-act="openWork" data-id="${escape(w.id)}">Edit</button> <button class="btn small secondary danger" data-act="deleteWork" data-id="${escape(w.id)}">Delete</button></div>`).join(''):'<div class="empty">No uninvoiced work.</div>';
 }
 function invoiceWork(id){
   const w=workItems.find(x=>x.id===id);
@@ -1680,18 +1686,18 @@ function saveWorkEdit(){const w=workItems.find(x=>x.id===editingWork);if(!w)retu
 function deleteWork(id){const w=workItems.find(x=>x.id===id);if(!w)return;if(!confirm('Delete work item "'+w.desc+'" for '+w.client+'?'))return;withUndo('Deleted work item '+w.desc,()=>{workItems=workItems.filter(x=>x.id!==id);});}
 function deleteTransaction(k){const t=transactions[k];if(!t)return;if(!confirm('Delete bank line '+t.date+' '+money(t.amount,curOf(t))+'?'))return;withUndo('Deleted bank line '+t.date,()=>{transactions.splice(k,1);});}
 function deleteWip(k){const n=wipNotes[k];if(!n)return;if(!confirm('Delete this WIP note?'))return;withUndo('Deleted WIP note',()=>{wipNotes.splice(k,1);});}
-function renderWip(){$('wipList').innerHTML=wipNotes.length?wipNotes.map((n,i)=>`<div style="padding:0.3rem 0;border-bottom:1px solid var(--line);font-size:0.76rem">${escape(n.text)}<br><span class="reason">${escape(n.date)}</span> <button class="btn small secondary danger" onclick="deleteWip(${i})">Delete</button></div>`).join(''):'<div class="empty">No WIP notes.</div>';}
+function renderWip(){$('wipList').innerHTML=wipNotes.length?wipNotes.map((n,i)=>`<div style="padding:0.3rem 0;border-bottom:1px solid var(--line);font-size:0.76rem">${escape(n.text)}<br><span class="reason">${escape(n.date)}</span> <button class="btn small secondary danger" data-act="deleteWip" data-id="${escape(i)}">Delete</button></div>`).join(''):'<div class="empty">No WIP notes.</div>';}
 function renderLedger(){
   const all=[];
   invoices.forEach(i=>(i.payments||[]).forEach((p,idx)=>all.push({...p,payRef:p.ref,ref:i.ref,client:i.client,currency:curOf(i),invId:i.id,payIdx:idx})));
   all.sort((a,b)=>(b.date||'').localeCompare(a.date||''));
-  $('ledgerList').innerHTML=all.length?all.map(p=>`<div class="payrow" style="padding:0.3rem 0;border-bottom:1px solid var(--line);font-size:0.76rem"><strong>${escape(p.client)}</strong> ${escape(p.ref)} · ${escape(p.date)} · ${escape(p.method||'—')} ${p.payRef?'· '+escape(p.payRef):''}<br><span class="reason">${money(p.amount,p.currency)} ${escape(p.note||'')}</span> <button class="btn small secondary" onclick="editPayment(${p.invId},${p.payIdx})">Edit</button> <button class="btn small secondary danger" onclick="cancelPayment(${p.invId},${p.payIdx})">Delete</button></div>`).join(''):'<div class="empty">No payments yet.</div>';
+  $('ledgerList').innerHTML=all.length?all.map(p=>`<div class="payrow" style="padding:0.3rem 0;border-bottom:1px solid var(--line);font-size:0.76rem"><strong>${escape(p.client)}</strong> ${escape(p.ref)} · ${escape(p.date)} · ${escape(p.method||'—')} ${p.payRef?'· '+escape(p.payRef):''}<br><span class="reason">${money(p.amount,p.currency)} ${escape(p.note||'')}</span> <button class="btn small secondary" data-act="editPayment" data-args="${escape(JSON.stringify([p.invId,p.payIdx]))}">Edit</button> <button class="btn small secondary danger" data-act="cancelPayment" data-args="${escape(JSON.stringify([p.invId,p.payIdx]))}">Delete</button></div>`).join(''):'<div class="empty">No payments yet.</div>';
 }
 function renderTransactions(){
   $('txList').innerHTML=transactions.length?transactions.map((t,i)=>{
     const matches=suggestMatches(t);
-    const sug=matches.length?matches.slice(0,3).map(m=>`<button class="btn small secondary" onclick="confirmMatch(${i},${m.id})">${escape(m.ref)} ${money(remaining(m),curOf(m))} (${matchLabel(t,m)})</button>`).join(' '):'<span class="reason">No close match in '+escape(curOf(t))+'</span>';
-    return `<div style="padding:0.35rem 0;border-bottom:1px solid var(--line);font-size:0.76rem"><strong>${escape(t.date)}</strong> ${money(t.amount,curOf(t))} · ${escape(t.desc||'')}${t.matched?' <span class="status paid">matched</span>':''}<br>${t.matched?'':sug} <button class="btn small secondary danger" onclick="deleteTransaction(${i})">Delete</button></div>`;
+    const sug=matches.length?matches.slice(0,3).map(m=>`<button class="btn small secondary" data-act="confirmMatch" data-args="${escape(JSON.stringify([i,m.id]))}">${escape(m.ref)} ${money(remaining(m),curOf(m))} (${matchLabel(t,m)})</button>`).join(' '):'<span class="reason">No close match in '+escape(curOf(t))+'</span>';
+    return `<div style="padding:0.35rem 0;border-bottom:1px solid var(--line);font-size:0.76rem"><strong>${escape(t.date)}</strong> ${money(t.amount,curOf(t))} · ${escape(t.desc||'')}${t.matched?' <span class="status paid">matched</span>':''}<br>${t.matched?'':sug} <button class="btn small secondary danger" data-act="deleteTransaction" data-id="${escape(i)}">Delete</button></div>`;
   }).join(''):'<div class="empty">No transactions imported. CSV only — you confirm every match.</div>';
 }
 
@@ -1724,11 +1730,11 @@ function logReminder(id,channel,tone){
   inv.lastContact=today();log('reminder',channel+' reminder ('+tone+') for '+inv.ref);
   setTimeout(()=>{save();refresh();},0);
 }
-function reminderLinks(i){const t=reminderTone(i);return `<a class="btn small secondary" href="${escape(mailtoHref(i,t))}" onclick="logReminder(${i.id},'email','${t}')">Email</a> <a class="btn small secondary" target="_blank" rel="noopener" href="${escape(waHref(i,t))}" onclick="logReminder(${i.id},'WhatsApp','${t}')">WhatsApp</a>`;}
+function reminderLinks(i){const t=reminderTone(i);return `<a class="btn small secondary" href="${escape(mailtoHref(i,t))}" data-act="logReminder" data-args="${escape(JSON.stringify([i.id,'email',t]))}">Email</a> <a class="btn small secondary" target="_blank" rel="noopener" href="${escape(waHref(i,t))}" data-act="logReminder" data-args="${escape(JSON.stringify([i.id,'WhatsApp',t]))}">WhatsApp</a>`;}
 function renderTopActions(){
   const open=invoices.filter(isOpen);
   const top=[...open].sort((a,b)=>priorityScore(b).score-priorityScore(a).score).slice(0,3);
-  $('topActions').innerHTML=top.length?'<div style="font-size:0.7rem;color:var(--soft);margin-bottom:0.15rem">Top 3 actions</div>'+top.map((i,n)=>`<div class="topact" style="display:flex;justify-content:space-between;align-items:center;padding:0.25rem 0;font-size:0.76rem"><div>${n+1}. ${escape(i.client)} · ${escape(i.ref)} · ${escape(recommended(i))}</div><div><button class="btn small secondary" onclick="openAction(${i.id})">Do</button> <button class="btn small secondary" onclick="openPay(${i.id})">Pay</button> <button class="btn small secondary" onclick="prepareNote(${i.id})">Note</button> ${reminderLinks(i)}</div></div>`).join(''):'<div style="font-size:0.76rem;color:var(--soft)">No open actions.</div>';
+  $('topActions').innerHTML=top.length?'<div style="font-size:0.7rem;color:var(--soft);margin-bottom:0.15rem">Top 3 actions</div>'+top.map((i,n)=>`<div class="topact" style="display:flex;justify-content:space-between;align-items:center;padding:0.25rem 0;font-size:0.76rem"><div>${n+1}. ${escape(i.client)} · ${escape(i.ref)} · ${escape(recommended(i))}</div><div><button class="btn small secondary" data-act="openAction" data-id="${escape(i.id)}">Do</button> <button class="btn small secondary" data-act="openPay" data-id="${escape(i.id)}">Pay</button> <button class="btn small secondary" data-act="prepareNote" data-id="${escape(i.id)}">Note</button> ${reminderLinks(i)}</div></div>`).join(''):'<div style="font-size:0.76rem;color:var(--soft)">No open actions.</div>';
 }
 function generateNote(){
   const id=+$('noteSelect').value;
@@ -1752,14 +1758,14 @@ function prepareAllNotes(){
   const w=openWin();
   const items=list.map(i=>{const r=reminderText(i);return `<div class="note"><pre>${escape('Subject: '+r.subject+'\n\n'+r.body)}</pre><p><a href="${escape(mailtoHref(i))}">Open in email</a> · <a href="${escape(waHref(i))}" target="_blank" rel="noopener">Open in WhatsApp</a></p></div>`;}).join('<hr>');
   w.document.write(`<!DOCTYPE html><html><head><title>Today's notes</title><style>body{font-family:Georgia,serif;padding:1.5rem;background:#F4F0E6;color:#1C1915}pre{font-family:Georgia,serif;white-space:pre-wrap}</style></head><body>${PRINT_BAR}<h1>Today's follow-up notes</h1><p>${escape(settings.business||'Paper Ledger Desk')} · ${today()}</p>${items}</body></html>`);
-  w.document.close();
+  w.document.close();bindPrint(w);
   log('notes','Prepared '+plural(list.length,'note'));save();
 }
 
 // ---------- navigation ----------
 const GROUP_FIRST={};
 function goView(v){
-  const btn=document.querySelector('.subnav button[data-view="'+v+'"]');if(!btn||!$(v))return;
+  const btn=document.querySelector('.subnav button[data-view="'+escape(v)+'"]');if(!btn||!$(v))return;
   const g=btn.dataset.group;GROUP_FIRST[g]=v;
   document.querySelectorAll('.mainnav button').forEach(b=>b.classList.toggle('active',b.dataset.group===g));
   const subs=[...document.querySelectorAll('.subnav button')];
@@ -1769,7 +1775,7 @@ function goView(v){
   if(v==='backup')renderBackups();
   if(v==='insights')renderInsights();
 }
-document.querySelectorAll('.mainnav button').forEach(b=>b.onclick=()=>{const g=b.dataset.group;goView(GROUP_FIRST[g]||document.querySelector('.subnav button[data-group="'+g+'"]').dataset.view);});
+document.querySelectorAll('.mainnav button').forEach(b=>b.onclick=()=>{const g=b.dataset.group;goView(GROUP_FIRST[g]||document.querySelector('.subnav button[data-group="'+escape(g)+'"]').dataset.view);});
 document.querySelectorAll('.subnav button').forEach(b=>b.onclick=()=>goView(b.dataset.view));
 
 // ---------- onboarding ----------
@@ -1787,7 +1793,22 @@ function finishWizard(skip){
 }
 
 // ---------- logo ----------
-function getLogo(){try{return JSON.parse(localStorage.getItem(LOGO_KEY)||'null');}catch{return null;}}
+
+// v4.2: a logo is only used when it is a real PNG/JPEG data URL with integer size
+const LOGO_RE=/^data:image\/(png|jpeg);base64,[A-Za-z0-9+/=]+$/, B64_RE=/^[A-Za-z0-9+/=]+$/, LOGO_MAX_CHARS=3000000;
+function clampDim(v){v=Math.round(+v);return Number.isFinite(v)?Math.min(4096,Math.max(1,v)):1;}
+function cleanLogo(l){
+  if(typeof l==='string'){try{l=JSON.parse(l);}catch{return null;}}
+  if(!l||typeof l!=='object'||Array.isArray(l))return null;
+  if(typeof l.data!=='string'||l.data.length>LOGO_MAX_CHARS||!LOGO_RE.test(l.data))return null;
+  if(!Number.isInteger(l.w)||!Number.isInteger(l.h)||l.w<1||l.h<1||l.w>4096||l.h>4096)return null;
+  const o={data:l.data,w:l.w,h:l.h};
+  if(typeof l.png==='string'&&l.png.length<=LOGO_MAX_CHARS&&LOGO_RE.test(l.png))o.png=l.png;
+  if(typeof l.alpha==='string'&&l.alpha.length<=LOGO_MAX_CHARS&&B64_RE.test(l.alpha)){o.alpha=l.alpha;o.alphaFilter=l.alphaFilter==='none'?'none':'flate';}
+  return o;
+}
+function getLogo(){try{return cleanLogo(localStorage.getItem(LOGO_KEY)||'null');}catch{return null;}}
+
 function handleLogo(file){
   if(!file)return;if(!/^image\/(png|jpeg)$/.test(file.type)){toast('Logo must be PNG or JPEG');return;}
   const r=new FileReader();
@@ -1829,7 +1850,8 @@ PDFDoc.prototype.text=function(x,y,s,o={}){
 PDFDoc.prototype.line=function(x1,y1,x2,y2,w){this.cur.push(`${w||0.5} w 0.6 G ${x1.toFixed(2)} ${(this.H-y1).toFixed(2)} m ${x2.toFixed(2)} ${(this.H-y2).toFixed(2)} l S`);};
 PDFDoc.prototype.rect=function(x,y,w,h,gray){this.cur.push(`${gray} g ${x.toFixed(2)} ${(this.H-y-h).toFixed(2)} ${w.toFixed(2)} ${h.toFixed(2)} re f 0 g`);};
 PDFDoc.prototype.image=function(src,x,y,w,h,pw,ph){
-  const lg=typeof src==='string'?{data:src}:src;const b=atob(lg.data.split(',')[1]);const k=this.imgs.length;
+  pw=clampDim(pw);ph=clampDim(ph);
+  const lg=typeof src==='string'?{data:src}:src;if(!lg||typeof lg.data!=='string'||!/^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(lg.data))return;const b=atob(lg.data.split(',')[1]);const k=this.imgs.length;
   this.imgs.push({b,pw,ph,alpha:lg.alpha?atob(lg.alpha):null,flate:lg.alphaFilter!=='none'});
   this.cur.push(`q ${w.toFixed(2)} 0 0 ${h.toFixed(2)} ${x.toFixed(2)} ${(this.H-y-h).toFixed(2)} cm /Im${k} Do Q`);
 };
@@ -1872,7 +1894,7 @@ PDFDoc.prototype.output=function(){
 };
 function pdfHeader(doc,title){
   const L=50,R=545;let y=50;const logo=getLogo();
-  if(logo){const h=Math.min(55,logo.h*(160/logo.w));const w=h*logo.w/logo.h;doc.image(logo,L,y-10,w,h,logo.w,logo.h);}
+  if(logo){logo.w=clampDim(logo.w);logo.h=clampDim(logo.h);const h=Math.min(55,logo.h*(160/logo.w));const w=h*logo.w/logo.h;doc.image(logo,L,y-10,w,h,logo.w,logo.h);}
   doc.text(R,y+6,title,{size:20,bold:true,align:'right'});
   let by=logo?y+60:y+6;
   doc.text(L,by,settings.business||'Your business',{size:12,bold:true});by+=14;
@@ -2044,7 +2066,7 @@ function reminderSchedule(){
 function markStepDone(id,label){const inv=invoices.find(x=>x.id===id);if(!inv)return;inv.contacts=inv.contacts||[];inv.contacts.unshift({date:today(),note:'Reminder step done ('+label+')'});inv.lastContact=today();log('reminder','Step done on '+inv.ref+': '+label);save();refresh();toast('Marked done');}
 function renderReminderSchedule(){
   const el=$('remSchedule');if(!el)return;const {due,upcoming,steps}=reminderSchedule();
-  const row=s=>{const i=s.inv;const lab=stepLabel(s.o);return `<div class="schedrow" data-ref="${escape(i.ref)}" data-step="${s.o}"><div><strong>${escape(i.client)}</strong> · ${escape(i.ref)} · ${money(Math.max(0,remaining(i)),curOf(i))}<br><span class="reason">${escape(lab)} (${escape(s.date)}) · ${s.tone} tone</span></div><div class="schedbtns"><a class="btn small secondary" href="${escape(mailtoHref(i,s.tone))}" onclick="logReminder(${i.id},'email','${s.tone}')">Email</a> <a class="btn small secondary" target="_blank" rel="noopener" href="${escape(waHref(i,s.tone))}" onclick="logReminder(${i.id},'WhatsApp','${s.tone}')">WhatsApp</a> <button class="btn small secondary" onclick="markStepDone(${i.id},${jsArg(lab)})">Mark done</button></div></div>`;};
+  const row=s=>{const i=s.inv;const lab=stepLabel(s.o);return `<div class="schedrow" data-ref="${escape(i.ref)}" data-step="${escape(s.o)}"><div><strong>${escape(i.client)}</strong> · ${escape(i.ref)} · ${money(Math.max(0,remaining(i)),curOf(i))}<br><span class="reason">${escape(lab)} (${escape(s.date)}) · ${s.tone} tone</span></div><div class="schedbtns"><a class="btn small secondary" href="${escape(mailtoHref(i,s.tone))}" data-act="logReminder" data-args="${escape(JSON.stringify([i.id,'email',s.tone]))}">Email</a> <a class="btn small secondary" target="_blank" rel="noopener" href="${escape(waHref(i,s.tone))}" data-act="logReminder" data-args="${escape(JSON.stringify([i.id,'WhatsApp',s.tone]))}">WhatsApp</a> <button class="btn small secondary" data-act="markStepDone" data-args="${escape(JSON.stringify([i.id,lab]))}">Mark done</button></div></div>`;};
   el.innerHTML=`<h2 class="h3">Reminder schedule</h2><div class="reason">Suggested steps: ${steps.map(stepLabel).map(escape).join(' · ')||'none'} (change in More › Settings). Nothing is sent automatically — you open each message and press send.</div>`+
     (due.length?`<div class="schedhead">Due now (${due.length})</div>`+due.slice(0,8).map(row).join('')+(due.length>8?`<div class="reason">+${due.length-8} more</div>`:''):'<div class="reason" style="margin-top:0.2rem">No reminder steps due today.</div>')+
     (upcoming.length?`<div class="schedhead">Next 14 days</div>`+upcoming.slice(0,6).map(s=>`<div class="reason upcomingrow" data-ref="${escape(s.inv.ref)}">${escape(s.date)} · ${escape(s.inv.client)} · ${escape(s.inv.ref)} · ${escape(stepLabel(s.o))}</div>`).join(''):'');
@@ -2074,21 +2096,21 @@ function monthName(ym){const [y,m]=ym.split('-').map(Number);return new Date(y,m
 function trendSvg(c,pts){
   const W=360,H=170,L=34,B=140,T=16,bw=(W-L-10)/pts.length;
   const bars=pts.map((p,k)=>{const x=L+k*bw+bw*0.18,w=bw*0.64;const lab=monthName(p.ym);
-    if(p.rate==null)return `<text x="${(x+w/2).toFixed(1)}" y="${B-4}" text-anchor="middle" class="svgsoft">–</text><text x="${(x+w/2).toFixed(1)}" y="${B+16}" text-anchor="middle" class="svgtxt">${lab}</text>`;
-    const h=(B-T)*p.rate;return `<rect class="svgbar" x="${x.toFixed(1)}" y="${(B-h).toFixed(1)}" width="${w.toFixed(1)}" height="${Math.max(0.5,h).toFixed(1)}"><title>${lab}: ${Math.round(p.rate*100)}%</title></rect><text x="${(x+w/2).toFixed(1)}" y="${(B-h-4).toFixed(1)}" text-anchor="middle" class="svgtxt">${Math.round(p.rate*100)}%</text><text x="${(x+w/2).toFixed(1)}" y="${B+16}" text-anchor="middle" class="svgtxt">${lab}</text>`;}).join('');
-  const grid=[0,50,100].map(v=>{const y=B-(B-T)*v/100;return `<line x1="${L}" x2="${W-6}" y1="${y}" y2="${y}" class="svgline"/><text x="${L-4}" y="${y+3}" text-anchor="end" class="svgsoft">${v}%</text>`;}).join('');
+    if(p.rate==null)return `<text x="${escape((x+w/2).toFixed(1))}" y="${escape(B-4)}" text-anchor="middle" class="svgsoft">–</text><text x="${escape((x+w/2).toFixed(1))}" y="${escape(B+16)}" text-anchor="middle" class="svgtxt">${lab}</text>`;
+    const h=(B-T)*p.rate;return `<rect class="svgbar" x="${escape(x.toFixed(1))}" y="${escape((B-h).toFixed(1))}" width="${escape(w.toFixed(1))}" height="${escape(Math.max(0.5,h).toFixed(1))}"><title>${lab}: ${Math.round(p.rate*100)}%</title></rect><text x="${escape((x+w/2).toFixed(1))}" y="${escape((B-h-4).toFixed(1))}" text-anchor="middle" class="svgtxt">${Math.round(p.rate*100)}%</text><text x="${escape((x+w/2).toFixed(1))}" y="${escape(B+16)}" text-anchor="middle" class="svgtxt">${lab}</text>`;}).join('');
+  const grid=[0,50,100].map(v=>{const y=B-(B-T)*v/100;return `<line x1="${escape(L)}" x2="${escape(W-6)}" y1="${escape(y)}" y2="${escape(y)}" class="svgline"/><text x="${escape(L-4)}" y="${escape(y+3)}" text-anchor="end" class="svgsoft">${v}%</text>`;}).join('');
   const desc=pts.map(p=>monthName(p.ym)+' '+(p.rate==null?'no invoices due':Math.round(p.rate*100)+'%')).join(', ');
-  return `<svg class="trend" data-cur="${c}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Collection rate ${c}, last 6 months: ${escape(desc)}" preserveAspectRatio="xMidYMid meet">${grid}${bars}</svg>`;
+  return `<svg class="trend" data-cur="${escape(c)}" viewBox="0 0 ${escape(W)} ${escape(H)}" role="img" aria-label="Collection rate ${escape(c)}, last 6 months: ${escape(desc)}" preserveAspectRatio="xMidYMid meet">${grid}${bars}</svg>`;
 }
 function renderRecoveredCards(d,el,compact){
   if(!el)return;const curs=Object.keys(d.rec).sort();
-  el.innerHTML=curs.length?curs.map(c=>{const r=d.rec[c];return `<div class="kpi recovered" data-cur="${c}"><div class="label">Cash recovered this month · ${c}</div><div class="value" style="color:var(--grove)">${money(fromMinor(r.amt,c),c)}</div><div class="reason">${plural(r.ids.size,'late invoice')} collected${r.afterRem?' · '+money(fromMinor(r.afterRem,c),c)+' after a reminder':''}</div></div>`;}).join(''):`<div class="kpi recovered"><div class="label">Cash recovered this month</div><div class="value">${money(0,defCur())}</div><div class="reason">No late invoices collected yet this month.</div></div>`;
+  el.innerHTML=curs.length?curs.map(c=>{const r=d.rec[c];return `<div class="kpi recovered" data-cur="${escape(c)}"><div class="label">Cash recovered this month · ${c}</div><div class="value" style="color:var(--grove)">${money(fromMinor(r.amt,c),c)}</div><div class="reason">${plural(r.ids.size,'late invoice')} collected${r.afterRem?' · '+money(fromMinor(r.afterRem,c),c)+' after a reminder':''}</div></div>`;}).join(''):`<div class="kpi recovered"><div class="label">Cash recovered this month</div><div class="value">${money(0,defCur())}</div><div class="reason">No late invoices collected yet this month.</div></div>`;
 }
 function renderInsights(){
   if(!$('insights'))return;const d=insightsData();
   renderRecoveredCards(d,$('insRecovered'));
-  $('insTrend').innerHTML=d.curs.length?d.curs.map(c=>`<div class="trendbox" data-cur="${c}"><div class="reason"><strong>${c}</strong></div>${trendSvg(c,d.trend[c])}<details><summary>Data table (${c})</summary><table class="mini"><thead><tr><th>Month</th><th>Due</th><th>Collected by month-end</th><th>Rate</th></tr></thead><tbody>${d.trend[c].map(p=>`<tr data-ym="${p.ym}"><td>${p.ym}</td><td>${money(fromMinor(p.due,c),c)}</td><td>${money(fromMinor(p.col,c),c)}</td><td>${p.rate==null?'—':Math.round(p.rate*100)+'%'}</td></tr>`).join('')}</tbody></table></details></div>`).join(''):'<div class="empty">No invoices yet.</div>';
-  $('insDays').innerHTML=d.days.length?`<div class="tablewrap" tabindex="0" role="region" aria-label="Days to pay by client"><table class="cards dtp"><thead><tr><th>Client</th><th>Currency</th><th>Paid invoices</th><th>Avg days to pay</th><th>Avg vs due</th><th>On time</th></tr></thead><tbody>${d.days.map(r=>`<tr data-client="${escape(r.client)}" data-cur="${r.cur}"><td data-label="Client"><strong>${escape(r.client)}</strong></td><td data-label="Currency">${r.cur}</td><td data-label="Paid invoices">${r.n}</td><td data-label="Avg days to pay" class="avgdays">${r.avg.toFixed(1)}</td><td data-label="Avg vs due">${r.avgLate>0?r.avgLate.toFixed(1)+' days late':r.avgLate<0?(-r.avgLate).toFixed(1)+' days early':'on due date'}</td><td data-label="On time">${r.onTimePct}%${r.n<2?' <span class="reason">(1 invoice)</span>':''}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No fully paid invoices yet.</div>';
+  $('insTrend').innerHTML=d.curs.length?d.curs.map(c=>`<div class="trendbox" data-cur="${escape(c)}"><div class="reason"><strong>${c}</strong></div>${trendSvg(c,d.trend[c])}<details><summary>Data table (${c})</summary><table class="mini"><thead><tr><th>Month</th><th>Due</th><th>Collected by month-end</th><th>Rate</th></tr></thead><tbody>${d.trend[c].map(p=>`<tr data-ym="${escape(p.ym)}"><td>${p.ym}</td><td>${money(fromMinor(p.due,c),c)}</td><td>${money(fromMinor(p.col,c),c)}</td><td>${p.rate==null?'—':Math.round(p.rate*100)+'%'}</td></tr>`).join('')}</tbody></table></details></div>`).join(''):'<div class="empty">No invoices yet.</div>';
+  $('insDays').innerHTML=d.days.length?`<div class="tablewrap" tabindex="0" role="region" aria-label="Days to pay by client"><table class="cards dtp"><thead><tr><th>Client</th><th>Currency</th><th>Paid invoices</th><th>Avg days to pay</th><th>Avg vs due</th><th>On time</th></tr></thead><tbody>${d.days.map(r=>`<tr data-client="${escape(r.client)}" data-cur="${escape(r.cur)}"><td data-label="Client"><strong>${escape(r.client)}</strong></td><td data-label="Currency">${r.cur}</td><td data-label="Paid invoices">${r.n}</td><td data-label="Avg days to pay" class="avgdays">${r.avg.toFixed(1)}</td><td data-label="Avg vs due">${r.avgLate>0?r.avgLate.toFixed(1)+' days late':r.avgLate<0?(-r.avgLate).toFixed(1)+' days early':'on due date'}</td><td data-label="On time">${r.onTimePct}%${r.n<2?' <span class="reason">(1 invoice)</span>':''}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No fully paid invoices yet.</div>';
 }
 
 // ---------- invoices table: pagination, cards, drafts ----------
@@ -2101,7 +2123,7 @@ function renderTableInner(){
   const shown=rows.length>tableLimit?rows.slice(0,tableLimit):rows;
   $('table').innerHTML=shown.map(i=>{
     const s=statusOf(i);const rem=remaining(i);const ps=priorityScore(i);const id=i.id;
-    return `<tr data-id="${id}"><td data-label="Select" class="selcell"><label class="chk"><input type="checkbox" class="rowchk" data-id="${id}" aria-label="Select ${escape(i.ref||'invoice')}" ${selected.has(id)?'checked':''}></label></td><td data-label="Ref">${escape(i.ref||'—')}${i.recurring?' <span aria-label="recurring" title="Recurring monthly">↻</span>':''}</td><td data-label="Client"><strong>${escape(i.client)}</strong>${i.tags?'<br><span class="reason">'+escape(i.tags)+'</span>':''}</td><td data-label="Total / Rem">${money(total(i),i.currency)}<br><small>${rem<0?'<span class="overpay">Credit '+money(-rem,i.currency)+'</span>':'Rem '+money(rem,i.currency)}</small></td><td data-label="Due">${escape(i.due)}</td><td data-label="Next">${escape(i.nextAction||'—')}</td><td data-label="Score">${ps.score}</td><td data-label="Status"><span class="status ${s}">${s}</span></td><td class="actions">${s==='draft'?'<button class="btn small" onclick="finaliseDraft('+id+')">Finalise</button> ':''}${i.type==='quote'?'<button class="btn small" onclick="convert('+id+')">Convert</button> ':''}<button class="btn small secondary" onclick="duplicate(${id})">Dup</button> <button class="btn small secondary" onclick="openPay(${id})">Pay</button> <button class="btn small secondary" onclick="openAction(${id})">Action</button> <button class="btn small secondary" onclick="openEdit(${id})">Edit</button> <button class="btn small secondary" onclick="printInvoice(${id})">Print</button> <button class="btn small secondary" onclick="downloadInvoicePdf(${id})">PDF</button> <button class="btn small secondary" onclick="sendInvoice(${id})">Send</button> <button class="btn small secondary" onclick="logContact(${id})">Contact</button> <button class="btn small secondary" onclick="showContacts(${id})">History</button> <button class="btn small secondary" onclick="statement(${jsArg(i.client)})">Stmt</button> <button class="btn small secondary danger" onclick="deleteInvoice(${id})">Del</button></td></tr>`;
+    return `<tr data-id="${escape(id)}"><td data-label="Select" class="selcell"><label class="chk"><input type="checkbox" class="rowchk" data-id="${escape(id)}" aria-label="Select ${escape(i.ref||'invoice')}" ${selected.has(id)?'checked':''}></label></td><td data-label="Ref">${escape(i.ref||'—')}${i.recurring?' <span aria-label="recurring" title="Recurring monthly">↻</span>':''}</td><td data-label="Client"><strong>${escape(i.client)}</strong>${i.tags?'<br><span class="reason">'+escape(i.tags)+'</span>':''}</td><td data-label="Total / Rem">${money(total(i),i.currency)}<br><small>${rem<0?'<span class="overpay">Credit '+money(-rem,i.currency)+'</span>':'Rem '+money(rem,i.currency)}</small></td><td data-label="Due">${escape(i.due)}</td><td data-label="Next">${escape(i.nextAction||'—')}</td><td data-label="Score">${ps.score}</td><td data-label="Status"><span class="status ${escape(s)}">${s}</span></td><td class="actions">${s==='draft'?'<button class="btn small" data-act="finaliseDraft" data-id="'+escape(id)+'">Finalise</button> ':''}${i.type==='quote'?'<button class="btn small" data-act="convert" data-id="'+escape(id)+'">Convert</button> ':''}<button class="btn small secondary" data-act="duplicate" data-id="${escape(id)}">Dup</button> <button class="btn small secondary" data-act="openPay" data-id="${escape(id)}">Pay</button> <button class="btn small secondary" data-act="openAction" data-id="${escape(id)}">Action</button> <button class="btn small secondary" data-act="openEdit" data-id="${escape(id)}">Edit</button> <button class="btn small secondary" data-act="printInvoice" data-id="${escape(id)}">Print</button> <button class="btn small secondary" data-act="downloadInvoicePdf" data-id="${escape(id)}">PDF</button> <button class="btn small secondary" data-act="sendInvoice" data-id="${escape(id)}">Send</button> <button class="btn small secondary" data-act="logContact" data-id="${escape(id)}">Contact</button> <button class="btn small secondary" data-act="showContacts" data-id="${escape(id)}">History</button> <button class="btn small secondary" data-act="statement" data-arg="${escape(i.client)}">Stmt</button> <button class="btn small secondary danger" data-act="deleteInvoice" data-id="${escape(id)}">Del</button></td></tr>`;
   }).join('')+(rows.length>shown.length?`<tr class="morerow"><td colspan="9"><span class="reason">Showing ${shown.length} of ${rows.length}.</span> <button class="btn secondary" id="showMoreRows">Show 100 more</button> <button class="btn secondary" id="showAllRows">Show all ${rows.length}</button></td></tr>`:'');
   $('table').querySelectorAll('.rowchk').forEach(cb=>cb.onchange=e=>{const id=+e.target.dataset.id;if(e.target.checked)selected.add(id);else selected.delete(id);});
   if($('showMoreRows'))$('showMoreRows').onclick=()=>{tableLimit+=100;renderTable();};
@@ -2111,7 +2133,7 @@ function renderLines(lines){
   $('lines').innerHTML=lines.map((l,i)=>lineHtml(l,i)).join('');
   $('lines').querySelectorAll('input').forEach(el=>el.addEventListener('input',updatePreview));
 }
-function lineHtml(l,i){const n=i+1;return `<div class="line-item"><input placeholder="Description" aria-label="Line ${n} description" value="${escape(l.desc||'')}" data-d="${i}"><input type="number" aria-label="Line ${n} quantity" value="${escape(l.qty??1)}" data-q="${i}" step="0.01"><input type="number" aria-label="Line ${n} rate" value="${escape(l.rate??0)}" data-r="${i}" step="0.01"><input type="number" aria-label="Line ${n} hours (optional)" value="${escape(l.hours||'')}" data-h="${i}" placeholder="Hrs" step="0.1"><button class="btn small secondary" aria-label="Remove line ${n}" onclick="this.parentElement.remove();updatePreview()">×</button></div>`;}
+function lineHtml(l,i){const n=i+1;return `<div class="line-item"><input placeholder="Description" aria-label="Line ${escape(n)} description" value="${escape(l.desc||'')}" data-d="${escape(i)}"><input type="number" aria-label="Line ${escape(n)} quantity" value="${escape(l.qty??1)}" data-q="${escape(i)}" step="0.01"><input type="number" aria-label="Line ${escape(n)} rate" value="${escape(l.rate??0)}" data-r="${escape(i)}" step="0.01"><input type="number" aria-label="Line ${escape(n)} hours (optional)" value="${escape(l.hours||'')}" data-h="${escape(i)}" placeholder="Hrs" step="0.1"><button class="btn small secondary" aria-label="Remove line ${escape(n)}" data-act="rmLine">×</button></div>`;}
 $('addLine').onclick=()=>{const n=$('lines').querySelectorAll('.line-item').length;const t=document.createElement('div');t.innerHTML=lineHtml({desc:'',qty:1,rate:0},n);const d=t.firstElementChild;$('lines').appendChild(d);d.querySelectorAll('input').forEach(el=>el.addEventListener('input',updatePreview));d.querySelector('[data-d]').focus();};
 
 // ---------- bulk paid + aging export ----------
@@ -2146,7 +2168,7 @@ function csvCell(v){let s=String(v??'');if(/^[=+\-@\t\r]/.test(s))s="'"+s;return
 const SNAP_BUDGET=1500000;
 let storageFull=false,snapsOff=false;
 function isQuota(e){return !!e&&(e.name==='QuotaExceededError'||e.name==='NS_ERROR_DOM_QUOTA_REACHED'||e.code===22||e.code===1014);}
-function dropOldestSnapshot(){const s=getSnaps();if(!s.length)return false;s.pop();try{if(s.length)localStorage.setItem(SNAP_KEY,JSON.stringify(s));else localStorage.removeItem(SNAP_KEY);}catch{localStorage.removeItem(SNAP_KEY);}return true;}
+function dropOldestSnapshot(){const s=getSnaps();if(!s.length)return false;dropOneSnap(s);try{if(s.length)localStorage.setItem(SNAP_KEY,JSON.stringify(s));else localStorage.removeItem(SNAP_KEY);}catch{localStorage.removeItem(SNAP_KEY);}return true;}
 function save(){
   if(snapPaused){toast('Saving paused: stored data was unreadable. Restore a snapshot or export first.');return false;}
   const str=JSON.stringify(payload());let ok=false,err=null,trimmed=0;
@@ -2161,11 +2183,13 @@ function autoSnapshot(str,force){
   let snaps=getSnaps();const last=snaps[0];
   if(!force&&last&&last.data===str)return;
   const now=Date.now();const meta={at:now,n:invoices.length,c:Object.keys(clientsMeta).length,data:str};
-  if(!force&&last&&now-last.at<2000)snaps[0]=meta;else snaps.unshift(meta);
-  const keep=[];let tot=0;for(const s of snaps.slice(0,SNAP_MAX)){tot+=s.data.length;if(keep.length&&tot>SNAP_BUDGET)break;keep.push(s);}
-  snapsOff=!putSnaps(keep);
+  if(!force&&last&&!last.pin&&now-last.at<2000)snaps[0]=meta;else snaps.unshift(meta);
+  const pinned=snaps.filter(s=>s&&s.pin).slice(0,PIN_MAX);const normal=snaps.filter(s=>s&&!s.pin);
+  const keep=[];let tot=0;for(const s of normal.slice(0,SNAP_MAX)){tot+=s.data.length;if(keep.length&&tot>SNAP_BUDGET)break;keep.push(s);}
+  snapsOff=!putSnaps(keep.concat(pinned).sort((a,b)=>b.at-a.at));
 }
-function putSnaps(snaps){snaps=snaps.slice();while(snaps.length){try{localStorage.setItem(SNAP_KEY,JSON.stringify(snaps));return true;}catch(e){snaps.pop();}}try{localStorage.removeItem(SNAP_KEY);}catch{}return false;}
+function dropOneSnap(a){for(let k=a.length-1;k>=0;k--){if(!a[k].pin){a.splice(k,1);return true;}}if(a.length){a.pop();return true;}return false;}
+function putSnaps(snaps){snaps=snaps.slice();while(snaps.length){try{localStorage.setItem(SNAP_KEY,JSON.stringify(snaps));return true;}catch(e){dropOneSnap(snaps);}}try{localStorage.removeItem(SNAP_KEY);}catch{}return false;}
 function storageUsage(){let n=0;try{for(let k=0;k<localStorage.length;k++){const key=localStorage.key(k);n+=key.length+(localStorage.getItem(key)||'').length;}}catch{}return n;}
 function renderStorageWarn(){
   const el=$('storageWarn');if(!el)return;
@@ -2188,7 +2212,7 @@ function renderBackups(){
   const snaps=getSnaps();
   $('lastExported').textContent=settings.lastBackup?('Last exported '+new Date(settings.lastBackup).toLocaleString()):'Never exported';
   if($('storageMeter'))$('storageMeter').textContent='Browser storage used: about '+Math.round(storageUsage()/1024)+' KB (most browsers allow about 5,000 KB per site). Snapshots are trimmed automatically when space runs low.';
-  $('snapList').innerHTML=snaps.length?snaps.map((s,k)=>`<div class="safety snaprow"><strong>${escape(new Date(s.at).toLocaleString())}</strong> · ${plural(s.n,'invoice')} · ${Math.round(s.data.length/1024)} KB <button class="btn small secondary" onclick="restoreSnapshot(${k})">Restore</button></div>`).join(''):'<div class="empty">No snapshots yet.</div>';
+  $('snapList').innerHTML=snaps.length?snaps.map((s,k)=>`<div class="safety snaprow"><strong>${escape(new Date(s.at).toLocaleString())}</strong>${s.pin?' · '+escape(s.label||'Kept before upgrade'):''} · ${plural(s.n,'invoice')} · ${Math.round(s.data.length/1024)} KB <button class="btn small secondary" data-act="restoreSnapshot" data-id="${escape(k)}">Restore</button></div>`).join(''):'<div class="empty">No snapshots yet.</div>';
 }
 
 // ---------- logo with transparency ----------
@@ -2221,7 +2245,7 @@ function a11yLabel(root){
   (root||document).querySelectorAll('input,select,textarea').forEach(el=>{
     if(el.type==='hidden'||el.getAttribute('aria-label')||el.getAttribute('aria-labelledby'))return;
     if(el.closest('label'))return;
-    if(el.id&&document.querySelector('label[for="'+el.id+'"]'))return;
+    if(el.id&&document.querySelector('label[for="'+escape(el.id)+'"]'))return;
     const wrap=el.parentElement;const lab=wrap&&[...wrap.children].find(c=>c.tagName==='LABEL'&&!c.htmlFor&&!c.querySelector('input,select,textarea'));
     if(lab&&el.id){lab.htmlFor=el.id;return;}
     if(lab){if(!lab.id)lab.id='lbl'+(a11yLabel.n=(a11yLabel.n||0)+1);el.setAttribute('aria-labelledby',lab.id);return;}
@@ -2375,7 +2399,7 @@ function openEdit(id){
   openEdit_v3(id);
   const inv=invoices.find(x=>x.id===id);
   $('mRef').placeholder=id?'':peekRef()+' (automatic)';
-  if($('presetPick'))$('presetPick').innerHTML='<option value="">Add a saved item…</option>'+presets.map((p,k)=>`<option value="${k}">${escape(p.desc)} · ${escape(money(+p.rate||0,$('mCur').value))}</option>`).join('')+(presets.length?'':'<option value="" disabled>No saved items yet (More actions › Save line preset)</option>');
+  if($('presetPick'))$('presetPick').innerHTML='<option value="">Add a saved item…</option>'+presets.map((p,k)=>`<option value="${escape(k)}">${escape(p.desc)} · ${escape(money(+p.rate||0,$('mCur').value))}</option>`).join('')+(presets.length?'':'<option value="" disabled>No saved items yet (More actions › Save line preset)</option>');
   if($('mTerms'))$('mTerms').value='';
   if(!id){const c=clientsMeta[$('mClient').value]||{};void c;}
   updatePreview();
@@ -2489,32 +2513,107 @@ function sanitizeInvoice(i,probs,k){
   if(o.tags!=null&&typeof o.tags!=='string')o.tags=String(o.tags);
   return o;
 }
-function sanitizePayload(raw,probs){
-  probs=probs||[];const d=isObj(raw)?{...raw}:{};
+// ---------- v4.2: hardened parsing of stored data and backups ----------
+const BAD_KEYS=new Set(['__proto__','constructor','prototype']);
+const MAX_IMPORT_BYTES=5*1024*1024, MAX_STR=100000, MAX_DEPTH=12;
+const LIST_MAX={invoices:20000,expenses:20000,transactions:20000,work:20000,presets:2000,followups:20000,activity:1000,wip:5000,checklist:20000};
+const INV_LIST_MAX={lines:500,payments:2000,contacts:2000};
+const MAX_CLIENTS=20000;
+const SETTINGS_KEYS=new Set(Object.keys(settings).concat(['reminderOffsets']));
+const PIN_MAX=3;
+// Deep copy that drops __proto__/constructor/prototype keys at every level. In import mode it also
+// truncates over-long strings and over-long lists, and reports what it changed.
+function stripData(v,lim,depth,st){
+  if(depth>MAX_DEPTH){st.deep++;return null;}
+  if(typeof v==='string'){if(lim&&v.length>MAX_STR){st.str++;return v.slice(0,MAX_STR);}return v;}
+  if(Array.isArray(v)){let a=v;if(lim&&a.length>50000){st.list++;a=a.slice(0,50000);}return a.map(x=>stripData(x,lim,depth+1,st));}
+  if(v&&typeof v==='object'){const o={};for(const k of Object.keys(v)){if(BAD_KEYS.has(k)){st.proto++;continue;}o[k]=stripData(v[k],lim,depth+1,st);}return o;}
+  return (typeof v==='number'||typeof v==='boolean'||v===null)?v:null;
+}
+const isNum=x=>typeof x==='number'&&Number.isFinite(x);
+// Ids: keep finite numbers; a numeric string becomes that number; anything else (or a duplicate) is re-issued.
+// Returns old->new map so references between records stay consistent.
+function fixIds(list,taken){
+  const map=new Map();let next=Date.now();
+  const fresh=()=>{while(taken.has(next))next++;return next++;};
+  list.forEach(r=>{
+    const old=r.id;let id=old;
+    if(!isNum(id)&&typeof id==='string'&&/^-?\d{1,16}(\.\d+)?$/.test(id.trim()))id=Number(id.trim());
+    if(!isNum(id)||taken.has(id))id=fresh();
+    taken.add(id);
+    if(id!==old){r.id=id;if(!map.has(old))map.set(old,id);}
+  });
+  return map;
+}
+function sanitizePayload(raw,probs,opts){
+  probs=probs||[];opts=opts||{};const lim=!!opts.import;
+  const st={proto:0,str:0,list:0,deep:0};
+  const d=isObj(raw)?stripData(raw,lim,0,st):{};
+  if(st.proto)probs.push(plural(st.proto,'unsafe key')+' (__proto__/constructor/prototype) removed');
+  if(st.str)probs.push(plural(st.str,'over-long text field')+' shortened to '+MAX_STR.toLocaleString('en-US')+' characters');
+  if(st.list)probs.push(plural(st.list,'over-long list')+' shortened');
+  if(st.deep)probs.push(plural(st.deep,'over-nested value')+' dropped');
+  if(lim)Object.keys(LIST_MAX).forEach(k=>{if(Array.isArray(d[k])&&d[k].length>LIST_MAX[k]){probs.push(k+': only the first '+LIST_MAX[k]+' entries kept');d[k]=d[k].slice(0,LIST_MAX[k]);}});
   const list=Array.isArray(d.invoices)?d.invoices:[];
   d.invoices=list.map((i,k)=>sanitizeInvoice(i,probs,k)).filter(Boolean);
-  const ids=new Set();d.invoices.forEach(i=>{if(i.id==null||ids.has(i.id)){i.id=newId();while(ids.has(i.id))i.id=newId();}ids.add(i.id);});
+  if(lim)d.invoices.forEach(i=>Object.keys(INV_LIST_MAX).forEach(f=>{if(Array.isArray(i[f])&&i[f].length>INV_LIST_MAX[f]){probs.push((i.ref||'invoice')+': only the first '+INV_LIST_MAX[f]+' '+f+' kept');i[f]=i[f].slice(0,INV_LIST_MAX[f]);}}));
+  const invMap=fixIds(d.invoices,new Set());
+  if(invMap.size)probs.push(plural(invMap.size,'invoice id')+' re-issued (references updated)');
+  const ref=v=>invMap.has(v)?invMap.get(v):v;
   if(d.clientsMeta!==undefined&&!isObj(d.clientsMeta)){probs.push('client list was unreadable (rebuilt from invoices)');d.clientsMeta={};}
-  if(isObj(d.clientsMeta)){const cm=Object.create(null);Object.keys(d.clientsMeta).forEach(n=>{if(RESERVED_NAMES.includes(n))return;const m=d.clientsMeta[n];cm[n]=isObj(m)?{...m}:{};if(cm[n].currency&&!validCur(cm[n].currency))delete cm[n].currency;});d.clientsMeta=Object.assign({},cm);}
+  if(isObj(d.clientsMeta)){const cm=Object.create(null);let n=0;Object.keys(d.clientsMeta).forEach(name=>{if(RESERVED_NAMES.includes(name))return;if(lim&&++n>MAX_CLIENTS)return;const m=d.clientsMeta[name];cm[name]=isObj(m)?{...m}:{};if(cm[name].currency&&!validCur(cm[name].currency))delete cm[name].currency;});d.clientsMeta=Object.assign({},cm);}
   const arr=(k,keep)=>{if(d[k]===undefined)return;if(!Array.isArray(d[k])){probs.push(k+' was not a list');d[k]=[];return;}const n=d[k].length;d[k]=d[k].filter(keep);if(d[k].length!==n)probs.push(plural(n-d[k].length,'unreadable '+k.replace(/s$/,'')+' entry')+' skipped');};
   arr('expenses',e=>isObj(e)&&Number.isFinite(+e.amount));(d.expenses||[]).forEach(e=>{e.amount=+e.amount;if(e.currency&&!validCur(e.currency))e.currency=defCur();});
   arr('transactions',t=>isObj(t)&&Number.isFinite(+t.amount));(d.transactions||[]).forEach(t=>{t.amount=+t.amount;});
   arr('work',w=>isObj(w)&&Number.isFinite(+w.amount));arr('presets',isObj);arr('followups',isObj);arr('activity',isObj);arr('wip',isObj);
+  // ids of the other record lists (missing ids are left for load() to fill, as before)
+  ['expenses','transactions','work','presets','followups'].forEach(k=>{if(!Array.isArray(d[k]))return;const has=d[k].filter(r=>r.id!=null);const m=fixIds(has,new Set());if(m.size)probs.push(plural(m.size,k.replace(/s$/,'')+' id')+' re-issued');});
+  // references to invoice ids
+  (d.work||[]).forEach(w=>{if(w.invoiceId!=null){w.invoiceId=ref(w.invoiceId);if(!isNum(w.invoiceId))w.invoiceId=null;}});
+  (d.followups||[]).forEach(f=>{if(f.invoiceId!=null){f.invoiceId=ref(f.invoiceId);if(!isNum(f.invoiceId))f.invoiceId=null;}});
   if(d.checklist!==undefined&&!Array.isArray(d.checklist))d.checklist=[];
-  if(d.settings!==undefined){if(!isObj(d.settings)){probs.push('settings were unreadable (kept current settings)');d.settings={};}else{d.settings={...d.settings};if(d.settings.currency!==undefined&&!validCur(d.settings.currency)){probs.push('unknown default currency "'+String(d.settings.currency).slice(0,8)+'" (kept '+defCur()+')');delete d.settings.currency;}['opening','reserve','whatif','weeklyTarget','defaultTax','defaultTerms','nextNum','tolPct','tolAbs'].forEach(f=>{if(d.settings[f]!==undefined&&!Number.isFinite(+d.settings[f]))delete d.settings[f];});}}
+  if(Array.isArray(d.checklist))d.checklist=d.checklist.map(ref).filter(v=>isNum(v)||(!lim&&typeof v==='string'));
+  if(d.settings!==undefined){if(!isObj(d.settings)){probs.push('settings were unreadable (kept current settings)');d.settings={};}else{
+    const sIn=d.settings,sOut={};let dropped=0;
+    Object.keys(sIn).forEach(k=>{const v=sIn[k];if(v!==null&&typeof v==='object'){dropped++;return;}
+      if(lim&&!SETTINGS_KEYS.has(k)){dropped++;return;}sOut[k]=v;});
+    if(dropped)probs.push(plural(dropped,'unknown setting')+' ignored');
+    d.settings=sOut;
+    if(d.settings.currency!==undefined&&!validCur(d.settings.currency)){probs.push('unknown default currency "'+String(d.settings.currency).slice(0,8)+'" (kept '+defCur()+')');delete d.settings.currency;}['opening','reserve','whatif','weeklyTarget','defaultTax','defaultTerms','nextNum','tolPct','tolAbs'].forEach(f=>{if(d.settings[f]!==undefined&&!Number.isFinite(+d.settings[f]))delete d.settings[f];});}}
   return d;
 }
 function applyPayload(raw){
   const d=sanitizePayload(raw,[]);
-  invoices=d.invoices||[];clientsMeta=d.clientsMeta||{};expenses=d.expenses||[];transactions=d.transactions||[];followups=d.followups||[];activity=d.activity||[];wipNotes=d.wip||[];workItems=d.work||[];presets=d.presets||[];checklistDone=new Set(d.checklist||[]);settings=Object.assign(settings,d.settings||{});
+  invoices=d.invoices||[];clientsMeta=d.clientsMeta||{};expenses=d.expenses||[];transactions=d.transactions||[];followups=d.followups||[];activity=d.activity||[];wipNotes=d.wip||[];workItems=d.work||[];presets=d.presets||[];checklistDone=new Set(d.checklist||[]);
+  const sIn=d.settings||{};Object.keys(sIn).forEach(k=>{if(!BAD_KEYS.has(k))settings[k]=sIn[k];});
+}
+// Versioned migration: before data saved by an older schema is rewritten, keep the raw stored text as a
+// pinned snapshot (More > Backups) so it can always be restored exactly.
+function migrateSnapshot(rawStr,raw){
+  const from=Number(raw&&raw.schema)||0;window._migratedFrom=null;
+  if(from>=SCHEMA||typeof rawStr!=='string')return null;
+  try{
+    const snaps=getSnaps();
+    if(!snaps.some(s=>s&&s.pin&&s.data===rawStr)){
+      snaps.unshift({at:Date.now(),n:Array.isArray(raw.invoices)?raw.invoices.length:0,c:isObj(raw.clientsMeta)?Object.keys(raw.clientsMeta).length:0,data:rawStr,pin:true,fromSchema:from,label:'Kept before upgrade to v'+APP_VERSION+' (data format '+from+' → '+SCHEMA+')'});
+      const pinned=snaps.filter(s=>s&&s.pin);while(pinned.length>PIN_MAX){const old=pinned.pop();snaps.splice(snaps.indexOf(old),1);}
+      if(!putSnaps(snaps))toast('Could not keep a pre-upgrade snapshot (storage full). Export a backup before changing anything.');
+    }
+  }catch(e){console.warn('pre-upgrade snapshot failed',e);}
+  window._migratedFrom=from;return from;
 }
 $('importFile').onchange=e=>{
   const f=e.target.files[0];if(!f)return;
+  if(f.size>MAX_IMPORT_BYTES){e.target.value='';pendingImport=null;toast('That backup is too large to import ('+Math.round(f.size/1048576)+' MB; the limit is 5 MB). Nothing was changed.');return;}
   const r=new FileReader();
   r.onload=ev=>{
-    let data;try{data=JSON.parse(ev.target.result);}catch{toast('This file is not a readable backup (invalid or cut-off JSON). Nothing was changed.');return;}
+    const text=ev.target.result;
+    if(typeof text!=='string'||text.length>MAX_IMPORT_BYTES){pendingImport=null;toast('That backup is too large to import (the limit is 5 MB). Nothing was changed.');return;}
+    let data;try{data=JSON.parse(text);}catch{toast('This file is not a readable backup (invalid or cut-off JSON). Nothing was changed.');return;}
     if(!isObj(data)||!Array.isArray(data.invoices)){toast('This file is not a Paper Ledger backup (no invoice list). Nothing was changed.');return;}
-    const probs=[];const clean=sanitizePayload(data,probs);clean.logo=data.logo;
+    const probs=[];const clean=sanitizePayload(data,probs,{import:true});
+    clean.logo=null;
+    if(data.logo!=null&&data.logo!==''){const lg=cleanLogo(data.logo);if(lg)clean.logo=JSON.stringify(lg);else probs.push('logo was not a valid PNG/JPEG image (ignored)');}
     const list=clean.invoices;pendingImport=clean;
     const shown=probs.slice(0,6).map(p=>'<li>'+escape(p)+'</li>').join('')+(probs.length>6?'<li>…and '+(probs.length-6)+' more</li>':'');
     $('importPreview').innerHTML=`Found ${plural(list.length,'invoice')}${data.settings?' (full backup)':''}.`+(probs.length?`<div class="nag" role="alert" style="margin:0.4rem 0"><strong>${plural(probs.length,'problem')} found — these will be skipped or fixed:</strong><ul style="margin:0.2rem 0 0 1rem">${shown}</ul></div>`:'<br>')+list.slice(0,5).map(i=>escape(i.ref||'?')+' · '+escape(i.client||'?')).join('<br>')+(list.length>5?'<br>…':'');
@@ -2534,7 +2633,7 @@ $('confirmImport').onclick=()=>{
   }
   const existing=new Set(invoices.map(i=>i.ref));const ids=new Set(invoices.map(i=>i.id));
   let added=0,skipped=0;
-  data.invoices.forEach(i=>{if(!i.client||!i.ref)return;if(existing.has(i.ref))skipped++;else{let id=i.id;while(id==null||ids.has(id))id=newId();ids.add(id);invoices.push({...i,id});existing.add(i.ref);added++;}});
+  data.invoices.forEach(i=>{if(!i.client||!i.ref)return;if(existing.has(i.ref))skipped++;else{let id=i.id;while(!isNum(id)||ids.has(id))id=newId();ids.add(id);invoices.push({...i,id});existing.add(i.ref);added++;}});
   log('import','Imported '+added+' invoices, skipped '+skipped+' duplicates');
   pendingImport=null;save();close();load();refresh();toast('Imported '+added+', skipped '+skipped);
 };
@@ -2566,13 +2665,30 @@ function exportActivity(){
   csvDownload(out,'paper-ledger-activity-'+today()+'.csv');toast('Activity exported');
 }
 if($('exportActivity'))$('exportActivity').onclick=exportActivity;
+
+// ================= v4.2: delegated actions (no inline handlers; ids travel in escaped data- attributes) =================
+const PLD_ACTIONS=new Set(["archiveClient", "cancelLastPayment", "cancelPayment", "confirmMatch", "convert", "copyEmail", "deleteClient", "deleteExpense", "deleteInvoice", "deleteTransaction", "deleteWip", "deleteWork", "downloadInvoicePdf", "downloadStatementPdf", "duplicate", "editPayment", "finaliseDraft", "goView", "invoiceWork", "logContact", "logReminder", "markStepDone", "openAction", "openClient", "openEdit", "openExpense", "openPay", "openWork", "prepareNote", "printInvoice", "restoreSnapshot", "sendInvoice", "sendStatement", "setNext", "showContacts", "statement"]);
+function pldAction(e){
+  const t=e.target;const el=t&&t.closest?t.closest('[data-act]'):null;if(!el)return;
+  const a=el.dataset.act;
+  if(a==='rmLine'){el.parentElement.remove();updatePreview();return;}
+  if(!PLD_ACTIONS.has(a))return;const fn=window[a];if(typeof fn!=='function')return;
+  let args;
+  if(el.hasAttribute('data-args')){try{args=JSON.parse(el.dataset.args);}catch{return;}if(!Array.isArray(args))return;}
+  else if(el.hasAttribute('data-id')){const n=Number(el.dataset.id);if(!Number.isFinite(n))return;args=[n];}
+  else if(el.hasAttribute('data-arg'))args=[el.dataset.arg];
+  else args=[];
+  fn(...args);
+}
+document.addEventListener('click',pldAction,true);
+function bindPrint(w){try{if(!w||w.blocked)return;w.document.querySelectorAll('[data-pld-print]').forEach(b=>b.addEventListener('click',()=>w.print()));}catch{}}
 // ---------- pop-up windows: never crash when the browser blocks them ----------
 function openWin(){
   let w=null;try{w=window.open('','_blank');}catch{}
   if(!w){toast('Your browser blocked the pop-up. Allow pop-ups for this page, or use the PDF button instead.');return {document:{write(){},close(){},title:''},focus(){},print(){},close(){},blocked:true};}
   return w;
 }
-const PRINT_BAR='<div class="noprint" style="margin-bottom:12px"><button onclick="window.print()" style="padding:6px 12px">Print / Save as PDF</button></div><style>@media print{.noprint{display:none}}</style>';
+const PRINT_BAR='<div class="noprint" style="margin-bottom:12px"><button data-pld-print style="padding:6px 12px">Print / Save as PDF</button></div><style>@media print{.noprint{display:none}}</style>';
 // ---------- clients ----------
 const EMAIL_RE=/^[^\s@<>(),;:"]+@[^\s@<>(),;:".]+(\.[^\s@<>(),;:".]+)+$/;
 function saveClient(){
@@ -2602,7 +2718,7 @@ function getFiltered(){
 function renderCommand(){
   renderCommand_v3();
   if(!invoices.length&&$('command')){
-    $('command').insertAdjacentHTML('afterbegin','<div class="card firstrun" style="grid-column:1/-1"><div style="font-family:var(--serif);font-size:1.05rem">Welcome — let’s get you paid</div><p class="reason" style="margin:0.3rem 0 0.5rem">1. Add your first invoice · 2. Download the PDF or send it by email/WhatsApp · 3. Record the payment when it arrives. Everything stays on this device.</p><button class="btn" id="firstInvBtn" onclick="openEdit(null)">Create your first invoice</button> <button class="btn secondary" onclick="goView(\'settings\')">Add your business details</button></div>');
+    $('command').insertAdjacentHTML('afterbegin','<div class="card firstrun" style="grid-column:1/-1"><div style="font-family:var(--serif);font-size:1.05rem">Welcome — let’s get you paid</div><p class="reason" style="margin:0.3rem 0 0.5rem">1. Add your first invoice · 2. Download the PDF or send it by email/WhatsApp · 3. Record the payment when it arrives. Everything stays on this device.</p><button class="btn" id="firstInvBtn" data-act="openEdit" data-args="[null]">Create your first invoice</button> <button class="btn secondary" data-act="goView" data-arg="settings">Add your business details</button></div>');
   }
 }
 function renderWeekly(){
@@ -2637,7 +2753,7 @@ if($('undoBar')){$('undoBar').setAttribute('role','region');$('undoBar').setAttr
 
 
 // ================= v4.1: private feedback to the Paper Ledger Desk team (email only, nothing stored remotely) =================
-const APP_VERSION='4.1';
+const APP_VERSION='4.2';
 const FEEDBACK_TO='paperledgerdesk@gmail.com';
 const FB_KEY='pld_feedback_sent_v1';
 const FB_TYPES=['Complaint','Suggestion','Bug report','Praise','Other'];
